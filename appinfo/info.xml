@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<info xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
+	<id>pathlocale</id>
+	<name>Path localization</name>
+	<summary>Arabic and English text for every screen, the IBM Plex Sans Arabic font, the Path platform name</summary>
+	<description>Adds missing Arabic translations, replaces the product name in the user interface and loads the IBM Plex Sans Arabic font. Does not change Nextcloud files.</description>
+	<version>0.0.1</version>
+	<licence>agpl</licence>
+	<author>wi</author>
+	<namespace>Pathlocale</namespace>
+	<category>customization</category>
+	<dependencies>
+		<nextcloud min-version="34"/>
+	</dependencies>
+</info>
