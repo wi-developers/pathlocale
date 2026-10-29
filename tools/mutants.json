@@ -491,8 +491,8 @@
   "runner": "js",
   "edits": [
    [
-    "acc.split(from).join(to)",
-    "acc"
+    "DATA.swaps.reduce((acc, [from, to]) => acc.split(from).join(to), text)",
+    "DATA.swaps.reduce((acc, [from, to]) => acc, text)"
    ]
   ],
   "tests": "English pages"
