@@ -11,7 +11,7 @@ class DictionaryTest extends TestCase {
 	private const DIR = '/var/www/html/custom_apps/pathlocale';
 	private const ATTRIBUTION_KEY = 'Developed by the {communityopen}Nextcloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}AGPL{linkclose}.';
 	/** Keys that name a company or the upstream community: the real name must stay (a false sponsor or author would be worse than the old name). */
-	private const UPSTREAM_KEYS = '/Nextcloud (GmbH|community)/';
+	private const UPSTREAM_KEYS = '/Nextcloud (GmbH|community|Enterprise|portal|Appstore|App ?Store|All-in-One|Hub|[Dd]ocker|[Cc]lient|Server|Administration Manual|%d|%[0-9]\$s|[0-9]|<=)|Nextcloud subscription|community (release|build) of Nextcloud|We at Nextcloud|#Nextcloud|desktop client|(since|As of) Nextcloud/';
 	private const NAME_BAD ='/nextcloud|ن[ايِى]?كست\s*كلا?و?د|ناكست/iu';
 
 	private function data(string $lang): array {
@@ -145,7 +145,6 @@ class DictionaryTest extends TestCase {
 					continue;
 				}
 				$found++;
-				$this->assertStringContainsString('Nextcloud', implode(' ', (array)$value), "$app: " . mb_substr((string)$key, 0, 50));
 				$this->assertSame(0, preg_match('/منصة بث|Path platform/u', implode(' ', (array)$value)), "$app: the platform name replaced a company or community");
 			}
 		}
@@ -159,9 +158,47 @@ class DictionaryTest extends TestCase {
 		}
 	}
 
+	/** One list of "keep the upstream name" patterns for the build, the runtime data and this test. */
+	public function testKeepPatternsAreTheOnesTheTestsUse(): void {
+		$keep = json_decode((string)file_get_contents(self::DIR . '/data/footer.json'), true, 512, JSON_THROW_ON_ERROR)['en']['keep'];
+		$this->assertSame(self::UPSTREAM_KEYS, '/' . implode('|', $keep) . '/');
+		foreach ([
+			'Nextcloud GmbH sponsors a free push notification gateway' => true,
+			'install it manually from the Nextcloud App Store' => true,
+			'Nextcloud portal' => true,
+			'Nextcloud Enterprise' => true,
+			'We at Nextcloud believe' => true,
+			'As of Nextcloud 34 this app is bundled' => true,
+			'This community release of Nextcloud is unsupported' => true,
+			'Your Nextcloud setup is not capable' => false,
+			'Nextcloud Talk' => false,
+			'Add to your Nextcloud' => false,
+		] as $key => $kept) {
+			$this->assertSame($kept ? 1 : 0, preg_match(self::UPSTREAM_KEYS, $key), $key);
+		}
+	}
+
+	/** The exact-sentence map for PHP-rendered pages: only sentences that really name the product, none that keep the upstream name. */
+	public function testPhpTextsAreSafe(): void {
+		foreach (['ar', 'en'] as $lang) {
+			$map = $this->data($lang)['phpTexts'] ?? [];
+			$this->assertGreaterThanOrEqual(10, count($map), $lang);
+			foreach ($map as $from => $to) {
+				$this->assertSame($from, trim((string)preg_replace('/\s+/u', ' ', $from)), "$lang: key is normalised");
+				$this->assertNotSame($from, $to);
+				$this->assertSame(0, preg_match(self::UPSTREAM_KEYS, $from . ' ' . $to), "$lang: a sentence that keeps the upstream name is in the map: " . mb_substr($from, 0, 50));
+				$this->assertSame(0, preg_match(self::NAME_BAD, $to), "$lang: old name in the replacement: " . mb_substr($to, 0, 50));
+				$this->assertSame(1, preg_match(self::NAME_BAD, $from), "$lang: the map is only for sentences that name the product: " . mb_substr($from, 0, 50));
+			}
+		}
+	}
+
 	public function testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont(): void {
 		$css = str_replace("\r\n", "\n", (string)file_get_contents(self::DIR . '/css/pathlocale.css'));
 		$this->assertStringContainsString("html:root .app-menu__grid a.app-item[href\$=\"/settings/apps\"] {\n\tdisplay: none !important;\n}", $css);
+		$this->assertStringContainsString("html:root .app-menu__grid a.app-item[href=\"https://apps.nextcloud.com/\"] {
+	display: none !important;
+}", $css);
 		$this->assertSame(4, substr_count($css, '@font-face'));
 		$this->assertStringContainsString("html:root body {\n\tfont-family: var(--font-face);", $css);
 	}
@@ -178,12 +215,6 @@ class DictionaryTest extends TestCase {
 			$this->assertSame(0, preg_match(self::NAME_BAD, $f['reasons']));
 			foreach ([0, 2, 3, 4, 6] as $i) {
 				$this->assertSame(0, preg_match(self::NAME_BAD, $f['attribution'][$i]), "$lang: attribution part $i");
-			}
-			$this->assertNotEmpty($f['renames']);
-			foreach ($f['renames'] as $pair) {
-				$this->assertCount(2, $pair);
-				$this->assertSame($name, $pair[1]);
-				$this->assertSame(1, preg_match(self::NAME_BAD, $pair[0]), "$lang: a rename source is an old spelling");
 			}
 		}
 	}

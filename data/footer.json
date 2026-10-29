@@ -1,12 +1,37 @@
 {
  "ar": {
   "reasons": "أسباب تدعوك لاستعمال منصة بث في مؤسستك",
-  "attribution": ["منصة بث مبنية على برنامج ", "Nextcloud", " مفتوح المصدر، و", "الشيفرة المصدرية", " مرخّصة بموجب ", "AGPL", "."],
-  "renames": [["نكست كلاود", "منصة بث"], ["Nextcloud", "منصة بث"]]
+  "attribution": [
+   "منصة بث مبنية على برنامج ",
+   "Nextcloud",
+   " مفتوح المصدر، و",
+   "الشيفرة المصدرية",
+   " مرخّصة بموجب ",
+   "AGPL",
+   "."
+  ],
+  "productName": "منصة بث"
  },
  "en": {
   "reasons": "Reasons to use Path platform in your organization",
-  "attribution": ["Path platform is built on the open-source ", "Nextcloud", " software; the ", "source code", " is licensed under the ", "AGPL", "."],
-  "renames": [["Nextcloud", "Path platform"]]
+  "attribution": [
+   "Path platform is built on the open-source ",
+   "Nextcloud",
+   " software; the ",
+   "source code",
+   " is licensed under the ",
+   "AGPL",
+   "."
+  ],
+  "keep": [
+   "Nextcloud (GmbH|community|Enterprise|portal|Appstore|App ?Store|All-in-One|Hub|[Dd]ocker|[Cc]lient|Server|Administration Manual|%d|%[0-9]\\$s|[0-9]|<=)",
+   "Nextcloud subscription",
+   "community (release|build) of Nextcloud",
+   "We at Nextcloud",
+   "#Nextcloud",
+   "desktop client",
+   "(since|As of) Nextcloud"
+  ],
+  "productName": "Path platform"
  }
 }

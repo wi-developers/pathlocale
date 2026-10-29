@@ -152,57 +152,85 @@ test('English pages: the Arabic name and slogan are swapped in the title; on the
 	assert.equal(a.doc.title, 'Login - ' + from, 'Arabic pages keep the Arabic name');
 });
 
-test('personal settings footer: the reasons link is renamed, the "developed by" sentence becomes an attribution, only when the paragraph is the stock one', () => {
+test('personal settings footer: the reasons link is renamed and the "developed by" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph', () => {
 	const footerData = JSON.parse(fs.readFileSync(path.join(root, 'data', 'footer.json'), 'utf8'));
 	const HREFS = ['https://nextcloud.com/contribute', 'https://github.com/nextcloud', 'https://www.gnu.org/licenses/agpl-3.0.html'];
-	for (const lang of ['ar', 'en']) {
+	// where: which ancestors the element has; closest() answers for the selector text the runtime passes
+	const closestFor = (where) => (sel) => ((where.notice && sel === '.development-notice') || (where.editable && sel.includes('[contenteditable]')) ? {} : null);
+	const run = (lang, pathname, where = { notice: true }, tagName = 'P', hrefs = HREFS) => {
 		const f = footerData[lang];
-		const mkLinks = (hrefs) => hrefs.map((h, i) => ({ tagName: 'A', textContent: 'old' + i, getAttribute: () => h }));
-		const mkP = (hrefs) => { const links = mkLinks(hrefs); const p = { tagName: 'P', dataset: {}, children: links, kids: null, replaceChildren(...k) { this.kids = k; } }; links.forEach((a) => { a.parentElement = p; }); return p; };
-		const stock = mkP(HREFS); const div = mkP(HREFS); div.tagName = 'DIV'; const odd = mkP([HREFS[0], HREFS[1]]); const wrongLink = mkP([HREFS[0], 'https://example.org/x', HREFS[2]]);
+		const links = hrefs.map((h, i) => ({ tagName: 'A', textContent: 'old' + i, getAttribute: () => h }));
+		const p = { tagName, dataset: {}, children: links, kids: null, replaceChildren(...k) { this.kids = k; }, closest: closestFor(where) };
+		links.forEach((a) => { a.parentElement = p; });
 		const reasonsText = { nodeType: 3, nodeValue: '\n\t\t\told reasons\t\t' };
-		const reasons = { childNodes: [{ nodeType: 1 }, reasonsText] };
+		const reasons = { childNodes: [{ nodeType: 1 }, reasonsText], closest: closestFor(where) };
 		const body = { id: 'body-user', matches: () => false, querySelectorAll: (sel) => {
 			if (sel === '#open-reasons-use-nextcloud-pdf') return [reasons];
-			if (sel === `a[href="${HREFS[0]}"]`) return [stock, div, odd, wrongLink].map((p) => p.children[0]);
+			if (sel === `a[href="${HREFS[0]}"]`) return [links[0]];
 			return [];
 		} };
-		const doc = { body, addEventListener() {}, createTextNode: (t) => ({ text: t }) };
 		let observed = null;
-		load(lang, (c) => { c.MutationObserver = class { constructor(cb) { observed = cb; } observe() {} }; c.requestAnimationFrame = (fn) => fn(); }, doc);
-		assert.equal(reasonsText.nodeValue, '\n\t\t\t' + f.reasons + '\t\t', `${lang}: reasons text replaced, white space kept`);
-		assert.deepEqual(stock.kids.filter((k) => k.text !== undefined).map((k) => k.text), [f.attribution[0], f.attribution[2], f.attribution[4], f.attribution[6]]);
-		assert.deepEqual(stock.children.map((a) => a.textContent), [f.attribution[1], f.attribution[3], f.attribution[5]]);
-		assert.equal(stock.kids.length, 7, 'text, link, text, link, text, link, text');
-		assert.equal(stock.dataset.pathlocale, 'attribution');
-		assert.equal(div.kids, null, 'only a paragraph is rebuilt');
-		stock.kids = null; observed(); // the page changes (our own edit included): the same paragraph is not rebuilt again
-		assert.equal(stock.kids, null, 'no rebuild loop');
-		assert.equal(odd.kids, null, 'a paragraph with two links is left alone');
-		assert.equal(wrongLink.kids, null, 'a paragraph whose links are not the stock ones is left alone');
-		assert.ok(f.attribution[1] === 'Nextcloud' && f.attribution[5] === 'AGPL', 'the notice names the upstream software and the licence');
-		assert.ok(!/Nextcloud/.test([f.reasons, ...f.attribution.filter((_, i) => i !== 1)].join(' ')), 'the name appears only as the attribution link');
+		const doc = { body, addEventListener() {}, createTextNode: (t) => ({ text: t }), createTreeWalker: () => ({ nextNode: () => null }) };
+		load(lang, (c) => { c.location = { pathname, search: '' }; c.MutationObserver = class { constructor(cb) { observed = cb; } observe() {} }; c.requestAnimationFrame = (fn) => fn(); }, doc);
+		return { f, p, links, reasonsText, observed };
+	};
+	for (const lang of ['ar', 'en']) {
+		const r = run(lang, '/settings/user');
+		assert.equal(r.reasonsText.nodeValue, '\n\t\t\t' + r.f.reasons + '\t\t', lang + ': reasons text replaced, white space kept');
+		assert.deepEqual(r.p.kids.filter((k) => k.text !== undefined).map((k) => k.text), [r.f.attribution[0], r.f.attribution[2], r.f.attribution[4], r.f.attribution[6]]);
+		assert.deepEqual(r.links.map((a) => a.textContent), [r.f.attribution[1], r.f.attribution[3], r.f.attribution[5]]);
+		assert.equal(r.p.kids.length, 7, 'text, link, text, link, text, link, text');
+		assert.equal(r.p.dataset.pathlocale, 'attribution');
+		r.p.kids = null; r.observed(); // the page changes (our own edit included): the same paragraph is not rebuilt again
+		assert.equal(r.p.kids, null, 'no rebuild loop');
+		assert.ok(r.f.attribution[1] === 'Nextcloud' && r.f.attribution[5] === 'AGPL', 'the notice names the upstream software and the licence');
+		assert.ok(!/Nextcloud/.test([r.f.reasons, ...r.f.attribution.filter((_, i) => i !== 1)].join(' ')), 'the name appears only as the attribution link');
+		assert.equal(run(lang, '/index.php/settings/user/security').p.kids !== null, true, lang + ': index.php form of the path');
+		// the guards, each alone
+		const off = run(lang, '/apps/files/'); assert.equal(off.p.kids, null, 'not a personal settings page'); assert.match(off.reasonsText.nodeValue, /old reasons/);
+		const outside = run(lang, '/settings/user', { notice: false }); assert.equal(outside.p.kids, null, 'outside the notice area (a document, a note, a card)'); assert.match(outside.reasonsText.nodeValue, /old reasons/, 'the reasons link outside the notice area');
+		const edit = run(lang, '/settings/user', { notice: true, editable: true }); assert.equal(edit.p.kids, null, 'editable content'); assert.match(edit.reasonsText.nodeValue, /old reasons/, 'an editable reasons link');
+		assert.equal(run(lang, '/settings/user', { notice: true }, 'DIV').p.kids, null, 'only a paragraph is rebuilt');
+		assert.equal(run(lang, '/settings/user', { notice: true }, 'P', [HREFS[0], HREFS[1]]).p.kids, null, 'two links');
+		assert.equal(run(lang, '/settings/user', { notice: true }, 'P', [HREFS[0], 'https://example.org/x', HREFS[2]]).p.kids, null, 'not the stock links');
 	}
 });
 
-test('personal settings pages: the product name inside server text is renamed, in text nodes only and never in the attribution', () => {
-	// skip: which of our skip-list entries the element sits inside (closest() answers for the selector text the runtime passes)
+test('personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution', () => {
 	const mk = (v, tagName = 'P', skip = null) => ({ nodeValue: v, parentElement: { tagName, closest: (sel) => (skip && sel.includes(skip) ? {} : null) } });
+	const sentence = (lang) => { const d = data(lang).phpTexts; const k = Object.keys(d)[0]; return [k, d[k]]; };
 	const run = (lang, pathname, texts) => {
-		let i = 0; const nodes = texts;
-		const doc = { body: { id: 'body-user', querySelectorAll: () => [], matches: () => false }, addEventListener() {}, createTreeWalker: () => ({ nextNode: () => nodes[i++] ?? null }) };
+		let i = 0;
+		const doc = { body: { id: 'body-user', querySelectorAll: () => [], matches: () => false }, addEventListener() {}, createTreeWalker: () => ({ nextNode: () => texts[i++] ?? null }) };
 		load(lang, (c) => { c.location = { pathname, search: '' }; }, doc);
 	};
-	const a = mk('connect to نكست كلاود و Nextcloud'); const style = mk('Nextcloud', 'STYLE'); const area = mk('Nextcloud', 'TEXTAREA'); const attr = mk('Nextcloud', 'A', '[data-pathlocale]'); const agpl = mk('Nextcloud community', 'P', 'a[href*="/licenses/agpl"]'); const editable = mk('Nextcloud', 'DIV', '[contenteditable]'); const option = mk('Nextcloud', 'OPTION', 'option');
-	run('ar', '/settings/user/security', [a, style, area, attr, agpl, editable, option]);
-	assert.equal(a.nodeValue, 'connect to منصة بث و منصة بث');
-	assert.equal(style.nodeValue, 'Nextcloud'); assert.equal(area.nodeValue, 'Nextcloud'); assert.equal(attr.nodeValue, 'Nextcloud', 'the attribution keeps the upstream name');
-	assert.equal(agpl.nodeValue, 'Nextcloud community', 'a paragraph that links the AGPL keeps its text even if the footer markup changed');
-	assert.equal(editable.nodeValue, 'Nextcloud', 'editable content is not touched'); assert.equal(option.nodeValue, 'Nextcloud', 'options are not touched');
-	const e = mk('a Nextcloud server'); run('en', '/index.php/settings/user/sharing', [e]);
-	assert.equal(e.nodeValue, 'a Path platform server');
-	for (const other of ['/apps/files/', '/settings/admin/overview', '/settings/users', '/settings/userx', '/apps/files/settings/user']) {
-		const n = mk('a Nextcloud server'); run('en', other, [n]);
-		assert.equal(n.nodeValue, 'a Nextcloud server', `${other} is not a personal settings page`);
+	for (const lang of ['ar', 'en']) {
+		const [from, to] = sentence(lang);
+		assert.ok(Object.keys(data(lang).phpTexts).length >= 10, lang + ': the sentence map has content');
+		const hit = mk('\n\t' + from.replace(/ /g, '\n  ') + '\t'); const near = mk(from + ' and more'); const style = mk(from, 'STYLE');
+		const attr = mk(from, 'A', '[data-pathlocale]'); const agpl = mk(from, 'P', 'a[href*=\"/licenses/agpl\"]'); const editable = mk(from, 'DIV', '[contenteditable]'); const option = mk(from, 'OPTION', 'option');
+		run(lang, '/settings/user/security', [hit, near, style, attr, agpl, editable, option]);
+		assert.equal(hit.nodeValue.trim(), to, lang + ': the sentence is replaced, white space around it kept');
+		assert.equal(hit.nodeValue.startsWith('\n\t'), true);
+		assert.equal(near.nodeValue, from + ' and more', 'a text that merely contains the sentence is not touched');
+		for (const [name, n] of [['style', style], ['attribution', attr], ['agpl paragraph', agpl], ['editable', editable], ['option', option]]) assert.equal(n.nodeValue, from, name + ' is not touched');
+		for (const other of ['/apps/files/', '/settings/admin/overview', '/settings/users', '/settings/userx', '/apps/files/settings/user']) {
+			const n = mk(from); run(lang, other, [n]);
+			assert.equal(n.nodeValue, from, other + ' is not a personal settings page');
+		}
+	}
+	// the company, community and version texts keep the upstream name and are not in the map
+	for (const lang of ['ar', 'en']) for (const [k, v] of Object.entries(data(lang).phpTexts)) assert.ok(!/GmbH|community (release|build)|Enterprise/.test(k + v), 'upstream-name sentence in the map: ' + k);
+});
+
+test('core\'s constant product name is replaced by the platform name, and nothing breaks without it', () => {
+	for (const [lang, name] of [['ar', 'منصة بث'], ['en', 'Path platform']]) {
+		const ctx = load(lang, (c) => { c.OC = { theme: { productName: 'Nextcloud', name: 'x' } }; });
+		assert.equal(ctx.OC.theme.productName, name);
+		assert.equal(ctx.OC.theme.name, 'x', 'only the product name is touched');
+		assert.doesNotThrow(() => load(lang, (c) => { c.OC = {}; }));
+		assert.doesNotThrow(() => load(lang));
+		const odd = load(lang, (c) => { c.OC = { theme: { productName: 5 } }; });
+		assert.equal(odd.OC.theme.productName, 5, 'a value that is not a string is left alone');
 	}
 });

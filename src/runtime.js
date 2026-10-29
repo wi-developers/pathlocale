@@ -52,18 +52,24 @@
 		}
 		return null;
 	};
-	// Two sentences of the personal settings page are finished PHP text with the product name inside. The reasons link gets its
-	// text replaced; the "developed by" sentence is a legal notice, so it is rebuilt as an attribution ("built on Nextcloud, source
-	// code, AGPL") around the same three links, and only when the paragraph has exactly those three links.
+	// Personal settings pages (/settings/user/...) print some sentences as finished PHP text with the product name inside. Everything
+	// below runs on those pages only, inside the page's own notice area or by exact sentence, and never in editable content.
+	const SETTINGS_PATH = /^\/(index\.php\/)?settings\/user(\/|$)/;
+	const onSettings = () => SETTINGS_PATH.test(g.location?.pathname ?? '');
+	const EDITABLE = '[contenteditable], textarea, input, .ProseMirror, .modal-container';
+	// The reasons link gets its text replaced; the "developed by" sentence is a legal notice, so it is rebuilt as an attribution
+	// ("built on Nextcloud, source code, AGPL") around the same three links, and only when the paragraph has exactly those three links.
 	const ATTRIBUTION_LINKS = ['https://nextcloud.com/contribute', 'https://github.com/nextcloud', 'https://www.gnu.org/licenses/agpl-3.0.html'];
+	const inNotice = (el) => !!el.closest('.development-notice') && !el.closest(EDITABLE);
 	const footer = (root) => {
-		const f = DATA.footer; if (!f) return;
+		const f = DATA.footer; if (!f || !onSettings()) return;
 		for (const a of root.querySelectorAll('#open-reasons-use-nextcloud-pdf')) {
+			if (!inNotice(a)) continue;
 			const t = [...a.childNodes].find((n) => n.nodeType === 3 && n.nodeValue.trim());
 			if (t && t.nodeValue.trim() !== f.reasons) t.nodeValue = t.nodeValue.replace(t.nodeValue.trim(), () => f.reasons);
 		}
 		for (const first of root.querySelectorAll(`a[href="${ATTRIBUTION_LINKS[0]}"]`)) {
-			const p = first.parentElement; if (!p || p.tagName !== 'P' || p.dataset.pathlocale === 'attribution') continue;
+			const p = first.parentElement; if (!p || p.tagName !== 'P' || p.dataset.pathlocale === 'attribution' || !inNotice(p)) continue;
 			const links = [...p.children];
 			if (links.length !== 3 || links.some((a, i) => a.tagName !== 'A' || a.getAttribute('href') !== ATTRIBUTION_LINKS[i])) continue;
 			const parts = f.attribution; // text, link, text, link, text, link, text
@@ -72,18 +78,22 @@
 			p.dataset.pathlocale = 'attribution';
 		}
 	};
-	// The rest of the personal settings pages (/settings/user/...) is finished PHP text too ("connect to Nextcloud", "a Nextcloud server").
-	// Text nodes only, never editable or form content, never the attribution paragraph (built above, or any paragraph that links the AGPL).
-	const SETTINGS_SKIP = '[data-pathlocale], [contenteditable], option, textarea, input, p:has(a[href*="/licenses/agpl"])';
+	// The other sentences: exact upstream sentence (white space collapsed) -> our sentence. A sentence that Nextcloud rewords is left
+	// alone (upstream wording stays). Never the attribution paragraph, never editable content, form fields or options.
+	const PHP_TEXTS = new Map(Object.entries(DATA.phpTexts ?? {}));
+	const SETTINGS_SKIP = '[data-pathlocale], ' + EDITABLE + ', option, p:has(a[href*="/licenses/agpl"])';
 	const settingsRename = () => {
-		const list = DATA.footer?.renames; if (!list?.length || !/^\/(index\.php\/)?settings\/user(\/|$)/.test(g.location?.pathname ?? '')) return;
+		if (PHP_TEXTS.size === 0 || !onSettings()) return;
 		const walker = document.createTreeWalker(document.body, 4);
 		const todo = [];
 		for (let n = walker.nextNode(); n; n = walker.nextNode()) {
 			const el = n.parentElement;
-			if (el && !['SCRIPT', 'STYLE', 'TEXTAREA'].includes(el.tagName) && !el.closest(SETTINGS_SKIP)) todo.push(n);
+			if (el && !['SCRIPT', 'STYLE'].includes(el.tagName) && !el.closest(SETTINGS_SKIP)) todo.push(n);
 		}
-		for (const n of todo) { const t = list.reduce((acc, [from, to]) => acc.split(from).join(to), n.nodeValue); if (t !== n.nodeValue) n.nodeValue = t; }
+		for (const n of todo) {
+			const to = PHP_TEXTS.get(n.nodeValue.replace(/\s+/g, ' ').trim());
+			if (to !== undefined) n.nodeValue = n.nodeValue.replace(n.nodeValue.trim(), () => to);
+		}
 	};
 	const fix = (root) => {
 		if (!root.querySelectorAll) return;
@@ -123,7 +133,11 @@
 		a.href = (g.OC?.webroot ?? '') + '/index.php/apps/pathlocale/lang/' + other + '?redirect=' + encodeURIComponent(location.pathname + location.search);
 		document.body.appendChild(a);
 	};
+	// Core hands the code a constant product name (OC.theme.productName, always the upstream name); strings such as "a {productName} server" print it.
+	const productName = () => { const t = g.OC?.theme; if (DATA.footer?.productName && typeof t?.productName === 'string' && t.productName !== DATA.footer.productName) t.productName = DATA.footer.productName; };
+	productName();
 	const start = () => {
+		productName();
 		fix(document.body);
 		swapGuest();
 		guestSwitch();

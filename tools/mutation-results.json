@@ -457,8 +457,8 @@
   "tests": "personal settings footer",
   "status": "CAUGHT",
   "failed": [
-   "personal settings footer: the reasons link is renamed, the \"developed by\" sentence becomes an attribution, only when the paragraph is the stock one",
-   "personal settings footer: the reasons link is renamed, the \"developed by\" sentence becomes an attribution, only when the paragraph is the stock one"
+   "personal settings footer: the reasons link is renamed and the \"developed by\" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph",
+   "personal settings footer: the reasons link is renamed and the \"developed by\" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph"
   ]
  },
  "J20": {
@@ -468,8 +468,8 @@
   "tests": "personal settings footer",
   "status": "CAUGHT",
   "failed": [
-   "personal settings footer: the reasons link is renamed, the \"developed by\" sentence becomes an attribution, only when the paragraph is the stock one",
-   "personal settings footer: the reasons link is renamed, the \"developed by\" sentence becomes an attribution, only when the paragraph is the stock one"
+   "personal settings footer: the reasons link is renamed and the \"developed by\" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph",
+   "personal settings footer: the reasons link is renamed and the \"developed by\" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph"
   ]
  },
  "J21": {
@@ -479,8 +479,8 @@
   "tests": "personal settings footer",
   "status": "CAUGHT",
   "failed": [
-   "personal settings footer: the reasons link is renamed, the \"developed by\" sentence becomes an attribution, only when the paragraph is the stock one",
-   "personal settings footer: the reasons link is renamed, the \"developed by\" sentence becomes an attribution, only when the paragraph is the stock one"
+   "personal settings footer: the reasons link is renamed and the \"developed by\" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph",
+   "personal settings footer: the reasons link is renamed and the \"developed by\" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph"
   ]
  },
  "J22": {
@@ -490,8 +490,8 @@
   "tests": "personal settings footer",
   "status": "CAUGHT",
   "failed": [
-   "personal settings footer: the reasons link is renamed, the \"developed by\" sentence becomes an attribution, only when the paragraph is the stock one",
-   "personal settings footer: the reasons link is renamed, the \"developed by\" sentence becomes an attribution, only when the paragraph is the stock one"
+   "personal settings footer: the reasons link is renamed and the \"developed by\" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph",
+   "personal settings footer: the reasons link is renamed and the \"developed by\" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph"
   ]
  },
  "J23": {
@@ -501,8 +501,8 @@
   "tests": "personal settings footer",
   "status": "CAUGHT",
   "failed": [
-   "personal settings footer: the reasons link is renamed, the \"developed by\" sentence becomes an attribution, only when the paragraph is the stock one",
-   "personal settings footer: the reasons link is renamed, the \"developed by\" sentence becomes an attribution, only when the paragraph is the stock one"
+   "personal settings footer: the reasons link is renamed and the \"developed by\" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph",
+   "personal settings footer: the reasons link is renamed and the \"developed by\" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph"
   ]
  },
  "J24": {
@@ -512,8 +512,8 @@
   "tests": "personal settings footer",
   "status": "CAUGHT",
   "failed": [
-   "personal settings footer: the reasons link is renamed, the \"developed by\" sentence becomes an attribution, only when the paragraph is the stock one",
-   "personal settings footer: the reasons link is renamed, the \"developed by\" sentence becomes an attribution, only when the paragraph is the stock one"
+   "personal settings footer: the reasons link is renamed and the \"developed by\" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph",
+   "personal settings footer: the reasons link is renamed and the \"developed by\" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph"
   ]
  },
  "J25": {
@@ -523,80 +523,78 @@
   "tests": "personal settings footer",
   "status": "CAUGHT",
   "failed": [
-   "personal settings footer: the reasons link is renamed, the \"developed by\" sentence becomes an attribution, only when the paragraph is the stock one",
-   "personal settings footer: the reasons link is renamed, the \"developed by\" sentence becomes an attribution, only when the paragraph is the stock one"
+   "personal settings footer: the reasons link is renamed and the \"developed by\" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph",
+   "personal settings footer: the reasons link is renamed and the \"developed by\" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph"
   ]
  },
  "J26": {
   "id": "J26",
-  "rule": "settings rename: only on personal settings pages",
+  "rule": "settings sentences: only on personal settings pages",
   "file": "src/runtime.js",
   "tests": "personal settings pages",
   "status": "CAUGHT",
   "failed": [
    "navigation labels written by the server are translated, nothing else is touched",
    "English pages: the Arabic name and slogan are swapped in the title; on the login page everywhere, on public pages only in header and footer, never in editable content",
-   "personal settings footer: the reasons link is renamed, the \"developed by\" sentence becomes an attribution, only when the paragraph is the stock one",
-   "personal settings pages: the product name inside server text is renamed, in text nodes only and never in the attribution",
+   "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution",
    "navigation labels written by the server are translated, nothing else is touched",
    "English pages: the Arabic name and slogan are swapped in the title; on the login page everywhere, on public pages only in header and footer, never in editable content",
-   "personal settings footer: the reasons link is renamed, the \"developed by\" sentence becomes an attribution, only when the paragraph is the stock one",
-   "personal settings pages: the product name inside server text is renamed, in text nodes only and never in the attribution"
+   "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution"
   ]
  },
  "J27": {
   "id": "J27",
-  "rule": "settings rename: path must end at /settings/user or continue with a slash",
+  "rule": "settings path: ends at /settings/user or continues with a slash",
   "file": "src/runtime.js",
   "tests": "personal settings pages",
   "status": "CAUGHT",
   "failed": [
-   "personal settings pages: the product name inside server text is renamed, in text nodes only and never in the attribution",
-   "personal settings pages: the product name inside server text is renamed, in text nodes only and never in the attribution"
+   "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution",
+   "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution"
   ]
  },
  "J28": {
   "id": "J28",
-  "rule": "settings rename: scripts, styles and text areas are skipped",
+  "rule": "settings sentences: scripts and styles are skipped",
   "file": "src/runtime.js",
   "tests": "personal settings pages",
   "status": "CAUGHT",
   "failed": [
-   "personal settings pages: the product name inside server text is renamed, in text nodes only and never in the attribution",
-   "personal settings pages: the product name inside server text is renamed, in text nodes only and never in the attribution"
+   "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution",
+   "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution"
   ]
  },
  "J29": {
   "id": "J29",
-  "rule": "settings rename: the attribution is skipped",
+  "rule": "settings sentences: the attribution is skipped",
   "file": "src/runtime.js",
   "tests": "personal settings pages",
   "status": "CAUGHT",
   "failed": [
-   "personal settings pages: the product name inside server text is renamed, in text nodes only and never in the attribution",
-   "personal settings pages: the product name inside server text is renamed, in text nodes only and never in the attribution"
+   "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution",
+   "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution"
   ]
  },
  "J30": {
   "id": "J30",
-  "rule": "settings rename actually replaces",
+  "rule": "settings sentences are actually replaced",
   "file": "src/runtime.js",
   "tests": "personal settings pages",
   "status": "CAUGHT",
   "failed": [
-   "personal settings pages: the product name inside server text is renamed, in text nodes only and never in the attribution",
-   "personal settings pages: the product name inside server text is renamed, in text nodes only and never in the attribution"
+   "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution",
+   "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution"
   ]
  },
  "J31": {
   "id": "J31",
-  "rule": "settings rename: path is anchored at the start",
+  "rule": "settings path is anchored at the start",
   "file": "src/runtime.js",
   "tests": "personal settings pages",
   "status": "CAUGHT",
   "failed": [
-   "personal settings pages: the product name inside server text is renamed, in text nodes only and never in the attribution",
-   "personal settings pages: the product name inside server text is renamed, in text nodes only and never in the attribution"
+   "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution",
+   "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution"
   ]
  },
  "K01": {
@@ -654,35 +652,160 @@
  },
  "J35": {
   "id": "J35",
-  "rule": "settings rename skips the AGPL paragraph",
+  "rule": "settings sentences: the AGPL paragraph is skipped",
   "file": "src/runtime.js",
   "tests": "personal settings pages",
   "status": "CAUGHT",
   "failed": [
-   "personal settings pages: the product name inside server text is renamed, in text nodes only and never in the attribution",
-   "personal settings pages: the product name inside server text is renamed, in text nodes only and never in the attribution"
+   "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution",
+   "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution"
   ]
  },
  "J36": {
   "id": "J36",
-  "rule": "settings rename skips editable content",
+  "rule": "settings sentences: editable content is skipped",
   "file": "src/runtime.js",
   "tests": "personal settings pages",
   "status": "CAUGHT",
   "failed": [
-   "personal settings pages: the product name inside server text is renamed, in text nodes only and never in the attribution",
-   "personal settings pages: the product name inside server text is renamed, in text nodes only and never in the attribution"
+   "personal settings footer: the reasons link is renamed and the \"developed by\" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph",
+   "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution",
+   "personal settings footer: the reasons link is renamed and the \"developed by\" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph",
+   "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution"
   ]
  },
  "J37": {
   "id": "J37",
-  "rule": "settings rename skips options",
+  "rule": "settings sentences: options are skipped",
   "file": "src/runtime.js",
   "tests": "personal settings pages",
   "status": "CAUGHT",
   "failed": [
-   "personal settings pages: the product name inside server text is renamed, in text nodes only and never in the attribution",
-   "personal settings pages: the product name inside server text is renamed, in text nodes only and never in the attribution"
+   "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution",
+   "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution"
+  ]
+ },
+ "J38": {
+  "id": "J38",
+  "rule": "footer only on the personal settings page",
+  "file": "src/runtime.js",
+  "tests": "personal settings footer",
+  "status": "CAUGHT",
+  "failed": [
+   "personal settings footer: the reasons link is renamed and the \"developed by\" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph",
+   "personal settings footer: the reasons link is renamed and the \"developed by\" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph"
+  ]
+ },
+ "J39": {
+  "id": "J39",
+  "rule": "footer only inside the notice area",
+  "file": "src/runtime.js",
+  "tests": "personal settings footer",
+  "status": "CAUGHT",
+  "failed": [
+   "personal settings footer: the reasons link is renamed and the \"developed by\" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph",
+   "personal settings footer: the reasons link is renamed and the \"developed by\" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph"
+  ]
+ },
+ "J40": {
+  "id": "J40",
+  "rule": "footer never in editable content",
+  "file": "src/runtime.js",
+  "tests": "personal settings footer",
+  "status": "CAUGHT",
+  "failed": [
+   "personal settings footer: the reasons link is renamed and the \"developed by\" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph",
+   "personal settings footer: the reasons link is renamed and the \"developed by\" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph"
+  ]
+ },
+ "J41": {
+  "id": "J41",
+  "rule": "reasons link only inside the notice area",
+  "file": "src/runtime.js",
+  "tests": "personal settings footer",
+  "status": "CAUGHT",
+  "failed": [
+   "personal settings footer: the reasons link is renamed and the \"developed by\" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph",
+   "personal settings footer: the reasons link is renamed and the \"developed by\" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph"
+  ]
+ },
+ "J42": {
+  "id": "J42",
+  "rule": "attribution paragraph only inside the notice area",
+  "file": "src/runtime.js",
+  "tests": "personal settings footer",
+  "status": "CAUGHT",
+  "failed": [
+   "personal settings footer: the reasons link is renamed and the \"developed by\" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph",
+   "personal settings footer: the reasons link is renamed and the \"developed by\" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph"
+  ]
+ },
+ "J43": {
+  "id": "J43",
+  "rule": "product name is replaced",
+  "file": "src/runtime.js",
+  "tests": "core's constant product name",
+  "status": "CAUGHT",
+  "failed": [
+   "our entry wins over the entry Nextcloud registered, and Nextcloud entries we do not have stay",
+   "an entry Nextcloud registers AFTER us does not displace ours (translations are fetched later per app)",
+   "an app we have no dictionary for is passed through untouched",
+   "dangerous app names do not reach our dictionary",
+   "apps with a dictionary get a plural function when Nextcloud registered none, and keep theirs when it did",
+   "English: plural function is singular/plural",
+   "apps that ship no language file are marked as loaded so core does not fetch a missing file",
+   "loading twice does not wrap twice",
+   "navigation labels written by the server are translated, nothing else is touched",
+   "guest pages get one link to the other language; signed-in pages get none",
+   "English pages: the Arabic name and slogan are swapped in the title; on the login page everywhere, on public pages only in header and footer, never in editable content",
+   "personal settings footer: the reasons link is renamed and the \"developed by\" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph",
+   "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution",
+   "core's constant product name is replaced by the platform name, and nothing breaks without it",
+   "our entry wins over the entry Nextcloud registered, and Nextcloud entries we do not have stay",
+   "an entry Nextcloud registers AFTER us does not displace ours (translations are fetched later per app)",
+   "an app we have no dictionary for is passed through untouched",
+   "dangerous app names do not reach our dictionary",
+   "apps with a dictionary get a plural function when Nextcloud registered none, and keep theirs when it did",
+   "English: plural function is singular/plural",
+   "apps that ship no language file are marked as loaded so core does not fetch a missing file",
+   "loading twice does not wrap twice",
+   "navigation labels written by the server are translated, nothing else is touched",
+   "guest pages get one link to the other language; signed-in pages get none",
+   "English pages: the Arabic name and slogan are swapped in the title; on the login page everywhere, on public pages only in header and footer, never in editable content",
+   "personal settings footer: the reasons link is renamed and the \"developed by\" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph",
+   "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution",
+   "core's constant product name is replaced by the platform name, and nothing breaks without it"
+  ]
+ },
+ "J44": {
+  "id": "J44",
+  "rule": "settings sentences match with collapsed white space",
+  "file": "src/runtime.js",
+  "tests": "personal settings pages",
+  "status": "CAUGHT",
+  "failed": [
+   "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution",
+   "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution"
+  ]
+ },
+ "K03": {
+  "id": "K03",
+  "rule": "css hides the App store entry for non-admins (selector)",
+  "file": "css/pathlocale.css",
+  "tests": "testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont"
+  ]
+ },
+ "K04": {
+  "id": "K04",
+  "rule": "css hides the App store entry for non-admins (display)",
+  "file": "css/pathlocale.css",
+  "tests": "testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont"
   ]
  }
 }

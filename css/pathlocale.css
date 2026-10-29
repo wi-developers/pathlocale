@@ -41,3 +41,7 @@ html:root[lang="ar"] #body-login button[type="submit"] .button-vue__icon svg {
 html:root .app-menu__grid a.app-item[href$="/settings/apps"] {
 	display: none !important;
 }
+/* the same entry for users who are not admins: a link to the App Store site */
+html:root .app-menu__grid a.app-item[href="https://apps.nextcloud.com/"] {
+	display: none !important;
+}

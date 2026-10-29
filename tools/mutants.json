@@ -602,84 +602,6 @@
   "tests": "personal settings footer"
  },
  {
-  "id": "J26",
-  "rule": "settings rename: only on personal settings pages",
-  "file": "src/runtime.js",
-  "runner": "js",
-  "edits": [
-   [
-    " || !/^\\/(index\\.php\\/)?settings\\/user(\\/|$)/.test(g.location?.pathname ?? '')",
-    ""
-   ]
-  ],
-  "tests": "personal settings pages"
- },
- {
-  "id": "J27",
-  "rule": "settings rename: path must end at /settings/user or continue with a slash",
-  "file": "src/runtime.js",
-  "runner": "js",
-  "edits": [
-   [
-    "settings\\/user(\\/|$)/.test",
-    "settings\\/user/.test"
-   ]
-  ],
-  "tests": "personal settings pages"
- },
- {
-  "id": "J28",
-  "rule": "settings rename: scripts, styles and text areas are skipped",
-  "file": "src/runtime.js",
-  "runner": "js",
-  "edits": [
-   [
-    "!['SCRIPT', 'STYLE', 'TEXTAREA'].includes(el.tagName) && ",
-    ""
-   ]
-  ],
-  "tests": "personal settings pages"
- },
- {
-  "id": "J29",
-  "rule": "settings rename: the attribution is skipped",
-  "file": "src/runtime.js",
-  "runner": "js",
-  "edits": [
-   [
-    "'[data-pathlocale], [contenteditable]",
-    "'[contenteditable]"
-   ]
-  ],
-  "tests": "personal settings pages"
- },
- {
-  "id": "J30",
-  "rule": "settings rename actually replaces",
-  "file": "src/runtime.js",
-  "runner": "js",
-  "edits": [
-   [
-    "acc.split(from).join(to), n.nodeValue)",
-    "acc, n.nodeValue)"
-   ]
-  ],
-  "tests": "personal settings pages"
- },
- {
-  "id": "J31",
-  "rule": "settings rename: path is anchored at the start",
-  "file": "src/runtime.js",
-  "runner": "js",
-  "edits": [
-   [
-    "/^\\/(index\\.php\\/)?settings",
-    "/\\/(index\\.php\\/)?settings"
-   ]
-  ],
-  "tests": "personal settings pages"
- },
- {
   "id": "K01",
   "rule": "css hides the More apps entry (selector)",
   "file": "css/pathlocale.css",
@@ -697,88 +619,242 @@
   "file": "css/pathlocale.css",
   "edits": [
    [
-    "display: none !important;",
-    "display: block !important;"
+    "a.app-item[href$=\"/settings/apps\"] {\n\tdisplay: none !important;",
+    "a.app-item[href$=\"/settings/apps\"] {\n\tdisplay: block !important;"
    ]
   ],
   "tests": "testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont"
  },
  {
-  "id": "J32",
-  "rule": "public pages: only header and footer are swapped",
-  "file": "src/runtime.js",
-  "edits": [
-   [
-    "id === 'body-login' ? [document.body] : document.querySelectorAll('header, footer')",
-    "[document.body]"
-   ]
-  ],
-  "tests": "English pages: the Arabic name",
-  "runner": "js"
- },
- {
-  "id": "J33",
-  "rule": "guest swap skips editable content",
-  "file": "src/runtime.js",
-  "edits": [
-   [
-    "textarea, input, [contenteditable], .ProseMirror, #content-vue, .modal-container",
-    "textarea, input, .ProseMirror, #content-vue, .modal-container"
-   ]
-  ],
-  "tests": "English pages: the Arabic name",
-  "runner": "js"
- },
- {
-  "id": "J34",
-  "rule": "guest swap skips app content",
-  "file": "src/runtime.js",
-  "edits": [
-   [
-    ".ProseMirror, #content-vue, .modal-container",
-    ".ProseMirror, .modal-container"
-   ]
-  ],
-  "tests": "English pages: the Arabic name",
-  "runner": "js"
- },
- {
-  "id": "J35",
-  "rule": "settings rename skips the AGPL paragraph",
+  "id": "J26",
+  "rule": "settings sentences: only on personal settings pages",
   "file": "src/runtime.js",
   "runner": "js",
   "edits": [
    [
-    ", p:has(a[href*=\"/licenses/agpl\"])'",
-    "'"
+    "if (PHP_TEXTS.size === 0 || !onSettings()) return;",
+    "if (PHP_TEXTS.size === 0) return;"
+   ]
+  ],
+  "tests": "personal settings pages"
+ },
+ {
+  "id": "J27",
+  "rule": "settings path: ends at /settings/user or continues with a slash",
+  "file": "src/runtime.js",
+  "runner": "js",
+  "edits": [
+   [
+    "settings\\/user(\\/|$)/;",
+    "settings\\/user/;"
+   ]
+  ],
+  "tests": "personal settings pages"
+ },
+ {
+  "id": "J28",
+  "rule": "settings sentences: scripts and styles are skipped",
+  "file": "src/runtime.js",
+  "runner": "js",
+  "edits": [
+   [
+    "!['SCRIPT', 'STYLE'].includes(el.tagName) && !el.closest(SETTINGS_SKIP)",
+    "!el.closest(SETTINGS_SKIP)"
+   ]
+  ],
+  "tests": "personal settings pages"
+ },
+ {
+  "id": "J29",
+  "rule": "settings sentences: the attribution is skipped",
+  "file": "src/runtime.js",
+  "runner": "js",
+  "edits": [
+   [
+    "'[data-pathlocale], ' + EDITABLE",
+    "EDITABLE"
+   ]
+  ],
+  "tests": "personal settings pages"
+ },
+ {
+  "id": "J30",
+  "rule": "settings sentences are actually replaced",
+  "file": "src/runtime.js",
+  "runner": "js",
+  "edits": [
+   [
+    "n.nodeValue = n.nodeValue.replace(n.nodeValue.trim(), () => to);",
+    "n.nodeValue = n.nodeValue;"
+   ]
+  ],
+  "tests": "personal settings pages"
+ },
+ {
+  "id": "J31",
+  "rule": "settings path is anchored at the start",
+  "file": "src/runtime.js",
+  "runner": "js",
+  "edits": [
+   [
+    "/^\\/(index\\.php\\/)?settings",
+    "/\\/(index\\.php\\/)?settings"
+   ]
+  ],
+  "tests": "personal settings pages"
+ },
+ {
+  "id": "J35",
+  "rule": "settings sentences: the AGPL paragraph is skipped",
+  "file": "src/runtime.js",
+  "runner": "js",
+  "edits": [
+   [
+    ", option, p:has(a[href*=\"/licenses/agpl\"])'",
+    ", option'"
    ]
   ],
   "tests": "personal settings pages"
  },
  {
   "id": "J36",
-  "rule": "settings rename skips editable content",
+  "rule": "settings sentences: editable content is skipped",
   "file": "src/runtime.js",
   "runner": "js",
   "edits": [
    [
-    "'[data-pathlocale], [contenteditable], option",
-    "'[data-pathlocale], option"
+    "'[contenteditable], textarea, input, .ProseMirror, .modal-container'",
+    "'textarea, input, .ProseMirror, .modal-container'"
    ]
   ],
   "tests": "personal settings pages"
  },
  {
   "id": "J37",
-  "rule": "settings rename skips options",
+  "rule": "settings sentences: options are skipped",
   "file": "src/runtime.js",
   "runner": "js",
   "edits": [
    [
-    "[contenteditable], option, textarea",
-    "[contenteditable], textarea"
+    ", option, p:has(",
+    ", p:has("
    ]
   ],
   "tests": "personal settings pages"
+ },
+ {
+  "id": "J38",
+  "rule": "footer only on the personal settings page",
+  "file": "src/runtime.js",
+  "runner": "js",
+  "edits": [
+   [
+    "if (!f || !onSettings()) return;",
+    "if (!f) return;"
+   ]
+  ],
+  "tests": "personal settings footer"
+ },
+ {
+  "id": "J39",
+  "rule": "footer only inside the notice area",
+  "file": "src/runtime.js",
+  "runner": "js",
+  "edits": [
+   [
+    "!!el.closest('.development-notice') && ",
+    ""
+   ]
+  ],
+  "tests": "personal settings footer"
+ },
+ {
+  "id": "J40",
+  "rule": "footer never in editable content",
+  "file": "src/runtime.js",
+  "runner": "js",
+  "edits": [
+   [
+    " && !el.closest(EDITABLE);",
+    ";"
+   ]
+  ],
+  "tests": "personal settings footer"
+ },
+ {
+  "id": "J41",
+  "rule": "reasons link only inside the notice area",
+  "file": "src/runtime.js",
+  "runner": "js",
+  "edits": [
+   [
+    "if (!inNotice(a)) continue;",
+    ""
+   ]
+  ],
+  "tests": "personal settings footer"
+ },
+ {
+  "id": "J42",
+  "rule": "attribution paragraph only inside the notice area",
+  "file": "src/runtime.js",
+  "runner": "js",
+  "edits": [
+   [
+    "|| !inNotice(p)) continue;",
+    ") continue;"
+   ]
+  ],
+  "tests": "personal settings footer"
+ },
+ {
+  "id": "J43",
+  "rule": "product name is replaced",
+  "file": "src/runtime.js",
+  "runner": "js",
+  "edits": [
+   [
+    "t.productName = DATA.footer.productName;",
+    ""
+   ]
+  ],
+  "tests": "core's constant product name"
+ },
+ {
+  "id": "J44",
+  "rule": "settings sentences match with collapsed white space",
+  "file": "src/runtime.js",
+  "runner": "js",
+  "edits": [
+   [
+    "PHP_TEXTS.get(n.nodeValue.replace(/\\s+/g, ' ').trim())",
+    "PHP_TEXTS.get(n.nodeValue)"
+   ]
+  ],
+  "tests": "personal settings pages"
+ },
+ {
+  "id": "K03",
+  "rule": "css hides the App store entry for non-admins (selector)",
+  "file": "css/pathlocale.css",
+  "edits": [
+   [
+    "a.app-item[href=\"https://apps.nextcloud.com/\"]",
+    "a.app-item[href=\"https://apps.nextcloud.com/x\"]"
+   ]
+  ],
+  "tests": "testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont"
+ },
+ {
+  "id": "K04",
+  "rule": "css hides the App store entry for non-admins (display)",
+  "file": "css/pathlocale.css",
+  "edits": [
+   [
+    "a.app-item[href=\"https://apps.nextcloud.com/\"] {\n\tdisplay: none !important;",
+    "a.app-item[href=\"https://apps.nextcloud.com/\"] {\n\tdisplay: block !important;"
+   ]
+  ],
+  "tests": "testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont"
  }
 ]
