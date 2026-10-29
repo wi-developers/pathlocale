@@ -401,21 +401,23 @@
   "tests": "English pages",
   "status": "CAUGHT",
   "failed": [
-   "English pages: the Arabic name and slogan are swapped in the title and on guest pages only",
+   "English pages: the Arabic name and slogan are swapped in the title; on the login page everywhere, on public pages only in header and footer, never in editable content",
    "personal settings footer: the reasons link is renamed, the \"developed by\" sentence becomes an attribution, only when the paragraph is the stock one",
-   "English pages: the Arabic name and slogan are swapped in the title and on guest pages only",
-   "personal settings footer: the reasons link is renamed, the \"developed by\" sentence becomes an attribution, only when the paragraph is the stock one"
+   "personal settings pages: the product name inside server text is renamed, in text nodes only and never in the attribution",
+   "English pages: the Arabic name and slogan are swapped in the title; on the login page everywhere, on public pages only in header and footer, never in editable content",
+   "personal settings footer: the reasons link is renamed, the \"developed by\" sentence becomes an attribution, only when the paragraph is the stock one",
+   "personal settings pages: the product name inside server text is renamed, in text nodes only and never in the attribution"
   ]
  },
  "J15": {
   "id": "J15",
-  "rule": "text swap leaves file lists alone",
+  "rule": "text swap leaves scripts and styles alone",
   "file": "src/runtime.js",
   "tests": "English pages",
   "status": "CAUGHT",
   "failed": [
-   "English pages: the Arabic name and slogan are swapped in the title and on guest pages only",
-   "English pages: the Arabic name and slogan are swapped in the title and on guest pages only"
+   "English pages: the Arabic name and slogan are swapped in the title; on the login page everywhere, on public pages only in header and footer, never in editable content",
+   "English pages: the Arabic name and slogan are swapped in the title; on the login page everywhere, on public pages only in header and footer, never in editable content"
   ]
  },
  "J16": {
@@ -425,8 +427,8 @@
   "tests": "English pages",
   "status": "CAUGHT",
   "failed": [
-   "English pages: the Arabic name and slogan are swapped in the title and on guest pages only",
-   "English pages: the Arabic name and slogan are swapped in the title and on guest pages only"
+   "English pages: the Arabic name and slogan are swapped in the title; on the login page everywhere, on public pages only in header and footer, never in editable content",
+   "English pages: the Arabic name and slogan are swapped in the title; on the login page everywhere, on public pages only in header and footer, never in editable content"
   ]
  },
  "J17": {
@@ -436,8 +438,8 @@
   "tests": "English pages",
   "status": "CAUGHT",
   "failed": [
-   "English pages: the Arabic name and slogan are swapped in the title and on guest pages only",
-   "English pages: the Arabic name and slogan are swapped in the title and on guest pages only"
+   "English pages: the Arabic name and slogan are swapped in the title; on the login page everywhere, on public pages only in header and footer, never in editable content",
+   "English pages: the Arabic name and slogan are swapped in the title; on the login page everywhere, on public pages only in header and footer, never in editable content"
   ]
  },
  "J18": {
@@ -533,11 +535,11 @@
   "status": "CAUGHT",
   "failed": [
    "navigation labels written by the server are translated, nothing else is touched",
-   "English pages: the Arabic name and slogan are swapped in the title and on guest pages only",
+   "English pages: the Arabic name and slogan are swapped in the title; on the login page everywhere, on public pages only in header and footer, never in editable content",
    "personal settings footer: the reasons link is renamed, the \"developed by\" sentence becomes an attribution, only when the paragraph is the stock one",
    "personal settings pages: the product name inside server text is renamed, in text nodes only and never in the attribution",
    "navigation labels written by the server are translated, nothing else is touched",
-   "English pages: the Arabic name and slogan are swapped in the title and on guest pages only",
+   "English pages: the Arabic name and slogan are swapped in the title; on the login page everywhere, on public pages only in header and footer, never in editable content",
    "personal settings footer: the reasons link is renamed, the \"developed by\" sentence becomes an attribution, only when the paragraph is the stock one",
    "personal settings pages: the product name inside server text is renamed, in text nodes only and never in the attribution"
   ]

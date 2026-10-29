@@ -452,21 +452,21 @@
   "runner": "js",
   "edits": [
    [
-    "if (id !== 'body-login' && id !== 'body-public') return;\n\t\tconst skip",
-    "const skip"
+    "if (id !== 'body-login' && id !== 'body-public') return;\n\t\tconst todo",
+    "const todo"
    ]
   ],
   "tests": "English pages"
  },
  {
   "id": "J15",
-  "rule": "text swap leaves file lists alone",
+  "rule": "text swap leaves scripts and styles alone",
   "file": "src/runtime.js",
   "runner": "js",
   "edits": [
    [
-    "const skip = '.files-list, #app-content-vue, .app-files';",
-    "const skip = '#nothing';"
+    "!n.parentElement.closest(GUEST_SKIP) && !['SCRIPT', 'STYLE'].includes(n.parentElement.tagName)",
+    "!n.parentElement.closest(GUEST_SKIP)"
    ]
   ],
   "tests": "English pages"
@@ -647,8 +647,8 @@
   "runner": "js",
   "edits": [
    [
-    " && !el.closest('[data-pathlocale]')",
-    ""
+    "'[data-pathlocale], [contenteditable]",
+    "'[contenteditable]"
    ]
   ],
   "tests": "personal settings pages"
