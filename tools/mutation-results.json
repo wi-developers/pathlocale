@@ -707,43 +707,6 @@
    "personal settings footer: the reasons link is renamed and the \"developed by\" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph"
   ]
  },
- "J43": {
-  "id": "J43",
-  "rule": "product name is replaced",
-  "file": "src/runtime.js",
-  "tests": "core's constant product name",
-  "status": "CAUGHT",
-  "failed": [
-   "our entry wins over the entry Nextcloud registered, and Nextcloud entries we do not have stay",
-   "an entry Nextcloud registers AFTER us does not displace ours (translations are fetched later per app)",
-   "an app we have no dictionary for is passed through untouched",
-   "dangerous app names do not reach our dictionary",
-   "apps with a dictionary get a plural function when Nextcloud registered none, and keep theirs when it did",
-   "English: plural function is singular/plural",
-   "apps that ship no language file are marked as loaded so core does not fetch a missing file",
-   "loading twice does not wrap twice",
-   "navigation labels written by the server are translated, nothing else is touched",
-   "guest pages get one link to the other language; signed-in pages get none",
-   "English pages: the Arabic name and slogan are swapped in the title; on the login page everywhere, on public pages only in header and footer, never in editable content",
-   "personal settings footer: the reasons link is renamed and the \"developed by\" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph",
-   "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution",
-   "core's constant product name is replaced by the platform name, and nothing breaks without it",
-   "our entry wins over the entry Nextcloud registered, and Nextcloud entries we do not have stay",
-   "an entry Nextcloud registers AFTER us does not displace ours (translations are fetched later per app)",
-   "an app we have no dictionary for is passed through untouched",
-   "dangerous app names do not reach our dictionary",
-   "apps with a dictionary get a plural function when Nextcloud registered none, and keep theirs when it did",
-   "English: plural function is singular/plural",
-   "apps that ship no language file are marked as loaded so core does not fetch a missing file",
-   "loading twice does not wrap twice",
-   "navigation labels written by the server are translated, nothing else is touched",
-   "guest pages get one link to the other language; signed-in pages get none",
-   "English pages: the Arabic name and slogan are swapped in the title; on the login page everywhere, on public pages only in header and footer, never in editable content",
-   "personal settings footer: the reasons link is renamed and the \"developed by\" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph",
-   "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution",
-   "core's constant product name is replaced by the platform name, and nothing breaks without it"
-  ]
- },
  "J44": {
   "id": "J44",
   "rule": "settings sentences match with collapsed white space",
