@@ -38,4 +38,36 @@
 	for (const app of DATA.noFile) {
 		if (!Object.prototype.hasOwnProperty.call(real, app)) real[app] = {};
 	}
+	// Labels the server renders itself (app navigation entries and section captions arrive as finished text, so the
+	// JS dictionary never sees them). Exact-text lookup, only inside these navigation elements: never user data.
+	const NAV_TEXT = '.app-navigation-entry__name, .app-navigation-caption__name';
+	const NAV_TITLE = '.app-navigation-entry-link[title]';
+	const ORDER = ['core', 'lib', 'settings', 'files'];
+	const lookup = (text) => {
+		const reg = g._oc_l10n_registry_translations;
+		const apps = [...ORDER, ...Object.keys(reg).filter((a) => !ORDER.includes(a))];
+		for (const app of apps) {
+			const v = reg[app]?.[text];
+			if (typeof v === 'string' && v !== '' && v !== text) return v;
+		}
+		return null;
+	};
+	const fix = (root) => {
+		if (!root.querySelectorAll) return;
+		const nodes = root.matches?.(NAV_TEXT) ? [root, ...root.querySelectorAll(NAV_TEXT)] : root.querySelectorAll(NAV_TEXT);
+		for (const el of nodes) {
+			if (el.childNodes.length !== 1 || el.firstChild.nodeType !== 3) continue;
+			const raw = el.firstChild.nodeValue; const text = raw.trim(); if (!text) continue;
+			const tr = lookup(text); if (tr) el.firstChild.nodeValue = raw.replace(text, () => tr);
+		}
+		const links = root.matches?.(NAV_TITLE) ? [root, ...root.querySelectorAll(NAV_TITLE)] : root.querySelectorAll(NAV_TITLE);
+		for (const el of links) { const tr = lookup(el.getAttribute('title').trim()); if (tr) el.setAttribute('title', tr); }
+	};
+	const start = () => {
+		fix(document.body);
+		let queued = false;
+		new MutationObserver(() => { if (queued) return; queued = true; requestAnimationFrame(() => { queued = false; fix(document.body); }); })
+			.observe(document.body, { childList: true, subtree: true });
+	};
+	if (document.body) start(); else document.addEventListener('DOMContentLoaded', start, { once: true });
 })();
