@@ -135,3 +135,55 @@ test('English pages: the Arabic name and slogan are swapped in the title and on 
 	const a = run('body-login', 'ar');
 	assert.equal(a.doc.title, 'Login - ' + from, 'Arabic pages keep the Arabic name');
 });
+
+test('personal settings footer: the reasons link is renamed, the "developed by" sentence becomes an attribution, only when the paragraph is the stock one', () => {
+	const footerData = JSON.parse(fs.readFileSync(path.join(root, 'data', 'footer.json'), 'utf8'));
+	const HREFS = ['https://nextcloud.com/contribute', 'https://github.com/nextcloud', 'https://www.gnu.org/licenses/agpl-3.0.html'];
+	for (const lang of ['ar', 'en']) {
+		const f = footerData[lang];
+		const mkLinks = (hrefs) => hrefs.map((h, i) => ({ tagName: 'A', textContent: 'old' + i, getAttribute: () => h }));
+		const mkP = (hrefs) => { const links = mkLinks(hrefs); const p = { tagName: 'P', dataset: {}, children: links, kids: null, replaceChildren(...k) { this.kids = k; } }; links.forEach((a) => { a.parentElement = p; }); return p; };
+		const stock = mkP(HREFS); const div = mkP(HREFS); div.tagName = 'DIV'; const odd = mkP([HREFS[0], HREFS[1]]); const wrongLink = mkP([HREFS[0], 'https://example.org/x', HREFS[2]]);
+		const reasonsText = { nodeType: 3, nodeValue: '\n\t\t\told reasons\t\t' };
+		const reasons = { childNodes: [{ nodeType: 1 }, reasonsText] };
+		const body = { id: 'body-user', matches: () => false, querySelectorAll: (sel) => {
+			if (sel === '#open-reasons-use-nextcloud-pdf') return [reasons];
+			if (sel === `a[href="${HREFS[0]}"]`) return [stock, div, odd, wrongLink].map((p) => p.children[0]);
+			return [];
+		} };
+		const doc = { body, addEventListener() {}, createTextNode: (t) => ({ text: t }) };
+		let observed = null;
+		load(lang, (c) => { c.MutationObserver = class { constructor(cb) { observed = cb; } observe() {} }; c.requestAnimationFrame = (fn) => fn(); }, doc);
+		assert.equal(reasonsText.nodeValue, '\n\t\t\t' + f.reasons + '\t\t', `${lang}: reasons text replaced, white space kept`);
+		assert.deepEqual(stock.kids.filter((k) => k.text !== undefined).map((k) => k.text), [f.attribution[0], f.attribution[2], f.attribution[4], f.attribution[6]]);
+		assert.deepEqual(stock.children.map((a) => a.textContent), [f.attribution[1], f.attribution[3], f.attribution[5]]);
+		assert.equal(stock.kids.length, 7, 'text, link, text, link, text, link, text');
+		assert.equal(stock.dataset.pathlocale, 'attribution');
+		assert.equal(div.kids, null, 'only a paragraph is rebuilt');
+		stock.kids = null; observed(); // the page changes (our own edit included): the same paragraph is not rebuilt again
+		assert.equal(stock.kids, null, 'no rebuild loop');
+		assert.equal(odd.kids, null, 'a paragraph with two links is left alone');
+		assert.equal(wrongLink.kids, null, 'a paragraph whose links are not the stock ones is left alone');
+		assert.ok(f.attribution[1] === 'Nextcloud' && f.attribution[5] === 'AGPL', 'the notice names the upstream software and the licence');
+		assert.ok(!/Nextcloud/.test([f.reasons, ...f.attribution.filter((_, i) => i !== 1)].join(' ')), 'the name appears only as the attribution link');
+	}
+});
+
+test('personal settings pages: the product name inside server text is renamed, in text nodes only and never in the attribution', () => {
+	const mk = (v, tagName = 'P', marked = false) => ({ nodeValue: v, parentElement: { tagName, closest: (sel) => (marked && sel === '[data-pathlocale]' ? {} : null) } });
+	const run = (lang, pathname, texts) => {
+		let i = 0; const nodes = texts;
+		const doc = { body: { id: 'body-user', querySelectorAll: () => [], matches: () => false }, addEventListener() {}, createTreeWalker: () => ({ nextNode: () => nodes[i++] ?? null }) };
+		load(lang, (c) => { c.location = { pathname, search: '' }; }, doc);
+	};
+	const a = mk('connect to نكست كلاود و Nextcloud'); const style = mk('Nextcloud', 'STYLE'); const area = mk('Nextcloud', 'TEXTAREA'); const attr = mk('Nextcloud', 'A', true);
+	run('ar', '/settings/user/security', [a, style, area, attr]);
+	assert.equal(a.nodeValue, 'connect to منصة بث و منصة بث');
+	assert.equal(style.nodeValue, 'Nextcloud'); assert.equal(area.nodeValue, 'Nextcloud'); assert.equal(attr.nodeValue, 'Nextcloud', 'the attribution keeps the upstream name');
+	const e = mk('a Nextcloud server'); run('en', '/index.php/settings/user/sharing', [e]);
+	assert.equal(e.nodeValue, 'a Path platform server');
+	for (const other of ['/apps/files/', '/settings/admin/overview', '/settings/users', '/settings/userx', '/apps/files/settings/user']) {
+		const n = mk('a Nextcloud server'); run('en', other, [n]);
+		assert.equal(n.nodeValue, 'a Nextcloud server', `${other} is not a personal settings page`);
+	}
+});

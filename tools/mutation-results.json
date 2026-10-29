@@ -441,5 +441,154 @@
   "tests": "English pages",
   "status": "SURVIVED",
   "failed": []
+ },
+ "J19": {
+  "id": "J19",
+  "rule": "footer: reasons link text replaced",
+  "file": "src/runtime.js",
+  "tests": "personal settings footer",
+  "status": "CAUGHT",
+  "failed": [
+   "personal settings footer: the reasons link is renamed, the \"developed by\" sentence becomes an attribution, only when the paragraph is the stock one",
+   "personal settings footer: the reasons link is renamed, the \"developed by\" sentence becomes an attribution, only when the paragraph is the stock one"
+  ]
+ },
+ "J20": {
+  "id": "J20",
+  "rule": "footer: paragraph must have exactly three links",
+  "file": "src/runtime.js",
+  "tests": "personal settings footer",
+  "status": "CAUGHT",
+  "failed": [
+   "personal settings footer: the reasons link is renamed, the \"developed by\" sentence becomes an attribution, only when the paragraph is the stock one",
+   "personal settings footer: the reasons link is renamed, the \"developed by\" sentence becomes an attribution, only when the paragraph is the stock one"
+  ]
+ },
+ "J21": {
+  "id": "J21",
+  "rule": "footer: the links must be the stock ones",
+  "file": "src/runtime.js",
+  "tests": "personal settings footer",
+  "status": "CAUGHT",
+  "failed": [
+   "personal settings footer: the reasons link is renamed, the \"developed by\" sentence becomes an attribution, only when the paragraph is the stock one",
+   "personal settings footer: the reasons link is renamed, the \"developed by\" sentence becomes an attribution, only when the paragraph is the stock one"
+  ]
+ },
+ "J22": {
+  "id": "J22",
+  "rule": "footer: only a paragraph is rebuilt",
+  "file": "src/runtime.js",
+  "tests": "personal settings footer",
+  "status": "CAUGHT",
+  "failed": [
+   "personal settings footer: the reasons link is renamed, the \"developed by\" sentence becomes an attribution, only when the paragraph is the stock one",
+   "personal settings footer: the reasons link is renamed, the \"developed by\" sentence becomes an attribution, only when the paragraph is the stock one"
+  ]
+ },
+ "J23": {
+  "id": "J23",
+  "rule": "footer: a rebuilt paragraph is not rebuilt again (no observer loop)",
+  "file": "src/runtime.js",
+  "tests": "personal settings footer",
+  "status": "CAUGHT",
+  "failed": [
+   "personal settings footer: the reasons link is renamed, the \"developed by\" sentence becomes an attribution, only when the paragraph is the stock one",
+   "personal settings footer: the reasons link is renamed, the \"developed by\" sentence becomes an attribution, only when the paragraph is the stock one"
+  ]
+ },
+ "J24": {
+  "id": "J24",
+  "rule": "footer: link texts come from the data in order",
+  "file": "src/runtime.js",
+  "tests": "personal settings footer",
+  "status": "CAUGHT",
+  "failed": [
+   "personal settings footer: the reasons link is renamed, the \"developed by\" sentence becomes an attribution, only when the paragraph is the stock one",
+   "personal settings footer: the reasons link is renamed, the \"developed by\" sentence becomes an attribution, only when the paragraph is the stock one"
+  ]
+ },
+ "J25": {
+  "id": "J25",
+  "rule": "footer: the rebuilt paragraph is marked",
+  "file": "src/runtime.js",
+  "tests": "personal settings footer",
+  "status": "CAUGHT",
+  "failed": [
+   "personal settings footer: the reasons link is renamed, the \"developed by\" sentence becomes an attribution, only when the paragraph is the stock one",
+   "personal settings footer: the reasons link is renamed, the \"developed by\" sentence becomes an attribution, only when the paragraph is the stock one"
+  ]
+ },
+ "J26": {
+  "id": "J26",
+  "rule": "settings rename: only on personal settings pages",
+  "file": "src/runtime.js",
+  "tests": "personal settings pages",
+  "status": "CAUGHT",
+  "failed": [
+   "navigation labels written by the server are translated, nothing else is touched",
+   "English pages: the Arabic name and slogan are swapped in the title and on guest pages only",
+   "personal settings footer: the reasons link is renamed, the \"developed by\" sentence becomes an attribution, only when the paragraph is the stock one",
+   "personal settings pages: the product name inside server text is renamed, in text nodes only and never in the attribution",
+   "navigation labels written by the server are translated, nothing else is touched",
+   "English pages: the Arabic name and slogan are swapped in the title and on guest pages only",
+   "personal settings footer: the reasons link is renamed, the \"developed by\" sentence becomes an attribution, only when the paragraph is the stock one",
+   "personal settings pages: the product name inside server text is renamed, in text nodes only and never in the attribution"
+  ]
+ },
+ "J27": {
+  "id": "J27",
+  "rule": "settings rename: path must end at /settings/user or continue with a slash",
+  "file": "src/runtime.js",
+  "tests": "personal settings pages",
+  "status": "CAUGHT",
+  "failed": [
+   "personal settings pages: the product name inside server text is renamed, in text nodes only and never in the attribution",
+   "personal settings pages: the product name inside server text is renamed, in text nodes only and never in the attribution"
+  ]
+ },
+ "J28": {
+  "id": "J28",
+  "rule": "settings rename: scripts, styles and text areas are skipped",
+  "file": "src/runtime.js",
+  "tests": "personal settings pages",
+  "status": "CAUGHT",
+  "failed": [
+   "personal settings pages: the product name inside server text is renamed, in text nodes only and never in the attribution",
+   "personal settings pages: the product name inside server text is renamed, in text nodes only and never in the attribution"
+  ]
+ },
+ "J29": {
+  "id": "J29",
+  "rule": "settings rename: the attribution is skipped",
+  "file": "src/runtime.js",
+  "tests": "personal settings pages",
+  "status": "CAUGHT",
+  "failed": [
+   "personal settings pages: the product name inside server text is renamed, in text nodes only and never in the attribution",
+   "personal settings pages: the product name inside server text is renamed, in text nodes only and never in the attribution"
+  ]
+ },
+ "J30": {
+  "id": "J30",
+  "rule": "settings rename actually replaces",
+  "file": "src/runtime.js",
+  "tests": "personal settings pages",
+  "status": "CAUGHT",
+  "failed": [
+   "personal settings pages: the product name inside server text is renamed, in text nodes only and never in the attribution",
+   "personal settings pages: the product name inside server text is renamed, in text nodes only and never in the attribution"
+  ]
+ },
+ "J31": {
+  "id": "J31",
+  "rule": "settings rename: path is anchored at the start",
+  "file": "src/runtime.js",
+  "tests": "personal settings pages",
+  "status": "CAUGHT",
+  "failed": [
+   "personal settings pages: the product name inside server text is renamed, in text nodes only and never in the attribution",
+   "personal settings pages: the product name inside server text is renamed, in text nodes only and never in the attribution"
+  ]
  }
 }

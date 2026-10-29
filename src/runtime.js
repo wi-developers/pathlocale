@@ -52,6 +52,38 @@
 		}
 		return null;
 	};
+	// Two sentences of the personal settings page are finished PHP text with the product name inside. The reasons link gets its
+	// text replaced; the "developed by" sentence is a legal notice, so it is rebuilt as an attribution ("built on Nextcloud, source
+	// code, AGPL") around the same three links, and only when the paragraph has exactly those three links.
+	const ATTRIBUTION_LINKS = ['https://nextcloud.com/contribute', 'https://github.com/nextcloud', 'https://www.gnu.org/licenses/agpl-3.0.html'];
+	const footer = (root) => {
+		const f = DATA.footer; if (!f) return;
+		for (const a of root.querySelectorAll('#open-reasons-use-nextcloud-pdf')) {
+			const t = [...a.childNodes].find((n) => n.nodeType === 3 && n.nodeValue.trim());
+			if (t && t.nodeValue.trim() !== f.reasons) t.nodeValue = t.nodeValue.replace(t.nodeValue.trim(), () => f.reasons);
+		}
+		for (const first of root.querySelectorAll(`a[href="${ATTRIBUTION_LINKS[0]}"]`)) {
+			const p = first.parentElement; if (!p || p.tagName !== 'P' || p.dataset.pathlocale === 'attribution') continue;
+			const links = [...p.children];
+			if (links.length !== 3 || links.some((a, i) => a.tagName !== 'A' || a.getAttribute('href') !== ATTRIBUTION_LINKS[i])) continue;
+			const parts = f.attribution; // text, link, text, link, text, link, text
+			p.replaceChildren(document.createTextNode(parts[0]), links[0], document.createTextNode(parts[2]), links[1], document.createTextNode(parts[4]), links[2], document.createTextNode(parts[6]));
+			links.forEach((a, i) => { a.textContent = parts[1 + 2 * i]; });
+			p.dataset.pathlocale = 'attribution';
+		}
+	};
+	// The rest of the personal settings pages (/settings/user/...) is finished PHP text too ("connect to Nextcloud", "a Nextcloud server").
+	// Text nodes only (never input values or user files), and never the attribution paragraph built above.
+	const settingsRename = () => {
+		const list = DATA.footer?.renames; if (!list?.length || !/^\/(index\.php\/)?settings\/user(\/|$)/.test(g.location?.pathname ?? '')) return;
+		const walker = document.createTreeWalker(document.body, 4);
+		const todo = [];
+		for (let n = walker.nextNode(); n; n = walker.nextNode()) {
+			const el = n.parentElement;
+			if (el && !['SCRIPT', 'STYLE', 'TEXTAREA'].includes(el.tagName) && !el.closest('[data-pathlocale]')) todo.push(n);
+		}
+		for (const n of todo) { const t = list.reduce((acc, [from, to]) => acc.split(from).join(to), n.nodeValue); if (t !== n.nodeValue) n.nodeValue = t; }
+	};
 	const fix = (root) => {
 		if (!root.querySelectorAll) return;
 		const nodes = root.matches?.(NAV_TEXT) ? [root, ...root.querySelectorAll(NAV_TEXT)] : root.querySelectorAll(NAV_TEXT);
@@ -62,6 +94,8 @@
 		}
 		const links = root.matches?.(NAV_TITLE) ? [root, ...root.querySelectorAll(NAV_TITLE)] : root.querySelectorAll(NAV_TITLE);
 		for (const el of links) { const tr = lookup(el.getAttribute('title').trim()); if (tr) el.setAttribute('title', tr); }
+		footer(root);
+		settingsRename();
 	};
 	// English pages: Theming holds a single name and slogan (Arabic), so the server prints them in Arabic. Swap them for the
 	// English wording in the page title and on guest pages (login, public pages: no user files shown there).
