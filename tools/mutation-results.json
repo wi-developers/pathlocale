@@ -364,12 +364,12 @@
   "failed": [
    "navigation labels written by the server are translated, nothing else is touched",
    "guest pages get one link to the other language; signed-in pages get none",
-   "personal settings footer: the reasons link is renamed, the \"developed by\" sentence becomes an attribution, only when the paragraph is the stock one",
-   "personal settings pages: the product name inside server text is renamed, in text nodes only and never in the attribution",
+   "personal settings footer: the reasons link is renamed and the \"developed by\" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph",
+   "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution",
    "navigation labels written by the server are translated, nothing else is touched",
    "guest pages get one link to the other language; signed-in pages get none",
-   "personal settings footer: the reasons link is renamed, the \"developed by\" sentence becomes an attribution, only when the paragraph is the stock one",
-   "personal settings pages: the product name inside server text is renamed, in text nodes only and never in the attribution"
+   "personal settings footer: the reasons link is renamed and the \"developed by\" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph",
+   "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution"
   ]
  },
  "J12": {
@@ -402,11 +402,11 @@
   "status": "CAUGHT",
   "failed": [
    "English pages: the Arabic name and slogan are swapped in the title; on the login page everywhere, on public pages only in header and footer, never in editable content",
-   "personal settings footer: the reasons link is renamed, the \"developed by\" sentence becomes an attribution, only when the paragraph is the stock one",
-   "personal settings pages: the product name inside server text is renamed, in text nodes only and never in the attribution",
+   "personal settings footer: the reasons link is renamed and the \"developed by\" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph",
+   "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution",
    "English pages: the Arabic name and slogan are swapped in the title; on the login page everywhere, on public pages only in header and footer, never in editable content",
-   "personal settings footer: the reasons link is renamed, the \"developed by\" sentence becomes an attribution, only when the paragraph is the stock one",
-   "personal settings pages: the product name inside server text is renamed, in text nodes only and never in the attribution"
+   "personal settings footer: the reasons link is renamed and the \"developed by\" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph",
+   "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution"
   ]
  },
  "J15": {
@@ -527,6 +527,26 @@
    "personal settings footer: the reasons link is renamed and the \"developed by\" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph"
   ]
  },
+ "K01": {
+  "id": "K01",
+  "rule": "css hides the More apps entry (selector)",
+  "file": "css/pathlocale.css",
+  "tests": "testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont"
+  ]
+ },
+ "K02": {
+  "id": "K02",
+  "rule": "css hides the More apps entry (display)",
+  "file": "css/pathlocale.css",
+  "tests": "testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont"
+  ]
+ },
  "J26": {
   "id": "J26",
   "rule": "settings sentences: only on personal settings pages",
@@ -595,59 +615,6 @@
   "failed": [
    "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution",
    "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution"
-  ]
- },
- "K01": {
-  "id": "K01",
-  "rule": "css hides the More apps entry (selector)",
-  "file": "css/pathlocale.css",
-  "tests": "testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont",
-  "status": "CAUGHT",
-  "failed": [
-   "DictionaryTest::testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont"
-  ]
- },
- "K02": {
-  "id": "K02",
-  "rule": "css hides the More apps entry (display)",
-  "file": "css/pathlocale.css",
-  "tests": "testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont",
-  "status": "CAUGHT",
-  "failed": [
-   "DictionaryTest::testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont"
-  ]
- },
- "J32": {
-  "id": "J32",
-  "rule": "public pages: only header and footer are swapped",
-  "file": "src/runtime.js",
-  "tests": "English pages: the Arabic name",
-  "status": "CAUGHT",
-  "failed": [
-   "English pages: the Arabic name and slogan are swapped in the title; on the login page everywhere, on public pages only in header and footer, never in editable content",
-   "English pages: the Arabic name and slogan are swapped in the title; on the login page everywhere, on public pages only in header and footer, never in editable content"
-  ]
- },
- "J33": {
-  "id": "J33",
-  "rule": "guest swap skips editable content",
-  "file": "src/runtime.js",
-  "tests": "English pages: the Arabic name",
-  "status": "CAUGHT",
-  "failed": [
-   "English pages: the Arabic name and slogan are swapped in the title; on the login page everywhere, on public pages only in header and footer, never in editable content",
-   "English pages: the Arabic name and slogan are swapped in the title; on the login page everywhere, on public pages only in header and footer, never in editable content"
-  ]
- },
- "J34": {
-  "id": "J34",
-  "rule": "guest swap skips app content",
-  "file": "src/runtime.js",
-  "tests": "English pages: the Arabic name",
-  "status": "CAUGHT",
-  "failed": [
-   "English pages: the Arabic name and slogan are swapped in the title; on the login page everywhere, on public pages only in header and footer, never in editable content",
-   "English pages: the Arabic name and slogan are swapped in the title; on the login page everywhere, on public pages only in header and footer, never in editable content"
   ]
  },
  "J35": {
