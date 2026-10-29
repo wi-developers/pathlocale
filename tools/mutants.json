@@ -808,19 +808,6 @@
   "tests": "personal settings footer"
  },
  {
-  "id": "J43",
-  "rule": "product name is replaced",
-  "file": "src/runtime.js",
-  "runner": "js",
-  "edits": [
-   [
-    "t.productName = DATA.footer.productName;",
-    ""
-   ]
-  ],
-  "tests": "core's constant product name"
- },
- {
   "id": "J44",
   "rule": "settings sentences match with collapsed white space",
   "file": "src/runtime.js",

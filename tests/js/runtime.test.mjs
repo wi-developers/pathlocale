@@ -223,14 +223,11 @@ test('personal settings pages: exact upstream sentences are replaced, nothing el
 	for (const lang of ['ar', 'en']) for (const [k, v] of Object.entries(data(lang).phpTexts)) assert.ok(!/GmbH|community (release|build)|Enterprise/.test(k + v), 'upstream-name sentence in the map: ' + k);
 });
 
-test('core\'s constant product name is replaced by the platform name, and nothing breaks without it', () => {
-	for (const [lang, name] of [['ar', 'منصة بث'], ['en', 'Path platform']]) {
+test('the constant product name of core is left alone (strings such as "a {productName} server" or "{productName} iOS app" talk about the upstream software)', () => {
+	for (const lang of ['ar', 'en']) {
 		const ctx = load(lang, (c) => { c.OC = { theme: { productName: 'Nextcloud', name: 'x' } }; });
-		assert.equal(ctx.OC.theme.productName, name);
-		assert.equal(ctx.OC.theme.name, 'x', 'only the product name is touched');
+		assert.equal(ctx.OC.theme.productName, 'Nextcloud');
+		assert.equal(ctx.OC.theme.name, 'x');
 		assert.doesNotThrow(() => load(lang, (c) => { c.OC = {}; }));
-		assert.doesNotThrow(() => load(lang));
-		const odd = load(lang, (c) => { c.OC = { theme: { productName: 5 } }; });
-		assert.equal(odd.OC.theme.productName, 5, 'a value that is not a string is left alone');
 	}
 });

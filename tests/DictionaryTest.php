@@ -11,7 +11,7 @@ class DictionaryTest extends TestCase {
 	private const DIR = '/var/www/html/custom_apps/pathlocale';
 	private const ATTRIBUTION_KEY = 'Developed by the {communityopen}Nextcloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}AGPL{linkclose}.';
 	/** Keys that name a company or the upstream community: the real name must stay (a false sponsor or author would be worse than the old name). */
-	private const UPSTREAM_KEYS = '/Nextcloud (GmbH|community|Enterprise|portal|Appstore|App ?Store|All-in-One|Hub|[Dd]ocker|[Cc]lient|Server|Administration Manual|%d|%[0-9]\$s|[0-9]|<=)|Nextcloud subscription|community (release|build) of Nextcloud|We at Nextcloud|#Nextcloud|desktop client|(since|As of) Nextcloud/';
+	private const UPSTREAM_KEYS = '/Nextcloud (GmbH|community|Enterprise|portal|Appstore|App ?Store|All-in-One|Hub|[Dd]ocker|[Cc]lient|Server|Administration Manual|%d|%[0-9]\$s|[0-9]|<=)|Nextcloud subscription|community (release|build) of Nextcloud|We at Nextcloud|#Nextcloud|desktop client|(since|As of) Nextcloud|link to your Nextcloud|Add to your Nextcloud|remote Nextcloud|Nextcloud Mail [0-9]|Nextcloud instances|Struktur AG|Ethical AI Rating|Nextcloud Documentation|other Nextcloud users|Client Login Flow/';
 	private const NAME_BAD ='/nextcloud|ن[ايِى]?كست\s*كلا?و?د|ناكست/iu';
 
 	private function data(string $lang): array {
@@ -172,7 +172,12 @@ class DictionaryTest extends TestCase {
 			'This community release of Nextcloud is unsupported' => true,
 			'Your Nextcloud setup is not capable' => false,
 			'Nextcloud Talk' => false,
-			'Add to your Nextcloud' => false,
+			'Add to your Nextcloud' => true,
+			'Join conversations from remote Nextcloud servers' => true,
+			'It requires Nextcloud Mail 4.1 and an email account' => true,
+			'Our partner Struktur AG provides a service' => true,
+			'Chat with other Nextcloud users on their servers' => true,
+			'Show a glimpse of your latest novel directly from your Nextcloud' => false,
 		] as $key => $kept) {
 			$this->assertSame($kept ? 1 : 0, preg_match(self::UPSTREAM_KEYS, $key), $key);
 		}
@@ -221,6 +226,7 @@ class DictionaryTest extends TestCase {
 
 	public function testRuntimeKeepsItsSafetyProperties(): void {
 		$src = (string)file_get_contents(self::DIR . '/src/runtime.js');
+		$this->assertStringNotContainsString('productName', $src); // core's constant product name is used by strings about other clients, servers and versions: left alone
 		$this->assertStringNotContainsString('eval(', $src);
 		$this->assertStringNotContainsString('innerHTML', $src);
 		$this->assertStringNotContainsString('document.write', $src);

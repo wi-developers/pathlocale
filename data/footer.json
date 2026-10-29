@@ -9,8 +9,7 @@
    " مرخّصة بموجب ",
    "AGPL",
    "."
-  ],
-  "productName": "منصة بث"
+  ]
  },
  "en": {
   "reasons": "Reasons to use Path platform in your organization",
@@ -30,8 +29,14 @@
    "We at Nextcloud",
    "#Nextcloud",
    "desktop client",
-   "(since|As of) Nextcloud"
-  ],
-  "productName": "Path platform"
+   "(since|As of) Nextcloud",
+   "link to your Nextcloud|Add to your Nextcloud",
+   "remote Nextcloud",
+   "Nextcloud Mail [0-9]",
+   "Nextcloud instances",
+   "Struktur AG",
+   "Ethical AI Rating|Nextcloud Documentation",
+   "other Nextcloud users|Client Login Flow"
+  ]
  }
 }

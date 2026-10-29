@@ -133,11 +133,7 @@
 		a.href = (g.OC?.webroot ?? '') + '/index.php/apps/pathlocale/lang/' + other + '?redirect=' + encodeURIComponent(location.pathname + location.search);
 		document.body.appendChild(a);
 	};
-	// Core hands the code a constant product name (OC.theme.productName, always the upstream name); strings such as "a {productName} server" print it.
-	const productName = () => { const t = g.OC?.theme; if (DATA.footer?.productName && typeof t?.productName === 'string' && t.productName !== DATA.footer.productName) t.productName = DATA.footer.productName; };
-	productName();
 	const start = () => {
-		productName();
 		fix(document.body);
 		swapGuest();
 		guestSwitch();
