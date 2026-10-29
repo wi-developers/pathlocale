@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace OCA\Pathlocale\AppInfo;
 
 use OCA\Pathlocale\Listener\AssetsListener;
+use OCA\Pathlocale\Service\GuestLanguage;
 use OCP\AppFramework\App;
 use OCP\AppFramework\Bootstrap\IBootContext;
 use OCP\AppFramework\Bootstrap\IBootstrap;
@@ -13,7 +14,6 @@ use OCP\AppFramework\Http\Events\BeforeLoginTemplateRenderedEvent;
 use OCP\AppFramework\Http\Events\BeforeTemplateRenderedEvent;
 use OCP\IRequest;
 use OCP\IUserSession;
-use OCP\Server;
 
 class Application extends App implements IBootstrap {
 	public const APP_ID = 'pathlocale';
@@ -29,14 +29,15 @@ class Application extends App implements IBootstrap {
 	}
 
 	public function boot(IBootContext $context): void {
-		// SPIKE: guest language from a whitelisted cookie, through core's own forceLanguage request parameter
-		$c = $_COOKIE['pathlocale_lang'] ?? '';
-		if ($c === 'ar' || $c === 'en') {
-			$req = Server::get(IRequest::class);
-			$us = Server::get(IUserSession::class);
-			if (!$us->isLoggedIn() && method_exists($req, 'setUrlParameters')) {
-				$req->setUrlParameters(['forceLanguage' => $c]);
-			}
+		// A guest's language choice (cookie, two accepted values) goes in through core's own `forceLanguage` request
+		// parameter. Never in register(): the session is not known there. Never for a signed-in user: their saved
+		// language wins. setUrlParameters() is not part of IRequest, so a core change turns this into "no switcher".
+		$server = $context->getServerContainer();
+		$request = $server->get(IRequest::class);
+		$lang = GuestLanguage::fromCookie($request->getCookie(GuestLanguage::COOKIE));
+		if ($lang === null || $server->get(IUserSession::class)->isLoggedIn() || !method_exists($request, 'setUrlParameters')) {
+			return;
 		}
+		$request->setUrlParameters(['forceLanguage' => $lang]);
 	}
 }

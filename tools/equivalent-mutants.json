@@ -1,0 +1,4 @@
+{
+ "P07": "Removing the empty-string check in GuestLanguage::safeRedirect has no visible effect: an empty target read at offset 0 gives an empty string, which is not '/', so the same fallback '/' is returned. Kept as defence in depth.",
+ "J18": "Without the early return the Arabic build, whose list of swaps is empty, walks the guest page and replaces nothing: same page, only slower."
+}

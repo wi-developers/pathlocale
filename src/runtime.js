@@ -63,6 +63,19 @@
 		const links = root.matches?.(NAV_TITLE) ? [root, ...root.querySelectorAll(NAV_TITLE)] : root.querySelectorAll(NAV_TITLE);
 		for (const el of links) { const tr = lookup(el.getAttribute('title').trim()); if (tr) el.setAttribute('title', tr); }
 	};
+	// English pages: Theming holds a single name and slogan (Arabic), so the server prints them in Arabic. Swap them for the
+	// English wording in the page title and on guest pages (login, public pages: no user files shown there).
+	const swapText = (text) => DATA.swaps.reduce((acc, [from, to]) => acc.split(from).join(to), text);
+	const swapGuest = () => {
+		if (DATA.swaps.length === 0) return;
+		if (document.title) document.title = swapText(document.title);
+		const id = document.body?.id; if (id !== 'body-login' && id !== 'body-public') return;
+		const skip = '.files-list, #app-content-vue, .app-files';
+		const walker = document.createTreeWalker(document.body, 4);
+		const todo = [];
+		for (let n = walker.nextNode(); n; n = walker.nextNode()) { if (n.parentElement && !n.parentElement.closest(skip) && !['SCRIPT', 'STYLE'].includes(n.parentElement.tagName)) todo.push(n); }
+		for (const n of todo) { const t = swapText(n.nodeValue); if (t !== n.nodeValue) n.nodeValue = t; }
+	};
 	// Guest pages (login, public shares): a link to the other language. Signed-in users change language in their settings.
 	const guestSwitch = () => {
 		const id = document.body?.id; if (id !== 'body-login' && id !== 'body-public') return;
@@ -74,9 +87,10 @@
 	};
 	const start = () => {
 		fix(document.body);
+		swapGuest();
 		guestSwitch();
 		let queued = false;
-		new MutationObserver(() => { if (queued) return; queued = true; requestAnimationFrame(() => { queued = false; fix(document.body); }); })
+		new MutationObserver(() => { if (queued) return; queued = true; requestAnimationFrame(() => { queued = false; fix(document.body); swapGuest(); }); })
 			.observe(document.body, { childList: true, subtree: true });
 	};
 	if (document.body) start(); else document.addEventListener('DOMContentLoaded', start, { once: true });

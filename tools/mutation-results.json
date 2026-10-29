@@ -1,0 +1,445 @@
+{
+ "P01": {
+  "id": "P01",
+  "rule": "only ar and en are accepted codes",
+  "file": "lib/Service/GuestLanguage.php",
+  "tests": "testOnlyTheTwoCodesAreAccepted",
+  "status": "CAUGHT",
+  "failed": [
+   "GuestLanguageTest::testOnlyTheTwoCodesAreAccepted"
+  ]
+ },
+ "P02": {
+  "id": "P02",
+  "rule": "cookie value must be one of the codes",
+  "file": "lib/Service/GuestLanguage.php",
+  "tests": "testOnlyTheTwoCodesAreAccepted",
+  "status": "CAUGHT",
+  "failed": [
+   "GuestLanguageTest::testOnlyTheTwoCodesAreAccepted",
+   "GuestLanguageTest::testOnlyTheTwoCodesAreAccepted",
+   "GuestLanguageTest::testOnlyTheTwoCodesAreAccepted",
+   "GuestLanguageTest::testOnlyTheTwoCodesAreAccepted",
+   "GuestLanguageTest::testOnlyTheTwoCodesAreAccepted",
+   "GuestLanguageTest::testOnlyTheTwoCodesAreAccepted",
+   "GuestLanguageTest::testOnlyTheTwoCodesAreAccepted",
+   "GuestLanguageTest::testOnlyTheTwoCodesAreAccepted"
+  ]
+ },
+ "P03": {
+  "id": "P03",
+  "rule": "redirect: protocol-relative refused",
+  "file": "lib/Service/GuestLanguage.php",
+  "tests": "testRedirectStaysOnThisSite",
+  "status": "CAUGHT",
+  "failed": [
+   "GuestLanguageTest::testRedirectStaysOnThisSite"
+  ]
+ },
+ "P04": {
+  "id": "P04",
+  "rule": "redirect: backslash refused",
+  "file": "lib/Service/GuestLanguage.php",
+  "tests": "testRedirectStaysOnThisSite",
+  "status": "CAUGHT",
+  "failed": [
+   "GuestLanguageTest::testRedirectStaysOnThisSite",
+   "GuestLanguageTest::testRedirectStaysOnThisSite"
+  ]
+ },
+ "P05": {
+  "id": "P05",
+  "rule": "redirect: control characters refused",
+  "file": "lib/Service/GuestLanguage.php",
+  "tests": "testRedirectStaysOnThisSite",
+  "status": "CAUGHT",
+  "failed": [
+   "GuestLanguageTest::testRedirectStaysOnThisSite",
+   "GuestLanguageTest::testRedirectStaysOnThisSite",
+   "GuestLanguageTest::testRedirectStaysOnThisSite",
+   "GuestLanguageTest::testRedirectStaysOnThisSite",
+   "GuestLanguageTest::testRedirectStaysOnThisSite"
+  ]
+ },
+ "P06": {
+  "id": "P06",
+  "rule": "redirect: scheme inside refused",
+  "file": "lib/Service/GuestLanguage.php",
+  "tests": "testRedirectStaysOnThisSite",
+  "status": "CAUGHT",
+  "failed": [
+   "GuestLanguageTest::testRedirectStaysOnThisSite"
+  ]
+ },
+ "P07": {
+  "id": "P07",
+  "rule": "redirect: empty target handled",
+  "file": "lib/Service/GuestLanguage.php",
+  "tests": "testRedirectStaysOnThisSite",
+  "status": "SURVIVED",
+  "failed": []
+ },
+ "P08": {
+  "id": "P08",
+  "rule": "redirect: must start with a slash",
+  "file": "lib/Service/GuestLanguage.php",
+  "tests": "testRedirectStaysOnThisSite",
+  "status": "CAUGHT",
+  "failed": [
+   "GuestLanguageTest::testRedirectStaysOnThisSite",
+   "GuestLanguageTest::testRedirectStaysOnThisSite",
+   "GuestLanguageTest::testRedirectStaysOnThisSite",
+   "GuestLanguageTest::testRedirectStaysOnThisSite"
+  ]
+ },
+ "C01": {
+  "id": "C01",
+  "rule": "controller writes a cookie only for the two codes",
+  "file": "lib/Controller/LanguageController.php",
+  "tests": "testAnotherLanguageWritesNoCookie",
+  "status": "CAUGHT",
+  "failed": [
+   "LanguageRouteTest::testAnotherLanguageWritesNoCookie"
+  ]
+ },
+ "C02": {
+  "id": "C02",
+  "rule": "cookie is SameSite Lax",
+  "file": "lib/Controller/LanguageController.php",
+  "tests": "testSetsTheCookieAndRedirectsBack",
+  "status": "CAUGHT",
+  "failed": [
+   "LanguageRouteTest::testSetsTheCookieAndRedirectsBack"
+  ]
+ },
+ "C03": {
+  "id": "C03",
+  "rule": "cookie lives one year",
+  "file": "lib/Controller/LanguageController.php",
+  "tests": "testSetsTheCookieAndRedirectsBack",
+  "status": "CAUGHT",
+  "failed": [
+   "LanguageRouteTest::testSetsTheCookieAndRedirectsBack"
+  ]
+ },
+ "C04": {
+  "id": "C04",
+  "rule": "redirect target is checked",
+  "file": "lib/Controller/LanguageController.php",
+  "tests": "testRedirectToAnotherSiteIsRefused",
+  "status": "CAUGHT",
+  "failed": [
+   "LanguageRouteTest::testRedirectToAnotherSiteIsRefused"
+  ]
+ },
+ "C05": {
+  "id": "C05",
+  "rule": "route is open to guests",
+  "file": "lib/Controller/LanguageController.php",
+  "tests": "testSetsTheCookieAndRedirectsBack",
+  "status": "CAUGHT",
+  "failed": [
+   "LanguageRouteTest::testSetsTheCookieAndRedirectsBack"
+  ]
+ },
+ "C06": {
+  "id": "C06",
+  "rule": "GET route needs no CSRF token",
+  "file": "lib/Controller/LanguageController.php",
+  "tests": "testSetsTheCookieAndRedirectsBack",
+  "status": "CAUGHT",
+  "failed": [
+   "LanguageRouteTest::testSetsTheCookieAndRedirectsBack"
+  ]
+ },
+ "A01": {
+  "id": "A01",
+  "rule": "a signed-in user's language is never overridden",
+  "file": "lib/AppInfo/Application.php",
+  "tests": "testSignedInUserKeepsTheirOwnLanguage",
+  "status": "CAUGHT",
+  "failed": [
+   "PageLanguageTest::testSignedInUserKeepsTheirOwnLanguage"
+  ]
+ },
+ "A02": {
+  "id": "A02",
+  "rule": "the cookie language is the one handed to core",
+  "file": "lib/AppInfo/Application.php",
+  "tests": "testGuestCookieBeatsTheBrowser",
+  "status": "CAUGHT",
+  "failed": [
+   "PageLanguageTest::testGuestCookieBeatsTheBrowser"
+  ]
+ },
+ "A03": {
+  "id": "A03",
+  "rule": "the cookie language is handed to core at all",
+  "file": "lib/AppInfo/Application.php",
+  "tests": "testGuestCookieBeatsTheBrowser",
+  "status": "CAUGHT",
+  "failed": [
+   "PageLanguageTest::testGuestCookieBeatsTheBrowser"
+  ]
+ },
+ "A04": {
+  "id": "A04",
+  "rule": "unaccepted cookie values never reach core",
+  "file": "lib/AppInfo/Application.php",
+  "tests": "testUnacceptedCookieValuesAreIgnored",
+  "status": "CAUGHT",
+  "failed": [
+   "PageLanguageTest::testUnacceptedCookieValuesAreIgnored"
+  ]
+ },
+ "L01": {
+  "id": "L01",
+  "rule": "dictionary only for ar and en",
+  "file": "lib/Listener/AssetsListener.php",
+  "tests": "testAnotherLanguageGetsTheFontButNoDictionary|testDictionaryOnlyForTheTwoLanguages",
+  "status": "CAUGHT",
+  "failed": [
+   "AssetsListenerTest::testDictionaryOnlyForTheTwoLanguages"
+  ]
+ },
+ "L02": {
+  "id": "L02",
+  "rule": "the font stylesheet is added",
+  "file": "lib/Listener/AssetsListener.php",
+  "tests": "testGuestPagesCarryTheSwitchAssets|testSignedInPagesGetTheirLanguageDictionary",
+  "status": "CAUGHT",
+  "failed": [
+   "PageLanguageTest::testGuestPagesCarryTheSwitchAssets",
+   "PageLanguageTest::testSignedInPagesGetTheirLanguageDictionary"
+  ]
+ },
+ "L03": {
+  "id": "L03",
+  "rule": "the dictionary follows the page language",
+  "file": "lib/Listener/AssetsListener.php",
+  "tests": "testGuestPagesCarryTheSwitchAssets",
+  "status": "CAUGHT",
+  "failed": [
+   "PageLanguageTest::testGuestPagesCarryTheSwitchAssets"
+  ]
+ },
+ "R01": {
+  "id": "R01",
+  "rule": "the route exists at the documented path",
+  "file": "appinfo/routes.php",
+  "tests": "testSetsTheCookieAndRedirectsBack",
+  "status": "CAUGHT",
+  "failed": [
+   "LanguageRouteTest::testSetsTheCookieAndRedirectsBack"
+  ]
+ },
+ "S01": {
+  "id": "S01",
+  "rule": "runtime writes text, never markup",
+  "file": "src/runtime.js",
+  "tests": "testRuntimeKeepsItsSafetyProperties",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testRuntimeKeepsItsSafetyProperties"
+  ]
+ },
+ "J01": {
+  "id": "J01",
+  "rule": "our entry wins over Nextcloud's",
+  "file": "src/runtime.js",
+  "tests": "our entry wins|AFTER us",
+  "status": "CAUGHT",
+  "failed": [
+   "our entry wins over the entry Nextcloud registered, and Nextcloud entries we do not have stay",
+   "an entry Nextcloud registers AFTER us does not displace ours (translations are fetched later per app)",
+   "our entry wins over the entry Nextcloud registered, and Nextcloud entries we do not have stay",
+   "an entry Nextcloud registers AFTER us does not displace ours (translations are fetched later per app)"
+  ]
+ },
+ "J02": {
+  "id": "J02",
+  "rule": "apps without a dictionary pass through",
+  "file": "src/runtime.js",
+  "tests": "passed through untouched",
+  "status": "CAUGHT",
+  "failed": [
+   "an app we have no dictionary for is passed through untouched",
+   "an app we have no dictionary for is passed through untouched"
+  ]
+ },
+ "J03": {
+  "id": "J03",
+  "rule": "loading twice does not wrap twice",
+  "file": "src/runtime.js",
+  "tests": "loading twice",
+  "status": "CAUGHT",
+  "failed": [
+   "loading twice does not wrap twice",
+   "loading twice does not wrap twice"
+  ]
+ },
+ "J04": {
+  "id": "J04",
+  "rule": "Arabic plural: many form",
+  "file": "src/runtime.js",
+  "tests": "plural function",
+  "status": "CAUGHT",
+  "failed": [
+   "apps with a dictionary get a plural function when Nextcloud registered none, and keep theirs when it did",
+   "apps with a dictionary get a plural function when Nextcloud registered none, and keep theirs when it did"
+  ]
+ },
+ "J05": {
+  "id": "J05",
+  "rule": "Arabic plural: few form",
+  "file": "src/runtime.js",
+  "tests": "plural function",
+  "status": "CAUGHT",
+  "failed": [
+   "apps with a dictionary get a plural function when Nextcloud registered none, and keep theirs when it did",
+   "apps with a dictionary get a plural function when Nextcloud registered none, and keep theirs when it did"
+  ]
+ },
+ "J06": {
+  "id": "J06",
+  "rule": "English plural",
+  "file": "src/runtime.js",
+  "tests": "English: plural",
+  "status": "CAUGHT",
+  "failed": [
+   "English: plural function is singular/plural",
+   "English: plural function is singular/plural"
+  ]
+ },
+ "J07": {
+  "id": "J07",
+  "rule": "Nextcloud's own plural function is kept",
+  "file": "src/runtime.js",
+  "tests": "plural function",
+  "status": "CAUGHT",
+  "failed": [
+   "apps with a dictionary get a plural function when Nextcloud registered none, and keep theirs when it did",
+   "apps with a dictionary get a plural function when Nextcloud registered none, and keep theirs when it did"
+  ]
+ },
+ "J08": {
+  "id": "J08",
+  "rule": "apps with no language file are marked loaded",
+  "file": "src/runtime.js",
+  "tests": "no language file",
+  "status": "CAUGHT",
+  "failed": [
+   "apps that ship no language file are marked as loaded so core does not fetch a missing file",
+   "apps that ship no language file are marked as loaded so core does not fetch a missing file"
+  ]
+ },
+ "J09": {
+  "id": "J09",
+  "rule": "navigation fallback only inside navigation elements",
+  "file": "src/runtime.js",
+  "tests": "navigation labels",
+  "status": "CAUGHT",
+  "failed": [
+   "navigation labels written by the server are translated, nothing else is touched",
+   "navigation labels written by the server are translated, nothing else is touched"
+  ]
+ },
+ "J10": {
+  "id": "J10",
+  "rule": "navigation fallback keeps surrounding white space",
+  "file": "src/runtime.js",
+  "tests": "navigation labels",
+  "status": "CAUGHT",
+  "failed": [
+   "navigation labels written by the server are translated, nothing else is touched",
+   "navigation labels written by the server are translated, nothing else is touched"
+  ]
+ },
+ "J11": {
+  "id": "J11",
+  "rule": "the switch link is for guest pages only",
+  "file": "src/runtime.js",
+  "tests": "guest pages get one link",
+  "status": "CAUGHT",
+  "failed": [
+   "navigation labels written by the server are translated, nothing else is touched",
+   "guest pages get one link to the other language; signed-in pages get none",
+   "navigation labels written by the server are translated, nothing else is touched",
+   "guest pages get one link to the other language; signed-in pages get none"
+  ]
+ },
+ "J12": {
+  "id": "J12",
+  "rule": "the switch link offers the other language",
+  "file": "src/runtime.js",
+  "tests": "guest pages get one link",
+  "status": "CAUGHT",
+  "failed": [
+   "guest pages get one link to the other language; signed-in pages get none",
+   "guest pages get one link to the other language; signed-in pages get none"
+  ]
+ },
+ "J13": {
+  "id": "J13",
+  "rule": "the switch link returns to the same page",
+  "file": "src/runtime.js",
+  "tests": "guest pages get one link",
+  "status": "CAUGHT",
+  "failed": [
+   "guest pages get one link to the other language; signed-in pages get none",
+   "guest pages get one link to the other language; signed-in pages get none"
+  ]
+ },
+ "J14": {
+  "id": "J14",
+  "rule": "text swap only on guest pages",
+  "file": "src/runtime.js",
+  "tests": "English pages",
+  "status": "CAUGHT",
+  "failed": [
+   "English pages: the Arabic name and slogan are swapped in the title and on guest pages only",
+   "English pages: the Arabic name and slogan are swapped in the title and on guest pages only"
+  ]
+ },
+ "J15": {
+  "id": "J15",
+  "rule": "text swap leaves file lists alone",
+  "file": "src/runtime.js",
+  "tests": "English pages",
+  "status": "CAUGHT",
+  "failed": [
+   "English pages: the Arabic name and slogan are swapped in the title and on guest pages only",
+   "English pages: the Arabic name and slogan are swapped in the title and on guest pages only"
+  ]
+ },
+ "J16": {
+  "id": "J16",
+  "rule": "title is swapped",
+  "file": "src/runtime.js",
+  "tests": "English pages",
+  "status": "CAUGHT",
+  "failed": [
+   "English pages: the Arabic name and slogan are swapped in the title and on guest pages only",
+   "English pages: the Arabic name and slogan are swapped in the title and on guest pages only"
+  ]
+ },
+ "J17": {
+  "id": "J17",
+  "rule": "swap actually replaces",
+  "file": "src/runtime.js",
+  "tests": "English pages",
+  "status": "CAUGHT",
+  "failed": [
+   "English pages: the Arabic name and slogan are swapped in the title and on guest pages only",
+   "English pages: the Arabic name and slogan are swapped in the title and on guest pages only"
+  ]
+ },
+ "J18": {
+  "id": "J18",
+  "rule": "Arabic build never swaps",
+  "file": "src/runtime.js",
+  "tests": "English pages",
+  "status": "SURVIVED",
+  "failed": []
+ }
+}
