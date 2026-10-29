@@ -19,7 +19,7 @@ mkdir -p "$out"
 name="pathlocale-$version-$short.tar.gz"
 # a tree (not the commit) is archived because git archive writes the commit id into the tar header. --prefix makes the archive extract to pathlocale/ ; modes 644/755 (umask 0022) and a fixed mtime make the bytes depend on the
 # content only, so a later commit that changes only tests or tools leaves the sha256 as it was; gzip -n leaves out name and time
-git -c tar.umask=0022 archive --format=tar --mtime=2026-01-01T00:00:00Z --prefix=pathlocale/ "$full^{tree}" appinfo lib css js fonts | gzip -n -9 > "$out/$name"
+git -c core.autocrlf=false -c core.eol=lf -c tar.umask=0022 archive --format=tar --mtime=2026-01-01T00:00:00Z --prefix=pathlocale/ "$full^{tree}" appinfo lib css js fonts | gzip -n -9 > "$out/$name"
 echo "commit   $full"
 echo "package  $out/$name"
 echo "bytes    $(wc -c < "$out/$name" | tr -d ' ')"

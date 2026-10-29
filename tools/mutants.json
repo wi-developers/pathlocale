@@ -678,5 +678,107 @@
    ]
   ],
   "tests": "personal settings pages"
+ },
+ {
+  "id": "K01",
+  "rule": "css hides the More apps entry (selector)",
+  "file": "css/pathlocale.css",
+  "edits": [
+   [
+    "a.app-item[href$=\"/settings/apps\"]",
+    "a.app-item[href$=\"/settings/appz\"]"
+   ]
+  ],
+  "tests": "testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont"
+ },
+ {
+  "id": "K02",
+  "rule": "css hides the More apps entry (display)",
+  "file": "css/pathlocale.css",
+  "edits": [
+   [
+    "display: none !important;",
+    "display: block !important;"
+   ]
+  ],
+  "tests": "testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont"
+ },
+ {
+  "id": "J32",
+  "rule": "public pages: only header and footer are swapped",
+  "file": "src/runtime.js",
+  "edits": [
+   [
+    "id === 'body-login' ? [document.body] : document.querySelectorAll('header, footer')",
+    "[document.body]"
+   ]
+  ],
+  "tests": "English pages: the Arabic name",
+  "runner": "js"
+ },
+ {
+  "id": "J33",
+  "rule": "guest swap skips editable content",
+  "file": "src/runtime.js",
+  "edits": [
+   [
+    "textarea, input, [contenteditable], .ProseMirror, #content-vue, .modal-container",
+    "textarea, input, .ProseMirror, #content-vue, .modal-container"
+   ]
+  ],
+  "tests": "English pages: the Arabic name",
+  "runner": "js"
+ },
+ {
+  "id": "J34",
+  "rule": "guest swap skips app content",
+  "file": "src/runtime.js",
+  "edits": [
+   [
+    ".ProseMirror, #content-vue, .modal-container",
+    ".ProseMirror, .modal-container"
+   ]
+  ],
+  "tests": "English pages: the Arabic name",
+  "runner": "js"
+ },
+ {
+  "id": "J35",
+  "rule": "settings rename skips the AGPL paragraph",
+  "file": "src/runtime.js",
+  "runner": "js",
+  "edits": [
+   [
+    ", p:has(a[href*=\"/licenses/agpl\"])'",
+    "'"
+   ]
+  ],
+  "tests": "personal settings pages"
+ },
+ {
+  "id": "J36",
+  "rule": "settings rename skips editable content",
+  "file": "src/runtime.js",
+  "runner": "js",
+  "edits": [
+   [
+    "'[data-pathlocale], [contenteditable], option",
+    "'[data-pathlocale], option"
+   ]
+  ],
+  "tests": "personal settings pages"
+ },
+ {
+  "id": "J37",
+  "rule": "settings rename skips options",
+  "file": "src/runtime.js",
+  "runner": "js",
+  "edits": [
+   [
+    "[contenteditable], option, textarea",
+    "[contenteditable], textarea"
+   ]
+  ],
+  "tests": "personal settings pages"
  }
 ]

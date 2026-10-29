@@ -98,7 +98,7 @@ test('navigation labels written by the server are translated, nothing else is to
 
 test('guest pages get one link to the other language; signed-in pages get none', () => {
 	const made = [];
-	const mkDoc = (id) => ({ title: '', createTreeWalker: () => ({ nextNode: () => null }), body: { id, querySelectorAll: () => [], matches: () => false, appendChild: (e) => made.push(e) }, createElement: () => ({}), addEventListener() {} });
+	const mkDoc = (id) => ({ title: '', createTreeWalker: () => ({ nextNode: () => null }), querySelectorAll: () => [], body: { id, querySelectorAll: () => [], matches: () => false, appendChild: (e) => made.push(e) }, createElement: () => ({}), addEventListener() {} });
 	load('ar', (c) => { c.OC = { webroot: '' }; c.location = { pathname: '/login', search: '?a=1' }; }, mkDoc('body-login'));
 	assert.equal(made.length, 1);
 	assert.equal(made[0].lang, 'en');
@@ -112,26 +112,42 @@ test('guest pages get one link to the other language; signed-in pages get none',
 	assert.equal(made.length, 0);
 });
 
-test('English pages: the Arabic name and slogan are swapped in the title and on guest pages only', () => {
+test('English pages: the Arabic name and slogan are swapped in the title; on the login page everywhere, on public pages only in header and footer, never in editable content', () => {
 	const swaps = data('en').swaps;
 	assert.ok(swaps.length >= 1 && swaps.every((p) => p.length === 2 && p[0] && p[1]));
 	const [from, to] = swaps[0];
-	const mkText = (v, inside) => ({ nodeValue: v, parentElement: { tagName: 'P', closest: (sel) => (inside && sel.includes('.files-list') ? {} : null) } });
+	// kind: 'editable' (inside a contenteditable, textarea or editor), 'content' (inside #content-vue); closest() answers for the selectors our skip list names
+	const mkText = (v, kind) => ({ nodeValue: v, parentElement: { tagName: 'P', closest: (sel) => ((kind === 'editable' && sel.includes('[contenteditable]')) || (kind === 'content' && sel.includes('#content-vue')) ? {} : null) } });
 	const run = (id, lang = 'en') => {
-		const guestText = mkText('Log in to ' + from); const fileText = mkText('report ' + from + '.pdf', true); const script = mkText(from); script.parentElement.tagName = 'SCRIPT';
-		const nodes = [guestText, fileText, script]; let i = 0;
-		const doc = { title: 'Login - ' + from, createTreeWalker: () => ({ nextNode: () => nodes[i++] ?? null }), body: { id, querySelectorAll: () => [], matches: () => false, appendChild() {} }, createElement: () => ({}), addEventListener() {} };
+		const t = {
+			login: mkText('Log in to ' + from), editable: mkText('my notes ' + from, 'editable'), content: mkText('chat ' + from, 'content'),
+			script: mkText(from), headerText: mkText('Welcome ' + from), footerText: mkText(from + ' - slogan'), bodyOnly: mkText('document says ' + from),
+		};
+		t.script.parentElement.tagName = 'SCRIPT';
+		const lists = { body: [t.login, t.editable, t.content, t.script, t.bodyOnly], header: [t.headerText], footer: [t.footerText, t.editable] };
+		const asked = [];
+		const doc = { title: 'Login - ' + from, createTreeWalker: (r) => { let i = 0; const l = lists[r.name]; asked.push(r.name); return { nextNode: () => l[i++] ?? null }; },
+			querySelectorAll: (sel) => (sel === 'header, footer' ? [{ name: 'header' }, { name: 'footer' }] : []),
+			body: { name: 'body', id, querySelectorAll: () => [], matches: () => false, appendChild() {} }, createElement: () => ({}), addEventListener() {} };
 		load(lang, (c) => { c.OC = { webroot: '' }; c.location = { pathname: '/', search: '' }; }, doc);
-		return { doc, guestText, fileText, script };
+		return { doc, asked, ...t };
 	};
 	const g = run('body-login');
 	assert.equal(g.doc.title, 'Login - ' + to);
-	assert.equal(g.guestText.nodeValue, 'Log in to ' + to);
-	assert.equal(g.fileText.nodeValue, 'report ' + from + '.pdf', 'file lists are not touched');
+	assert.equal(g.login.nodeValue, 'Log in to ' + to);
+	assert.equal(g.editable.nodeValue, 'my notes ' + from, 'editable content is not touched');
+	assert.equal(g.content.nodeValue, 'chat ' + from, 'app content is not touched');
 	assert.equal(g.script.nodeValue, from, 'scripts are not touched');
+	const p = run('body-public');
+	assert.deepEqual(p.asked, ['header', 'footer'], 'public pages: only header and footer are walked');
+	assert.equal(p.headerText.nodeValue, 'Welcome ' + to);
+	assert.equal(p.footerText.nodeValue, to + ' - slogan');
+	assert.equal(p.bodyOnly.nodeValue, 'document says ' + from, 'public page body text (documents, chat) is not touched');
+	assert.equal(p.editable.nodeValue, 'my notes ' + from, 'editable content in the footer is not touched either');
 	const s = run('body-user');
 	assert.equal(s.doc.title, 'Login - ' + to, 'the title is swapped on every page');
-	assert.equal(s.guestText.nodeValue, 'Log in to ' + from, 'signed-in page text is not touched');
+	assert.equal(s.login.nodeValue, 'Log in to ' + from, 'signed-in page text is not touched');
+	assert.deepEqual(s.asked, []);
 	const a = run('body-login', 'ar');
 	assert.equal(a.doc.title, 'Login - ' + from, 'Arabic pages keep the Arabic name');
 });
@@ -170,16 +186,19 @@ test('personal settings footer: the reasons link is renamed, the "developed by" 
 });
 
 test('personal settings pages: the product name inside server text is renamed, in text nodes only and never in the attribution', () => {
-	const mk = (v, tagName = 'P', marked = false) => ({ nodeValue: v, parentElement: { tagName, closest: (sel) => (marked && sel === '[data-pathlocale]' ? {} : null) } });
+	// skip: which of our skip-list entries the element sits inside (closest() answers for the selector text the runtime passes)
+	const mk = (v, tagName = 'P', skip = null) => ({ nodeValue: v, parentElement: { tagName, closest: (sel) => (skip && sel.includes(skip) ? {} : null) } });
 	const run = (lang, pathname, texts) => {
 		let i = 0; const nodes = texts;
 		const doc = { body: { id: 'body-user', querySelectorAll: () => [], matches: () => false }, addEventListener() {}, createTreeWalker: () => ({ nextNode: () => nodes[i++] ?? null }) };
 		load(lang, (c) => { c.location = { pathname, search: '' }; }, doc);
 	};
-	const a = mk('connect to نكست كلاود و Nextcloud'); const style = mk('Nextcloud', 'STYLE'); const area = mk('Nextcloud', 'TEXTAREA'); const attr = mk('Nextcloud', 'A', true);
-	run('ar', '/settings/user/security', [a, style, area, attr]);
+	const a = mk('connect to نكست كلاود و Nextcloud'); const style = mk('Nextcloud', 'STYLE'); const area = mk('Nextcloud', 'TEXTAREA'); const attr = mk('Nextcloud', 'A', '[data-pathlocale]'); const agpl = mk('Nextcloud community', 'P', 'a[href*="/licenses/agpl"]'); const editable = mk('Nextcloud', 'DIV', '[contenteditable]'); const option = mk('Nextcloud', 'OPTION', 'option');
+	run('ar', '/settings/user/security', [a, style, area, attr, agpl, editable, option]);
 	assert.equal(a.nodeValue, 'connect to منصة بث و منصة بث');
 	assert.equal(style.nodeValue, 'Nextcloud'); assert.equal(area.nodeValue, 'Nextcloud'); assert.equal(attr.nodeValue, 'Nextcloud', 'the attribution keeps the upstream name');
+	assert.equal(agpl.nodeValue, 'Nextcloud community', 'a paragraph that links the AGPL keeps its text even if the footer markup changed');
+	assert.equal(editable.nodeValue, 'Nextcloud', 'editable content is not touched'); assert.equal(option.nodeValue, 'Nextcloud', 'options are not touched');
 	const e = mk('a Nextcloud server'); run('en', '/index.php/settings/user/sharing', [e]);
 	assert.equal(e.nodeValue, 'a Path platform server');
 	for (const other of ['/apps/files/', '/settings/admin/overview', '/settings/users', '/settings/userx', '/apps/files/settings/user']) {

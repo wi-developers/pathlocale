@@ -39,7 +39,7 @@
 		if (!Object.prototype.hasOwnProperty.call(real, app)) real[app] = {};
 	}
 	// Labels the server renders itself (app navigation entries and section captions arrive as finished text, so the
-	// JS dictionary never sees them). Exact-text lookup, only inside these navigation elements: never user data.
+	// JS dictionary never sees them). Exact-text lookup, only inside these navigation elements (display only: a favourite folder or calendar named like a dictionary key is shown translated).
 	const NAV_TEXT = '.app-navigation-entry__name, .app-navigation-caption__name';
 	const NAV_TITLE = '.app-navigation-entry-link[title]';
 	const ORDER = ['core', 'lib', 'settings', 'files'];
@@ -73,14 +73,15 @@
 		}
 	};
 	// The rest of the personal settings pages (/settings/user/...) is finished PHP text too ("connect to Nextcloud", "a Nextcloud server").
-	// Text nodes only (never input values or user files), and never the attribution paragraph built above.
+	// Text nodes only, never editable or form content, never the attribution paragraph (built above, or any paragraph that links the AGPL).
+	const SETTINGS_SKIP = '[data-pathlocale], [contenteditable], option, textarea, input, p:has(a[href*="/licenses/agpl"])';
 	const settingsRename = () => {
 		const list = DATA.footer?.renames; if (!list?.length || !/^\/(index\.php\/)?settings\/user(\/|$)/.test(g.location?.pathname ?? '')) return;
 		const walker = document.createTreeWalker(document.body, 4);
 		const todo = [];
 		for (let n = walker.nextNode(); n; n = walker.nextNode()) {
 			const el = n.parentElement;
-			if (el && !['SCRIPT', 'STYLE', 'TEXTAREA'].includes(el.tagName) && !el.closest('[data-pathlocale]')) todo.push(n);
+			if (el && !['SCRIPT', 'STYLE', 'TEXTAREA'].includes(el.tagName) && !el.closest(SETTINGS_SKIP)) todo.push(n);
 		}
 		for (const n of todo) { const t = list.reduce((acc, [from, to]) => acc.split(from).join(to), n.nodeValue); if (t !== n.nodeValue) n.nodeValue = t; }
 	};
@@ -98,16 +99,19 @@
 		settingsRename();
 	};
 	// English pages: Theming holds a single name and slogan (Arabic), so the server prints them in Arabic. Swap them for the
-	// English wording in the page title and on guest pages (login, public pages: no user files shown there).
+	// English wording in the page title; on the login page everywhere (no user content there); on public pages (shares, Talk guests: user documents,
+	// chat messages and editors live there) only in the header and the footer, where Theming prints them, and never in editable content.
 	const swapText = (text) => DATA.swaps.reduce((acc, [from, to]) => acc.split(from).join(to), text);
+	const GUEST_SKIP = 'textarea, input, [contenteditable], .ProseMirror, #content-vue, .modal-container';
 	const swapGuest = () => {
 		if (DATA.swaps.length === 0) return;
 		if (document.title) document.title = swapText(document.title);
 		const id = document.body?.id; if (id !== 'body-login' && id !== 'body-public') return;
-		const skip = '.files-list, #app-content-vue, .app-files';
-		const walker = document.createTreeWalker(document.body, 4);
 		const todo = [];
-		for (let n = walker.nextNode(); n; n = walker.nextNode()) { if (n.parentElement && !n.parentElement.closest(skip) && !['SCRIPT', 'STYLE'].includes(n.parentElement.tagName)) todo.push(n); }
+		for (const r of id === 'body-login' ? [document.body] : document.querySelectorAll('header, footer')) {
+			const walker = document.createTreeWalker(r, 4);
+			for (let n = walker.nextNode(); n; n = walker.nextNode()) { if (n.parentElement && !n.parentElement.closest(GUEST_SKIP) && !['SCRIPT', 'STYLE'].includes(n.parentElement.tagName)) todo.push(n); }
+		}
 		for (const n of todo) { const t = swapText(n.nodeValue); if (t !== n.nodeValue) n.nodeValue = t; }
 	};
 	// Guest pages (login, public shares): a link to the other language. Signed-in users change language in their settings.

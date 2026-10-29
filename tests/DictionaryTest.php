@@ -10,6 +10,8 @@ use PHPUnit\Framework\TestCase;
 class DictionaryTest extends TestCase {
 	private const DIR = '/var/www/html/custom_apps/pathlocale';
 	private const ATTRIBUTION_KEY = 'Developed by the {communityopen}Nextcloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}AGPL{linkclose}.';
+	/** Keys that name a company or the upstream community: the real name must stay (a false sponsor or author would be worse than the old name). */
+	private const UPSTREAM_KEYS = '/Nextcloud (GmbH|community)/';
 	private const NAME_BAD ='/nextcloud|ن[ايِى]?كست\s*كلا?و?د|ناكست/iu';
 
 	private function data(string $lang): array {
@@ -75,7 +77,7 @@ class DictionaryTest extends TestCase {
 		foreach (['ar', 'en'] as $lang) {
 			foreach ($this->data($lang)['apps'] as $app => $entries) {
 				foreach ($entries as $key => $value) {
-					if ($key === self::ATTRIBUTION_KEY) {
+					if ($key === self::ATTRIBUTION_KEY || ($lang === 'ar' && preg_match(self::UPSTREAM_KEYS, (string)$key))) {
 						continue; // the one place that must name the upstream software (testAttributionKeepsTheUpstreamNameAndLicence)
 					}
 					foreach ((array)$value as $form) {
@@ -132,6 +134,36 @@ class DictionaryTest extends TestCase {
 			$footer = json_decode((string)file_get_contents(self::DIR . '/data/footer.json'), true, 512, JSON_THROW_ON_ERROR)[$lang];
 			$this->assertSame($footer, $built['footer'], "$lang: built script has another footer than data/footer.json");
 		}
+	}
+
+	/** Texts that name the company or the upstream community keep the real name in Arabic and are not renamed in English. */
+	public function testCompanyAndCommunityNamesAreKept(): void {
+		$found = 0;
+		foreach ($this->data('ar')['apps'] as $app => $entries) {
+			foreach ($entries as $key => $value) {
+				if (!preg_match(self::UPSTREAM_KEYS, (string)$key) || $key === self::ATTRIBUTION_KEY) {
+					continue;
+				}
+				$found++;
+				$this->assertStringContainsString('Nextcloud', implode(' ', (array)$value), "$app: " . mb_substr((string)$key, 0, 50));
+				$this->assertSame(0, preg_match('/منصة بث|Path platform/u', implode(' ', (array)$value)), "$app: the platform name replaced a company or community");
+			}
+		}
+		$this->assertGreaterThanOrEqual(4, $found);
+		foreach ($this->data('en')['apps'] as $app => $entries) {
+			foreach (array_keys($entries) as $key) {
+				if ($key !== self::ATTRIBUTION_KEY) {
+					$this->assertSame(0, preg_match(self::UPSTREAM_KEYS, (string)$key), "en $app: a company or community text must show upstream English");
+				}
+			}
+		}
+	}
+
+	public function testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont(): void {
+		$css = str_replace("\r\n", "\n", (string)file_get_contents(self::DIR . '/css/pathlocale.css'));
+		$this->assertStringContainsString("html:root .app-menu__grid a.app-item[href\$=\"/settings/apps\"] {\n\tdisplay: none !important;\n}", $css);
+		$this->assertSame(4, substr_count($css, '@font-face'));
+		$this->assertStringContainsString("html:root body {\n\tfont-family: var(--font-face);", $css);
 	}
 
 	/** The sentences the runtime writes into PHP-rendered pages: shape, and the product name only as the attribution link. */

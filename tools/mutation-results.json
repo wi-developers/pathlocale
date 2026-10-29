@@ -596,5 +596,91 @@
    "personal settings pages: the product name inside server text is renamed, in text nodes only and never in the attribution",
    "personal settings pages: the product name inside server text is renamed, in text nodes only and never in the attribution"
   ]
+ },
+ "K01": {
+  "id": "K01",
+  "rule": "css hides the More apps entry (selector)",
+  "file": "css/pathlocale.css",
+  "tests": "testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont"
+  ]
+ },
+ "K02": {
+  "id": "K02",
+  "rule": "css hides the More apps entry (display)",
+  "file": "css/pathlocale.css",
+  "tests": "testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont"
+  ]
+ },
+ "J32": {
+  "id": "J32",
+  "rule": "public pages: only header and footer are swapped",
+  "file": "src/runtime.js",
+  "tests": "English pages: the Arabic name",
+  "status": "CAUGHT",
+  "failed": [
+   "English pages: the Arabic name and slogan are swapped in the title; on the login page everywhere, on public pages only in header and footer, never in editable content",
+   "English pages: the Arabic name and slogan are swapped in the title; on the login page everywhere, on public pages only in header and footer, never in editable content"
+  ]
+ },
+ "J33": {
+  "id": "J33",
+  "rule": "guest swap skips editable content",
+  "file": "src/runtime.js",
+  "tests": "English pages: the Arabic name",
+  "status": "CAUGHT",
+  "failed": [
+   "English pages: the Arabic name and slogan are swapped in the title; on the login page everywhere, on public pages only in header and footer, never in editable content",
+   "English pages: the Arabic name and slogan are swapped in the title; on the login page everywhere, on public pages only in header and footer, never in editable content"
+  ]
+ },
+ "J34": {
+  "id": "J34",
+  "rule": "guest swap skips app content",
+  "file": "src/runtime.js",
+  "tests": "English pages: the Arabic name",
+  "status": "CAUGHT",
+  "failed": [
+   "English pages: the Arabic name and slogan are swapped in the title; on the login page everywhere, on public pages only in header and footer, never in editable content",
+   "English pages: the Arabic name and slogan are swapped in the title; on the login page everywhere, on public pages only in header and footer, never in editable content"
+  ]
+ },
+ "J35": {
+  "id": "J35",
+  "rule": "settings rename skips the AGPL paragraph",
+  "file": "src/runtime.js",
+  "tests": "personal settings pages",
+  "status": "CAUGHT",
+  "failed": [
+   "personal settings pages: the product name inside server text is renamed, in text nodes only and never in the attribution",
+   "personal settings pages: the product name inside server text is renamed, in text nodes only and never in the attribution"
+  ]
+ },
+ "J36": {
+  "id": "J36",
+  "rule": "settings rename skips editable content",
+  "file": "src/runtime.js",
+  "tests": "personal settings pages",
+  "status": "CAUGHT",
+  "failed": [
+   "personal settings pages: the product name inside server text is renamed, in text nodes only and never in the attribution",
+   "personal settings pages: the product name inside server text is renamed, in text nodes only and never in the attribution"
+  ]
+ },
+ "J37": {
+  "id": "J37",
+  "rule": "settings rename skips options",
+  "file": "src/runtime.js",
+  "tests": "personal settings pages",
+  "status": "CAUGHT",
+  "failed": [
+   "personal settings pages: the product name inside server text is renamed, in text nodes only and never in the attribution",
+   "personal settings pages: the product name inside server text is renamed, in text nodes only and never in the attribution"
+  ]
  }
 }

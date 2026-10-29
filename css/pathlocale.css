@@ -36,3 +36,8 @@ html:root[lang="ar"] body {
 html:root[lang="ar"] #body-login button[type="submit"] .button-vue__icon svg {
 	transform: scaleX(-1);
 }
+
+/* the "More apps" entry of the app menu (a link to the App Store page): hidden for everyone; the page itself stays reachable for admins by address */
+html:root .app-menu__grid a.app-item[href$="/settings/apps"] {
+	display: none !important;
+}
