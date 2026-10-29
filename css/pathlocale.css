@@ -11,3 +11,28 @@ html:root, html:root body {
 html:root body {
 	font-family: var(--font-face);
 }
+
+.pathlocale-switch {
+	position: fixed;
+	top: 12px;
+	inset-inline-end: 16px;
+	z-index: 10000;
+	padding: 6px 14px;
+	border-radius: var(--border-radius-element, 8px);
+	background: rgba(255, 255, 255, 0.9);
+	color: #142666;
+	font-weight: 600;
+	text-decoration: none;
+}
+.pathlocale-switch:hover, .pathlocale-switch:focus-visible {
+	background: #fff;
+	text-decoration: underline;
+}
+
+/* guest pages (login, public shares) stay left-to-right in Arabic otherwise */
+html:root[lang="ar"] body {
+	direction: rtl;
+}
+html:root[lang="ar"] #body-login button[type="submit"] .button-vue__icon svg {
+	transform: scaleX(-1);
+}

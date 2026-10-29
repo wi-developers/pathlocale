@@ -63,8 +63,18 @@
 		const links = root.matches?.(NAV_TITLE) ? [root, ...root.querySelectorAll(NAV_TITLE)] : root.querySelectorAll(NAV_TITLE);
 		for (const el of links) { const tr = lookup(el.getAttribute('title').trim()); if (tr) el.setAttribute('title', tr); }
 	};
+	// Guest pages (login, public shares): a link to the other language. Signed-in users change language in their settings.
+	const guestSwitch = () => {
+		const id = document.body?.id; if (id !== 'body-login' && id !== 'body-public') return;
+		const other = DATA.lang === 'ar' ? 'en' : 'ar';
+		const a = document.createElement('a');
+		a.className = 'pathlocale-switch'; a.lang = other; a.textContent = other === 'ar' ? 'العربية' : 'English';
+		a.href = (g.OC?.webroot ?? '') + '/index.php/apps/pathlocale/lang/' + other + '?redirect=' + encodeURIComponent(location.pathname + location.search);
+		document.body.appendChild(a);
+	};
 	const start = () => {
 		fix(document.body);
+		guestSwitch();
 		let queued = false;
 		new MutationObserver(() => { if (queued) return; queued = true; requestAnimationFrame(() => { queued = false; fix(document.body); }); })
 			.observe(document.body, { childList: true, subtree: true });
