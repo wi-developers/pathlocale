@@ -5,7 +5,7 @@
 	<name>Path localization</name>
 	<summary>Arabic and English text for every screen, the IBM Plex Sans Arabic font, the Path platform name</summary>
 	<description>Adds missing Arabic translations, replaces the product name in the user interface and loads the IBM Plex Sans Arabic font. Does not change Nextcloud files.</description>
-	<version>0.1.2</version>
+	<version>0.1.3</version>
 	<licence>agpl</licence>
 	<author>wi</author>
 	<namespace>Pathlocale</namespace>

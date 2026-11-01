@@ -939,5 +939,53 @@
    ]
   ],
   "tests": "testKeepPatternsAreTheOnesTheTestsUse"
+ },
+ {
+  "id": "N01",
+  "rule": "English slogan swap: tagline source text",
+  "file": "data/en.json",
+  "edits": [
+   [
+    "\"منصة متكاملة للعمل والتواصل المؤسسي\"",
+    "\"منصة متكاملة للعمل والتواصل المؤسسى\""
+   ]
+  ],
+  "tests": "testEnglishSloganSwaps"
+ },
+ {
+  "id": "N02",
+  "rule": "English slogan swap: WI line source text",
+  "file": "data/en.json",
+  "edits": [
+   [
+    "\"إحدى منصات WI الرقمية\"",
+    "\"إحدى منصات WI الرقميه\""
+   ]
+  ],
+  "tests": "testEnglishSloganSwaps"
+ },
+ {
+  "id": "N03",
+  "rule": "English slogan swap: tagline English text",
+  "file": "data/en.json",
+  "edits": [
+   [
+    "\"An Integrated Platform for Work and Digital Communication\"",
+    "\"An Integrated Platform for Work and Digital Communications\""
+   ]
+  ],
+  "tests": "testEnglishSloganSwaps"
+ },
+ {
+  "id": "N04",
+  "rule": "English slogan swap: WI line English text",
+  "file": "data/en.json",
+  "edits": [
+   [
+    "\"A WI Digital Platform\"",
+    "\"A WI Digital Platforms\""
+   ]
+  ],
+  "tests": "testEnglishSloganSwaps"
  }
 ]

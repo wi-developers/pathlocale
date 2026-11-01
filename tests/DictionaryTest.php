@@ -104,6 +104,14 @@ class DictionaryTest extends TestCase {
 		}
 	}
 
+	/** The English pages swap the Arabic Theming slogan (tagline and WI line, brief s.5) for the English sentences of the brochure. */
+	public function testEnglishSloganSwaps(): void {
+		$swaps = $this->data('en')['swaps'];
+		$this->assertContains(['منصة متكاملة للعمل والتواصل المؤسسي', 'An Integrated Platform for Work and Digital Communication'], $swaps);
+		$this->assertContains(['إحدى منصات WI الرقمية', 'A WI Digital Platform'], $swaps);
+		$this->assertSame([], $this->data('ar')['swaps'] ?? [], 'Arabic pages swap nothing');
+	}
+
 	public function testEnglishIsOnlyTheRenamedSource(): void {
 		foreach ($this->data('en')['apps'] as $app => $entries) {
 			foreach ($entries as $key => $value) {

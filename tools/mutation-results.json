@@ -428,7 +428,9 @@
   "status": "CAUGHT",
   "failed": [
    "English pages: the Arabic name and slogan are swapped in the title; on the login page everywhere, on public pages only in header and footer, never in editable content",
-   "English pages: the Arabic name and slogan are swapped in the title; on the login page everywhere, on public pages only in header and footer, never in editable content"
+   "English pages: the Arabic slogan of Theming (tagline and WI line, any separator) becomes the English sentences of the brochure; Arabic pages keep it",
+   "English pages: the Arabic name and slogan are swapped in the title; on the login page everywhere, on public pages only in header and footer, never in editable content",
+   "English pages: the Arabic slogan of Theming (tagline and WI line, any separator) becomes the English sentences of the brochure; Arabic pages keep it"
   ]
  },
  "J17": {
@@ -439,7 +441,9 @@
   "status": "CAUGHT",
   "failed": [
    "English pages: the Arabic name and slogan are swapped in the title; on the login page everywhere, on public pages only in header and footer, never in editable content",
-   "English pages: the Arabic name and slogan are swapped in the title; on the login page everywhere, on public pages only in header and footer, never in editable content"
+   "English pages: the Arabic slogan of Theming (tagline and WI line, any separator) becomes the English sentences of the brochure; Arabic pages keep it",
+   "English pages: the Arabic name and slogan are swapped in the title; on the login page everywhere, on public pages only in header and footer, never in editable content",
+   "English pages: the Arabic slogan of Theming (tagline and WI line, any separator) becomes the English sentences of the brochure; Arabic pages keep it"
   ]
  },
  "J18": {
@@ -816,6 +820,46 @@
   "status": "CAUGHT",
   "failed": [
    "DictionaryTest::testKeepPatternsAreTheOnesTheTestsUse"
+  ]
+ },
+ "N01": {
+  "id": "N01",
+  "rule": "English slogan swap: tagline source text",
+  "file": "data/en.json",
+  "tests": "testEnglishSloganSwaps",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testEnglishSloganSwaps"
+  ]
+ },
+ "N02": {
+  "id": "N02",
+  "rule": "English slogan swap: WI line source text",
+  "file": "data/en.json",
+  "tests": "testEnglishSloganSwaps",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testEnglishSloganSwaps"
+  ]
+ },
+ "N03": {
+  "id": "N03",
+  "rule": "English slogan swap: tagline English text",
+  "file": "data/en.json",
+  "tests": "testEnglishSloganSwaps",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testEnglishSloganSwaps"
+  ]
+ },
+ "N04": {
+  "id": "N04",
+  "rule": "English slogan swap: WI line English text",
+  "file": "data/en.json",
+  "tests": "testEnglishSloganSwaps",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testEnglishSloganSwaps"
   ]
  }
 }

@@ -152,6 +152,25 @@ test('English pages: the Arabic name and slogan are swapped in the title; on the
 	assert.equal(a.doc.title, 'Login - ' + from, 'Arabic pages keep the Arabic name');
 });
 
+test('English pages: the Arabic slogan of Theming (tagline and WI line, any separator) becomes the English sentences of the brochure; Arabic pages keep it', () => {
+	const SLOGAN_AR = ['منصة متكاملة للعمل والتواصل المؤسسي', 'إحدى منصات WI الرقمية'];
+	const SLOGAN_EN = ['An Integrated Platform for Work and Digital Communication', 'A WI Digital Platform'];
+	for (const sep of [' – ', ' - ', ' ']) {
+		const mk = (v) => ({ nodeValue: v, parentElement: { tagName: 'P', closest: () => null } });
+		const footer = mk('Path | بث – ' + SLOGAN_AR.join(sep));
+		const doc = { title: 'Log in – ' + SLOGAN_AR[0], createTreeWalker: () => { let i = 0; const l = [footer]; return { nextNode: () => l[i++] ?? null }; },
+			querySelectorAll: () => [], body: { id: 'body-login', querySelectorAll: () => [], matches: () => false, appendChild() {} }, createElement: () => ({}), addEventListener() {} };
+		load('en', (c) => { c.OC = { webroot: '' }; c.location = { pathname: '/', search: '' }; }, doc);
+		assert.equal(footer.nodeValue, 'Path | بث – ' + SLOGAN_EN.join(sep), `separator "${sep}"`);
+		assert.equal(doc.title, 'Log in – ' + SLOGAN_EN[0]);
+	}
+	const arFooter = { nodeValue: SLOGAN_AR.join(' – '), parentElement: { tagName: 'P', closest: () => null } };
+	const arDoc = { title: 'x', createTreeWalker: () => { let i = 0; const l = [arFooter]; return { nextNode: () => l[i++] ?? null }; },
+		querySelectorAll: () => [], body: { id: 'body-login', querySelectorAll: () => [], matches: () => false, appendChild() {} }, createElement: () => ({}), addEventListener() {} };
+	load('ar', (c) => { c.OC = { webroot: '' }; c.location = { pathname: '/', search: '' }; }, arDoc);
+	assert.equal(arFooter.nodeValue, SLOGAN_AR.join(' – '));
+});
+
 test('personal settings footer: the reasons link is renamed and the "developed by" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph', () => {
 	const footerData = JSON.parse(fs.readFileSync(path.join(root, 'data', 'footer.json'), 'utf8'));
 	const HREFS = ['https://nextcloud.com/contribute', 'https://github.com/nextcloud', 'https://www.gnu.org/licenses/agpl-3.0.html'];
