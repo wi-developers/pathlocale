@@ -879,5 +879,65 @@
    ]
   ],
   "tests": "testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont"
+ },
+ {
+  "id": "K09",
+  "rule": "css hides the social links paragraph (selector)",
+  "file": "css/pathlocale.css",
+  "edits": [
+   [
+    "html:root .development-notice p.social-button {",
+    "html:root .development-notice p.social-buttom {"
+   ]
+  ],
+  "tests": "testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont"
+ },
+ {
+  "id": "K10",
+  "rule": "css hides the social links paragraph (display)",
+  "file": "css/pathlocale.css",
+  "edits": [
+   [
+    "p.social-button {\n\tdisplay: none !important;",
+    "p.social-button {\n\tdisplay: block !important;"
+   ]
+  ],
+  "tests": "testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont"
+ },
+ {
+  "id": "K11",
+  "rule": "css hides the social links paragraph only inside the notice area",
+  "file": "css/pathlocale.css",
+  "edits": [
+   [
+    "html:root .development-notice p.social-button {",
+    "html:root p.social-button {"
+   ]
+  ],
+  "tests": "testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont"
+ },
+ {
+  "id": "K12",
+  "rule": "keep list: Nextcloud URL / user of the Matterbridge fields",
+  "file": "data/footer.json",
+  "edits": [
+   [
+    "\"^Nextcloud (URL|user)$\"",
+    "\"^Nextcloud (URL)$\""
+   ]
+  ],
+  "tests": "testKeepPatternsAreTheOnesTheTestsUse"
+ },
+ {
+  "id": "K13",
+  "rule": "keep list: Share with me via Nextcloud",
+  "file": "data/footer.json",
+  "edits": [
+   [
+    "\"^Share with me via Nextcloud$\"",
+    "\"^Share with me via Nextcl0ud$\""
+   ]
+  ],
+  "tests": "testKeepPatternsAreTheOnesTheTestsUse"
  }
 ]

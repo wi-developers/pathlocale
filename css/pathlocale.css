@@ -51,3 +51,8 @@ html:root .development-notice p:has(> #open-reasons-use-nextcloud-pdf),
 html:root .development-notice #open-reasons-use-nextcloud-pdf {
 	display: none !important;
 }
+
+/* owner request 2026-11-01 (screenshot): the five links to the upstream project's social pages, blog and newsletter ("social-button" paragraph) under the licence sentence are hidden; the licence sentence is a different paragraph and stays */
+html:root .development-notice p.social-button {
+	display: none !important;
+}

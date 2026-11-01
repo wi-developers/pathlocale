@@ -11,7 +11,7 @@ class DictionaryTest extends TestCase {
 	private const DIR = '/var/www/html/custom_apps/pathlocale';
 	private const ATTRIBUTION_KEY = 'Developed by the {communityopen}Nextcloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}AGPL{linkclose}.';
 	/** Keys that name a company or the upstream community: the real name must stay (a false sponsor or author would be worse than the old name). */
-	private const UPSTREAM_KEYS = '/Nextcloud (GmbH|community|Enterprise|portal|Appstore|App ?Store|All-in-One|Hub|[Dd]ocker|[Cc]lient|Server|Administration Manual|%d|%[0-9]\$s|[0-9]|<=)|Nextcloud subscription|community (release|build) of Nextcloud|We at Nextcloud|#Nextcloud|desktop client|(since|As of) Nextcloud|link to your Nextcloud|Add to your Nextcloud|remote Nextcloud|Nextcloud Mail [0-9]|Nextcloud instances|Struktur AG|Ethical AI Rating|Nextcloud Documentation|other Nextcloud users|Client Login Flow/';
+	private const UPSTREAM_KEYS = '/Nextcloud (GmbH|community|Enterprise|portal|Appstore|App ?Store|All-in-One|Hub|[Dd]ocker|[Cc]lient|Server|Administration Manual|%d|%[0-9]\$s|[0-9]|<=)|Nextcloud subscription|community (release|build) of Nextcloud|We at Nextcloud|#Nextcloud|desktop client|(since|As of) Nextcloud|link to your Nextcloud|Add to your Nextcloud|remote Nextcloud|Nextcloud Mail [0-9]|Nextcloud instances|Struktur AG|Ethical AI Rating|Nextcloud Documentation|other Nextcloud users|Client Login Flow|^Nextcloud (URL|user)$|^Share with me via Nextcloud$/';
 	private const NAME_BAD ='/nextcloud|ن[ايِى]?كست\s*كلا?و?د|ناكست/iu';
 
 	private function data(string $lang): array {
@@ -177,6 +177,11 @@ class DictionaryTest extends TestCase {
 			'It requires Nextcloud Mail 4.1 and an email account' => true,
 			'Our partner Struktur AG provides a service' => true,
 			'Chat with other Nextcloud users on their servers' => true,
+			'Nextcloud URL' => true,
+			'Nextcloud user' => true,
+			'Share with me via Nextcloud' => true,
+			'Nextcloud URL used by Collabora:' => false,
+			'Share with me via {productName}' => false,
 			'Show a glimpse of your latest novel directly from your Nextcloud' => false,
 		] as $key => $kept) {
 			$this->assertSame($kept ? 1 : 0, preg_match(self::UPSTREAM_KEYS, $key), $key);
@@ -206,6 +211,9 @@ class DictionaryTest extends TestCase {
 }", $css);
 		$this->assertStringContainsString("html:root .development-notice p:has(> #open-reasons-use-nextcloud-pdf),\nhtml:root .development-notice #open-reasons-use-nextcloud-pdf {\n\tdisplay: none !important;\n}", $css);
 		$this->assertStringNotContainsString('agpl', preg_replace('~/\*.*?\*/~s', '', $css), 'the stylesheet never hides the licence sentence');
+		$this->assertStringContainsString("html:root .development-notice p.social-button {
+	display: none !important;
+}", $css);
 		$this->assertSame(4, substr_count($css, '@font-face'));
 		$this->assertStringContainsString("html:root body {\n\tfont-family: var(--font-face);", $css);
 	}

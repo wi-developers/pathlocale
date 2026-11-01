@@ -36,7 +36,9 @@
    "Nextcloud instances",
    "Struktur AG",
    "Ethical AI Rating|Nextcloud Documentation",
-   "other Nextcloud users|Client Login Flow"
+   "other Nextcloud users|Client Login Flow",
+   "^Nextcloud (URL|user)$",
+   "^Share with me via Nextcloud$"
   ]
  }
 }
