@@ -45,3 +45,9 @@ html:root .app-menu__grid a.app-item[href$="/settings/apps"] {
 html:root .app-menu__grid a.app-item[href="https://apps.nextcloud.com/"] {
 	display: none !important;
 }
+
+/* owner request 2026-11-01: the "Reasons to use ..." button of the personal settings footer (it opens the upstream project's own PDF, which cannot be changed from here) is hidden together with its paragraph; the licence/attribution sentence below it stays */
+html:root .development-notice p:has(> #open-reasons-use-nextcloud-pdf),
+html:root .development-notice #open-reasons-use-nextcloud-pdf {
+	display: none !important;
+}

@@ -626,6 +626,42 @@
   "tests": "testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont"
  },
  {
+  "id": "K06",
+  "rule": "css hides the reasons button (selector)",
+  "file": "css/pathlocale.css",
+  "edits": [
+   [
+    "html:root .development-notice #open-reasons-use-nextcloud-pdf {",
+    "html:root .development-notice #open-reasons-use-nextcloud-pdz {"
+   ]
+  ],
+  "tests": "testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont"
+ },
+ {
+  "id": "K07",
+  "rule": "css hides the reasons button (display)",
+  "file": "css/pathlocale.css",
+  "edits": [
+   [
+    "#open-reasons-use-nextcloud-pdf {\n\tdisplay: none !important;",
+    "#open-reasons-use-nextcloud-pdf {\n\tdisplay: block !important;"
+   ]
+  ],
+  "tests": "testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont"
+ },
+ {
+  "id": "K08",
+  "rule": "css hides the reasons paragraph only inside the notice area",
+  "file": "css/pathlocale.css",
+  "edits": [
+   [
+    "html:root .development-notice p:has(> #open-reasons-use-nextcloud-pdf),",
+    "html:root p:has(> #open-reasons-use-nextcloud-pdf),"
+   ]
+  ],
+  "tests": "testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont"
+ },
+ {
   "id": "J26",
   "rule": "settings sentences: only on personal settings pages",
   "file": "src/runtime.js",

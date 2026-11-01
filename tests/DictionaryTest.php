@@ -204,6 +204,8 @@ class DictionaryTest extends TestCase {
 		$this->assertStringContainsString("html:root .app-menu__grid a.app-item[href=\"https://apps.nextcloud.com/\"] {
 	display: none !important;
 }", $css);
+		$this->assertStringContainsString("html:root .development-notice p:has(> #open-reasons-use-nextcloud-pdf),\nhtml:root .development-notice #open-reasons-use-nextcloud-pdf {\n\tdisplay: none !important;\n}", $css);
+		$this->assertStringNotContainsString('agpl', preg_replace('~/\*.*?\*/~s', '', $css), 'the stylesheet never hides the licence sentence');
 		$this->assertSame(4, substr_count($css, '@font-face'));
 		$this->assertStringContainsString("html:root body {\n\tfont-family: var(--font-face);", $css);
 	}
