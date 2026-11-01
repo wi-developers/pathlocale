@@ -737,5 +737,35 @@
   "failed": [
    "DictionaryTest::testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont"
   ]
+ },
+ "K06": {
+  "id": "K06",
+  "rule": "css hides the reasons button (selector)",
+  "file": "css/pathlocale.css",
+  "tests": "testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont"
+  ]
+ },
+ "K07": {
+  "id": "K07",
+  "rule": "css hides the reasons button (display)",
+  "file": "css/pathlocale.css",
+  "tests": "testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont"
+  ]
+ },
+ "K08": {
+  "id": "K08",
+  "rule": "css hides the reasons paragraph only inside the notice area",
+  "file": "css/pathlocale.css",
+  "tests": "testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont"
+  ]
  }
 }
