@@ -767,5 +767,55 @@
   "failed": [
    "DictionaryTest::testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont"
   ]
+ },
+ "K09": {
+  "id": "K09",
+  "rule": "css hides the social links paragraph (selector)",
+  "file": "css/pathlocale.css",
+  "tests": "testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont"
+  ]
+ },
+ "K10": {
+  "id": "K10",
+  "rule": "css hides the social links paragraph (display)",
+  "file": "css/pathlocale.css",
+  "tests": "testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont"
+  ]
+ },
+ "K11": {
+  "id": "K11",
+  "rule": "css hides the social links paragraph only inside the notice area",
+  "file": "css/pathlocale.css",
+  "tests": "testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont"
+  ]
+ },
+ "K12": {
+  "id": "K12",
+  "rule": "keep list: Nextcloud URL / user of the Matterbridge fields",
+  "file": "data/footer.json",
+  "tests": "testKeepPatternsAreTheOnesTheTestsUse",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testKeepPatternsAreTheOnesTheTestsUse"
+  ]
+ },
+ "K13": {
+  "id": "K13",
+  "rule": "keep list: Share with me via Nextcloud",
+  "file": "data/footer.json",
+  "tests": "testKeepPatternsAreTheOnesTheTestsUse",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testKeepPatternsAreTheOnesTheTestsUse"
+  ]
  }
 }
