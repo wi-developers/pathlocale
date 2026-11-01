@@ -25,9 +25,9 @@ fail=0
 
 lang_of() { # accept-language, cookie value or "-"
 	if [ "$2" = "-" ]; then
-		curl -sS $CURL_OPTS -m 20 -H "Accept-Language: $1" "$BASE/login" 2>&1
+		curl -sS $CURL_OPTS -m 20 -H "Accept-Language: $1" "$BASE/index.php/login" 2>&1
 	else
-		curl -sS $CURL_OPTS -m 20 -H "Accept-Language: $1" -H "Cookie: pathlocale_lang=$2" "$BASE/login" 2>&1
+		curl -sS $CURL_OPTS -m 20 -H "Accept-Language: $1" -H "Cookie: pathlocale_lang=$2" "$BASE/index.php/login" 2>&1
 	fi
 }
 html_lang() { printf %s "$1" | tr '\n' ' ' | sed -n 's/.*<html[^>]*[[:space:]]lang="\([^"]*\)".*/\1/p' | head -n 1; }
