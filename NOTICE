@@ -1,0 +1,24 @@
+pathlocale - Path localization app for Nextcloud
+Copyright (C) 2026 WI
+
+This program is free software: you can redistribute it and/or modify it under the terms of the
+GNU Affero General Public License as published by the Free Software Foundation, version 3 of the
+License, or (at your option) any later version. It is distributed WITHOUT ANY WARRANTY, without
+even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. The full licence
+text is in the file COPYING.
+
+Third-party material in this repository
+---------------------------------------
+- Translations: data/*.json and js/pathlocale-l10n-*.js are adapted from the translation files of
+  Nextcloud 34.0.5 and of its apps (Copyright 2016 ownCloud, Inc.; 2016-2024 Nextcloud translators
+  and contributors; licensed AGPL-3.0). Changed by WI: missing Arabic strings added, the product
+  name replaced, wording adjusted. The scripts that produce them are in generator/.
+- Font: fonts/IBMPlexSansArabic-*.woff2 are the unmodified IBM Plex Sans Arabic files.
+  Copyright (C) 2017 IBM Corp. with Reserved Font Name "Plex". Licensed under the SIL Open Font
+  License 1.1, text in fonts/OFL-LICENSE.txt.
+
+Trademarks
+----------
+Nextcloud is a trademark of Nextcloud GmbH. This project is an independent work of WI. It is not
+affiliated with, sponsored or endorsed by Nextcloud GmbH. Nextcloud's own licence and trademark
+information: https://nextcloud.com/trademarks/

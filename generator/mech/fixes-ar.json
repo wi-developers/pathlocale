@@ -1,0 +1,17 @@
+{
+ "spreed": {
+  "Talk updates ✅": "تحديثات Talk ✅",
+  "The file must be a PNG or JPG": "يجب أن يكون الملف بصيغة PNG أو JPG"
+ },
+ "settings": {
+  "Developed by the {communityopen}Nextcloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}AGPL{linkclose}.": "منصة بث مبنية على برنامج {communityopen}Nextcloud{linkclose} مفتوح المصدر، و{githubopen}الشيفرة المصدرية{linkclose} مرخّصة بموجب {licenseopen}AGPL{linkclose}."
+ },
+ "core": {
+  "The update was unsuccessful. Please report this issue to the <a href=\"https://github.com/nextcloud/server/issues\" target=\"_blank\">Nextcloud community</a>.": "فشل التحديث. يرجى الإبلاغ عن هذه المشكلة إلى <a href=\"https://github.com/nextcloud/server/issues\" target=\"_blank\">مجتمع Nextcloud</a>."
+ },
+ "notifications": {
+  "Nextcloud GmbH sponsors a free push notification gateway for private users. To ensure good service, the gateway limits the number of push notifications per server and the limit was reached for this server. For enterprise users, a more scalable gateway is available.": "ترعى شركة Nextcloud GmbH بوابة إشعارات فورية مجانية للمستخدمين الأفراد. ولضمان جودة الخدمة، تحدّ البوابة من عدد الإشعارات الفورية لكل خادم، وقد تم بلوغ هذا الحد لهذا الخادم. وتتوفر للمؤسسات بوابة أكثر قابلية للتوسع.",
+  "Contact Nextcloud GmbH": "تواصل مع شركة Nextcloud GmbH",
+  "Nextcloud GmbH sponsors a free push notification gateway for private users. To ensure good service, the gateway limits the number of push notifications per server. For enterprise users, a more scalable gateway is available. Contact Nextcloud GmbH for more information.": "ترعى شركة Nextcloud GmbH بوابة مجانية لتحشيد الإشعارات للمستخدمين الخواص. ولضمان جودة الخدمة، تضع البوابة سقفاً على الإشعارات المجمعة لكل خادم. بالنسبة للمؤسسات، وللحصول على بوابة أكثر اعتمادية، يُرجى التواصل مع شركة Nextcloud GmbH لمزيد التفاصيل."
+ }
+}

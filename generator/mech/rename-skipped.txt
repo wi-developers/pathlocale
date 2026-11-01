@@ -1,0 +1,32 @@
+en core: The update was unsuccessful. Please report this issue to the  ->  The update was unsuccessful. Please report this issue to the <a href="https://github.com/nextcloud/server/issues" target
+ar core: user@your-nextcloud.org  ->  user@your-nextcloud.org
+ar core: The update was unsuccessful. Please report this issue to the  ->  فشل التحديث. يرجى التبليغ عن هذه المشكلة إلى <a href="https://github.com/nextcloud/server/issues" target="_blank"> مجتمع
+en notifications: This app provides a backend and frontend for the notificatio  ->  This app provides a backend and frontend for the notification API available in Path platform.
+		The API is used by other
+en calendar: A Calendar app for Nextcloud. Easily sync events from variou  ->  A Calendar app for Path platform. Easily sync events from various devices with your Path platform and edit them online.
+
+en mail: **💌 A mail app for Nextcloud**
+
+- **🚀 Integration with oth  ->  **💌 A mail app for Path platform**
+
+- **🚀 Integration with other Path platform apps!** Currently Contacts, Calendar & 
+ar mail: **💌 A mail app for Nextcloud**
+
+- **🚀 Integration with oth  ->  **💌 تطبيق البريد الإلكتروني لمنصة بث**
+
+- **🚀 التكامل مع تطبيقات منصة بث الأخرى!** الجاهزة منها حاليًا: جهات الاتصال و
+en spreed: **Nextcloud Talk** is a secure, self-hosted communication pl  ->  **Path platform Talk** is a secure, self-hosted communication platform that integrates seamlessly with the Path platform
+ar spreed: - Webhooks are now available to implement bots. See the docu  ->  - خطافات الويب Webhooks متاحة الآن لتطبيق الروبوتات bot. لمزيد المعلومات، أنظر التوثيق في: https://nextcloud-talk.readth
+ar spreed: **Nextcloud Talk** is a secure, self-hosted communication pl  ->  تطبيق "المحادثة" من منصة بث **منصة بث Talk** هو عبارة عن منصة اتصال آمنة ذاتية الاستضافة تتكامل بسلاسة مع بيئة منصة بث. 
+ar spreed: Matterbridge binary has incorrect permissions. Please make s  ->  كود "ماتر بريدج" Matterbridge binary لايملك الأذونات الصحيحة المطلوبة. رجاءً، تأكد من أن المستخدِم مالك ملف كود "ماتر بر
+ar spreed: Share from {nextcloud}  ->  مشاركة من {nextcloud}
+en user_migration: **👤➡ User migration app for Nextcloud**
+
+This app allows us  ->  **👤➡ User migration app for Path platform**
+
+This app allows users to easily migrate from one instance to another using
+ar user_migration: **👤➡ User migration app for Nextcloud**
+
+This app allows us  ->  ** 👤➡ تطبيق تنقل المستخدم لمنصة بث**
+
+يسمح هذا التطبيق للمستخدمين بالتنقل بسهولة من مثيل إلى آخر عن طريق تصدير حساباتهم
