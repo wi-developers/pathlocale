@@ -366,10 +366,14 @@
    "guest pages get one link to the other language; signed-in pages get none",
    "personal settings footer: the reasons link is renamed and the \"developed by\" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph",
    "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution",
+   "Talk dialog: the five server-built type texts are swapped by exact text, white space around them kept, on Talk pages",
+   "Talk dialog: other text, other pages and other kinds of node are not touched, and a dialog opened later is swapped too",
    "navigation labels written by the server are translated, nothing else is touched",
    "guest pages get one link to the other language; signed-in pages get none",
    "personal settings footer: the reasons link is renamed and the \"developed by\" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph",
-   "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution"
+   "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution",
+   "Talk dialog: the five server-built type texts are swapped by exact text, white space around them kept, on Talk pages",
+   "Talk dialog: other text, other pages and other kinds of node are not touched, and a dialog opened later is swapped too"
   ]
  },
  "J12": {
@@ -404,9 +408,11 @@
    "English pages: the Arabic name and slogan are swapped in the title; on the login page everywhere, on public pages only in header and footer, never in editable content",
    "personal settings footer: the reasons link is renamed and the \"developed by\" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph",
    "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution",
+   "Talk dialog: other text, other pages and other kinds of node are not touched, and a dialog opened later is swapped too",
    "English pages: the Arabic name and slogan are swapped in the title; on the login page everywhere, on public pages only in header and footer, never in editable content",
    "personal settings footer: the reasons link is renamed and the \"developed by\" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph",
-   "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution"
+   "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution",
+   "Talk dialog: other text, other pages and other kinds of node are not touched, and a dialog opened later is swapped too"
   ]
  },
  "J15": {
@@ -860,6 +866,275 @@
   "status": "CAUGHT",
   "failed": [
    "DictionaryTest::testEnglishSloganSwaps"
+  ]
+ },
+ "Q01": {
+  "id": "Q01",
+  "rule": "talk dialog swap: path must end at the app name (apps/spreedx is not Talk)",
+  "file": "src/runtime.js",
+  "tests": "Talk dialog: other text",
+  "status": "CAUGHT",
+  "failed": [
+   "Talk dialog: other text, other pages and other kinds of node are not touched, and a dialog opened later is swapped too",
+   "Talk dialog: other text, other pages and other kinds of node are not touched, and a dialog opened later is swapped too"
+  ]
+ },
+ "Q02": {
+  "id": "Q02",
+  "rule": "talk dialog swap: path is anchored at the start",
+  "file": "src/runtime.js",
+  "tests": "Talk dialog: other text",
+  "status": "CAUGHT",
+  "failed": [
+   "Talk dialog: other text, other pages and other kinds of node are not touched, and a dialog opened later is swapped too",
+   "Talk dialog: other text, other pages and other kinds of node are not touched, and a dialog opened later is swapped too"
+  ]
+ },
+ "Q03": {
+  "id": "Q03",
+  "rule": "talk dialog swap: the description elements are swapped",
+  "file": "src/runtime.js",
+  "tests": "Talk dialog: the five",
+  "status": "CAUGHT",
+  "failed": [
+   "Talk dialog: the five server-built type texts are swapped by exact text, white space around them kept, on Talk pages",
+   "Talk dialog: other text, other pages and other kinds of node are not touched, and a dialog opened later is swapped too",
+   "Talk dialog: the five server-built type texts are swapped by exact text, white space around them kept, on Talk pages",
+   "Talk dialog: other text, other pages and other kinds of node are not touched, and a dialog opened later is swapped too"
+  ]
+ },
+ "Q04": {
+  "id": "Q04",
+  "rule": "talk dialog swap: no other kind of element is looked at",
+  "file": "src/runtime.js",
+  "tests": "Talk dialog: the five",
+  "status": "CAUGHT",
+  "failed": [
+   "Talk dialog: the five server-built type texts are swapped by exact text, white space around them kept, on Talk pages",
+   "Talk dialog: other text, other pages and other kinds of node are not touched, and a dialog opened later is swapped too",
+   "Talk dialog: the five server-built type texts are swapped by exact text, white space around them kept, on Talk pages",
+   "Talk dialog: other text, other pages and other kinds of node are not touched, and a dialog opened later is swapped too"
+  ]
+ },
+ "Q05": {
+  "id": "Q05",
+  "rule": "talk dialog swap: only text nodes are changed",
+  "file": "src/runtime.js",
+  "tests": "Talk dialog: other text",
+  "status": "CAUGHT",
+  "failed": [
+   "Talk dialog: other text, other pages and other kinds of node are not touched, and a dialog opened later is swapped too",
+   "Talk dialog: other text, other pages and other kinds of node are not touched, and a dialog opened later is swapped too"
+  ]
+ },
+ "Q06": {
+  "id": "Q06",
+  "rule": "talk dialog swap: own entries only, and only string values (no inherited property reaches the page)",
+  "file": "src/runtime.js",
+  "tests": "Talk dialog: other text",
+  "status": "CAUGHT",
+  "failed": [
+   "Talk dialog: other text, other pages and other kinds of node are not touched, and a dialog opened later is swapped too",
+   "Talk dialog: other text, other pages and other kinds of node are not touched, and a dialog opened later is swapped too"
+  ]
+ },
+ "Q07": {
+  "id": "Q07",
+  "rule": "talk dialog swap: white space around the text is kept",
+  "file": "src/runtime.js",
+  "tests": "Talk dialog: the five",
+  "status": "CAUGHT",
+  "failed": [
+   "Talk dialog: the five server-built type texts are swapped by exact text, white space around them kept, on Talk pages",
+   "Talk dialog: the five server-built type texts are swapped by exact text, white space around them kept, on Talk pages"
+  ]
+ },
+ "Q08": {
+  "id": "Q08",
+  "rule": "talk dialog swap: white space inside the text is collapsed before the lookup",
+  "file": "src/runtime.js",
+  "tests": "Talk dialog: the five",
+  "status": "CAUGHT",
+  "failed": [
+   "Talk dialog: the five server-built type texts are swapped by exact text, white space around them kept, on Talk pages",
+   "Talk dialog: the five server-built type texts are swapped by exact text, white space around them kept, on Talk pages"
+  ]
+ },
+ "Q09": {
+  "id": "Q09",
+  "rule": "talk dialog swap runs with every page change",
+  "file": "src/runtime.js",
+  "tests": "Talk dialog: the five|Talk dialog: other text",
+  "status": "CAUGHT",
+  "failed": [
+   "Talk dialog: the five server-built type texts are swapped by exact text, white space around them kept, on Talk pages",
+   "Talk dialog: other text, other pages and other kinds of node are not touched, and a dialog opened later is swapped too",
+   "Talk dialog: the five server-built type texts are swapped by exact text, white space around them kept, on Talk pages",
+   "Talk dialog: other text, other pages and other kinds of node are not touched, and a dialog opened later is swapped too"
+  ]
+ },
+ "Q10": {
+  "id": "Q10",
+  "rule": "build: phpFixes are part of the run-time sentence map",
+  "file": "tools/build-js.mjs",
+  "tests": "build: phpTexts and phpFixes",
+  "status": "CAUGHT",
+  "failed": [
+   "build: phpTexts and phpFixes of the data are one sentence map in each built script, and the swaps are built in",
+   "build: phpTexts and phpFixes of the data are one sentence map in each built script, and the swaps are built in"
+  ]
+ },
+ "Q11": {
+  "id": "Q11",
+  "rule": "build: phpTexts are part of the run-time sentence map",
+  "file": "tools/build-js.mjs",
+  "tests": "build: phpTexts and phpFixes",
+  "status": "CAUGHT",
+  "failed": [
+   "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution",
+   "build: phpTexts and phpFixes of the data are one sentence map in each built script, and the swaps are built in",
+   "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution",
+   "build: phpTexts and phpFixes of the data are one sentence map in each built script, and the swaps are built in"
+  ]
+ },
+ "Q12": {
+  "id": "Q12",
+  "rule": "the Arabic text of the Talk voice room card exists",
+  "file": "data/ar.json",
+  "tests": "testTalkConversationTypeTextsHaveArabic",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testTalkConversationTypeTextsHaveArabic"
+  ]
+ },
+ "Q13": {
+  "id": "Q13",
+  "rule": "every listed English fix is in the English data",
+  "file": "data/en.json",
+  "tests": "testEnglishIsOnlyTheRenamedSource",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testEnglishIsOnlyTheRenamedSource"
+  ]
+ },
+ "Q14": {
+  "id": "Q14",
+  "rule": "phpFixes never name the product",
+  "file": "data/ar.json",
+  "tests": "testPhpFixesAreSafe",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testPhpFixesAreSafe"
+  ]
+ },
+ "Q15": {
+  "id": "Q15",
+  "rule": "the Arabic federated sharing sentence stays without the product token",
+  "file": "data/ar.json",
+  "tests": "testArabicKeepsTheTokensOfTheSource",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testArabicKeepsTheTokensOfTheSource"
+  ]
+ },
+ "K14": {
+  "id": "K14",
+  "rule": "css hides the privacy mission paragraph (display)",
+  "file": "css/pathlocale.css",
+  "tests": "testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont"
+  ]
+ },
+ "K15": {
+  "id": "K15",
+  "rule": "css hides only the paragraph of the privacy mission block",
+  "file": "css/pathlocale.css",
+  "tests": "testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont"
+  ]
+ },
+ "K16": {
+  "id": "K16",
+  "rule": "css hides the social-share row of the sharing page (display)",
+  "file": "css/pathlocale.css",
+  "tests": "testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont"
+  ]
+ },
+ "K17": {
+  "id": "K17",
+  "rule": "css hides the social-share row only inside the federated cloud section",
+  "file": "css/pathlocale.css",
+  "tests": "testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont"
+  ]
+ },
+ "K18": {
+  "id": "K18",
+  "rule": "css: the Talk icons are inside a feature check",
+  "file": "css/pathlocale.css",
+  "tests": "testTalkIllustrationsBecomeIconsAndFailSafe",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testTalkIllustrationsBecomeIconsAndFailSafe"
+  ]
+ },
+ "K19": {
+  "id": "K19",
+  "rule": "css hides the three Talk illustrations",
+  "file": "css/pathlocale.css",
+  "tests": "testTalkIllustrationsBecomeIconsAndFailSafe",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testTalkIllustrationsBecomeIconsAndFailSafe"
+  ]
+ },
+ "K20": {
+  "id": "K20",
+  "rule": "css: each of the three illustrations has its icon",
+  "file": "css/pathlocale.css",
+  "tests": "testTalkIllustrationsBecomeIconsAndFailSafe",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testTalkIllustrationsBecomeIconsAndFailSafe"
+  ]
+ },
+ "K21": {
+  "id": "K21",
+  "rule": "css: the icon panel takes its colour from the theme",
+  "file": "css/pathlocale.css",
+  "tests": "testTalkIllustrationsBecomeIconsAndFailSafe",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testTalkIllustrationsBecomeIconsAndFailSafe"
+  ]
+ },
+ "K22": {
+  "id": "K22",
+  "rule": "css: the icon takes its colour from the theme",
+  "file": "css/pathlocale.css",
+  "tests": "testTalkIllustrationsBecomeIconsAndFailSafe",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testTalkIllustrationsBecomeIconsAndFailSafe"
+  ]
+ },
+ "K23": {
+  "id": "K23",
+  "rule": "css: the icons are inline data, no request to another site",
+  "file": "css/pathlocale.css",
+  "tests": "testTalkIllustrationsBecomeIconsAndFailSafe",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testTalkIllustrationsBecomeIconsAndFailSafe"
   ]
  }
 }
