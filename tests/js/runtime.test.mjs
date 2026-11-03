@@ -250,3 +250,70 @@ test('the constant product name of core is left alone (strings such as "a {produ
 		assert.doesNotThrow(() => load(lang, (c) => { c.OC = {}; }));
 	}
 });
+
+// ---- Talk "new conversation" dialog (owner screenshot 100): the server prints the type texts, the runtime swaps them from our spreed entries
+const TALK_SEL = '.conversation-type-selector__label, .conversation-type-selector__description';
+const TALK_TEXTS = ['Send messages, create threads, and start voice and video calls.', 'Restricted conversation for internal presentations.', 'Directly join the call, ideal for catch-ups or spontaneous meetings.', 'Restricted conversation with lobby enabled, ideal for public webinars.', 'Voice room'];
+const textNode = (v) => ({ nodeType: 3, nodeValue: v });
+const typeEl = (...kids) => ({ childNodes: kids });
+const runTalk = (lang, pathname, els) => {
+	const queries = [];
+	let observed = null;
+	const body = { id: 'body-user', matches: () => false, querySelectorAll: (sel) => { queries.push(sel); return sel === TALK_SEL ? els : []; } };
+	const doc = { body, addEventListener() {}, createTextNode: (t) => ({ text: t }), createTreeWalker: () => ({ nextNode: () => null }) };
+	load(lang, (c) => { c.location = { pathname, search: '' }; c.MutationObserver = class { constructor(cb) { observed = cb; } observe() {} }; c.requestAnimationFrame = (fn) => fn(); }, doc);
+	return { queries, observed };
+};
+
+test('Talk dialog: the five server-built type texts are swapped by exact text, white space around them kept, on Talk pages', () => {
+	const ar = data('ar').apps.spreed;
+	for (const key of TALK_TEXTS) {
+		assert.ok(typeof ar[key] === 'string' && ar[key] !== '', 'the dictionary has ' + key);
+		for (const pathname of ['/index.php/apps/spreed/', '/apps/spreed/', '/apps/spreed', '/index.php/apps/spreed/call/abc123']) {
+			const n = textNode('\n\t' + key.replace(/ /g, '\n  ') + '\t');
+			const r = runTalk('ar', pathname, [typeEl(n)]);
+			assert.equal(n.nodeValue.trim(), ar[key], pathname + ': ' + key);
+			assert.equal(n.nodeValue.startsWith('\n\t') && n.nodeValue.endsWith('\t'), true, 'white space kept');
+			assert.ok(r.queries.includes(TALK_SEL), 'only the two kinds of element of the type selector are looked at');
+		}
+	}
+});
+
+test('Talk dialog: other text, other pages and other kinds of node are not touched, and a dialog opened later is swapped too', () => {
+	const ar = data('ar').apps.spreed;
+	const key = TALK_TEXTS[0];
+	const untouched = [textNode(key + ' and more'), textNode('Something else entirely'), textNode('عرض تقديمي'), textNode('constructor'), textNode('__proto__'), textNode('toString'), textNode('')];
+	const element = { nodeType: 1, nodeValue: key, childNodes: [] };
+	const els = [typeEl(...untouched, element)];
+	const r = runTalk('ar', '/index.php/apps/spreed/', els);
+	assert.deepEqual(untouched.map((n) => n.nodeValue), [key + ' and more', 'Something else entirely', 'عرض تقديمي', 'constructor', '__proto__', 'toString', '']);
+	assert.equal(element.nodeValue, key, 'only text nodes');
+	// the dialog is opened (or re-opened) later: the observer runs the fix again and the new nodes are swapped; the old ones stay as they are
+	const later = textNode(TALK_TEXTS[4]);
+	els.push(typeEl(later));
+	r.observed();
+	assert.equal(later.nodeValue, ar[TALK_TEXTS[4]]);
+	assert.equal(untouched[0].nodeValue, key + ' and more');
+	for (const pathname of ['/index.php/apps/spreedx/', '/index.php/apps/files/apps/spreed/', '/index.php/apps/files/', '/index.php/settings/user', '/index.php/call/abc123', '/', '/index.php/apps/talk/']) {
+		const n = textNode(key);
+		runTalk('ar', pathname, [typeEl(n)]);
+		assert.equal(n.nodeValue, key, pathname + ' is not a Talk page');
+	}
+	// English pages: Talk prints English already, our English spreed entries only rename the product, so nothing matches
+	const en = textNode(key);
+	runTalk('en', '/index.php/apps/spreed/', [typeEl(en)]);
+	assert.equal(en.nodeValue, key);
+});
+
+test('build: phpTexts and phpFixes of the data are one sentence map in each built script, and the swaps are built in', () => {
+	for (const lang of ['ar', 'en']) {
+		const m = fs.readFileSync(path.join(root, 'js', 'pathlocale-l10n-' + lang + '.js'), 'utf8').match(/const DATA = (\{.*\});\n/);
+		assert.ok(m, lang + ': DATA in the built script');
+		const built = JSON.parse(m[1]);
+		const d = data(lang);
+		assert.deepEqual(built.phpTexts, { ...d.phpTexts, ...d.phpFixes });
+		assert.deepEqual(built.swaps, d.swaps ?? []);
+		assert.ok(Object.keys(d.phpFixes).every((k) => !(k in d.phpTexts)), lang + ': no sentence in both maps');
+	}
+	assert.ok(Object.keys(data('ar').phpFixes).length >= 10);
+});

@@ -10,7 +10,8 @@ for (const lang of ['ar', 'en']) {
 	const sortObj = (o) => Object.fromEntries(Object.keys(o).sort().map((k) => [k, o[k]]));
 	const apps = Object.fromEntries(Object.keys(d.apps).sort().map((a) => [a, sortObj(d.apps[a])]));
 	const footer = JSON.parse(fs.readFileSync(path.join(root, 'data', 'footer.json'), 'utf8'))[lang];
-	const data = JSON.stringify({ lang, swaps: d.swaps ?? [], footer, phpTexts: d.phpTexts ?? {}, apps, noFile: [...(d.noFile ?? [])].sort() });
+	// phpTexts (sentences that name the product) and phpFixes (other exact sentences, 0.1.4) are one map at run time; the tests keep them apart
+	const data = JSON.stringify({ lang, swaps: d.swaps ?? [], footer, phpTexts: { ...(d.phpTexts ?? {}), ...(d.phpFixes ?? {}) }, apps, noFile: [...(d.noFile ?? [])].sort() });
 	if (!runtime.includes('const DATA = __PATHLOCALE_DATA__;')) throw new Error('runtime placeholder missing');
 	fs.writeFileSync(path.join(root, 'js', `pathlocale-l10n-${lang}.js`), runtime.replace('const DATA = __PATHLOCALE_DATA__;', () => 'const DATA = ' + data + ';'));
 	console.log(lang, Object.keys(apps).length, 'apps', data.length, 'bytes of data');

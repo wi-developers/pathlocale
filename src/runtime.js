@@ -95,6 +95,25 @@
 			if (to !== undefined) n.nodeValue = n.nodeValue.replace(n.nodeValue.trim(), () => to);
 		}
 	};
+	// Talk (/apps/spreed): the "new conversation" dialog prints the conversation types (title and description) as finished text that the server builds
+	// (OCS presets API, PHP t() in spreed), so the JS dictionary never sees them and Talk's own Arabic file lacks them. The two element kinds below
+	// are swapped by exact text from our own spreed entries. They get their own list because the dialog is a .modal-container (skipped elsewhere).
+	// Text that is already Arabic, or that Talk later renames, matches nothing and stays as it is.
+	const TALK_PATH = /^\/(index\.php\/)?apps\/spreed(\/|$)/;
+	const TALK_TEXT = '.conversation-type-selector__label, .conversation-type-selector__description';
+	const talkTexts = (root) => {
+		const dict = DATA.apps.spreed;
+		if (!dict || !TALK_PATH.test(g.location?.pathname ?? '')) return;
+		for (const el of root.querySelectorAll(TALK_TEXT)) {
+			for (const n of el.childNodes) {
+				if (n.nodeType !== 3) continue;
+				const text = n.nodeValue.trim();
+				const key = text.replace(/\s+/g, ' ');
+				const to = Object.prototype.hasOwnProperty.call(dict, key) ? dict[key] : undefined;
+				if (typeof to === 'string' && to !== '' && to !== text) n.nodeValue = n.nodeValue.replace(text, () => to);
+			}
+		}
+	};
 	const fix = (root) => {
 		if (!root.querySelectorAll) return;
 		const nodes = root.matches?.(NAV_TEXT) ? [root, ...root.querySelectorAll(NAV_TEXT)] : root.querySelectorAll(NAV_TEXT);
@@ -107,6 +126,7 @@
 		for (const el of links) { const tr = lookup(el.getAttribute('title').trim()); if (tr) el.setAttribute('title', tr); }
 		footer(root);
 		settingsRename();
+		talkTexts(root);
 	};
 	// English pages: Theming holds a single name and slogan (Arabic), so the server prints them in Arabic. Swap them for the
 	// English wording in the page title; on the login page everywhere (no user content there); on public pages (shares, Talk guests: user documents,

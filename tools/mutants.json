@@ -898,8 +898,8 @@
   "file": "css/pathlocale.css",
   "edits": [
    [
-    "p.social-button {\n\tdisplay: none !important;",
-    "p.social-button {\n\tdisplay: block !important;"
+    "html:root .development-notice p.social-button {\n\tdisplay: none !important;",
+    "html:root .development-notice p.social-button {\n\tdisplay: block !important;"
    ]
   ],
   "tests": "testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont"
@@ -987,5 +987,320 @@
    ]
   ],
   "tests": "testEnglishSloganSwaps"
+ },
+ {
+  "id": "Q01",
+  "rule": "talk dialog swap: path must end at the app name (apps/spreedx is not Talk)",
+  "file": "src/runtime.js",
+  "edits": [
+   [
+    "apps\\/spreed(\\/|$)/;",
+    "apps\\/spreed/;"
+   ]
+  ],
+  "tests": "Talk dialog: other text",
+  "runner": "js"
+ },
+ {
+  "id": "Q02",
+  "rule": "talk dialog swap: path is anchored at the start",
+  "file": "src/runtime.js",
+  "edits": [
+   [
+    "const TALK_PATH = /^\\/(index\\.php\\/)?apps",
+    "const TALK_PATH = /\\/(index\\.php\\/)?apps"
+   ]
+  ],
+  "tests": "Talk dialog: other text",
+  "runner": "js"
+ },
+ {
+  "id": "Q03",
+  "rule": "talk dialog swap: the description elements are swapped",
+  "file": "src/runtime.js",
+  "edits": [
+   [
+    "const TALK_TEXT = '.conversation-type-selector__label, .conversation-type-selector__description';",
+    "const TALK_TEXT = '.conversation-type-selector__label';"
+   ]
+  ],
+  "tests": "Talk dialog: the five",
+  "runner": "js"
+ },
+ {
+  "id": "Q04",
+  "rule": "talk dialog swap: no other kind of element is looked at",
+  "file": "src/runtime.js",
+  "edits": [
+   [
+    "const TALK_TEXT = '.conversation-type-selector__label, .conversation-type-selector__description';",
+    "const TALK_TEXT = '.conversation-type-selector__label, .conversation-type-selector__description, .modal-container';"
+   ]
+  ],
+  "tests": "Talk dialog: the five",
+  "runner": "js"
+ },
+ {
+  "id": "Q05",
+  "rule": "talk dialog swap: only text nodes are changed",
+  "file": "src/runtime.js",
+  "edits": [
+   [
+    "\t\t\t\tif (n.nodeType !== 3) continue;\n\t\t\t\tconst text = n.nodeValue.trim();",
+    "\t\t\t\tconst text = n.nodeValue.trim();"
+   ]
+  ],
+  "tests": "Talk dialog: other text",
+  "runner": "js"
+ },
+ {
+  "id": "Q06",
+  "rule": "talk dialog swap: own entries only, and only string values (no inherited property reaches the page)",
+  "file": "src/runtime.js",
+  "edits": [
+   [
+    "const to = Object.prototype.hasOwnProperty.call(dict, key) ? dict[key] : undefined;",
+    "const to = dict[key];"
+   ],
+   [
+    "if (typeof to === 'string' && to !== '' && to !== text)",
+    "if (to !== undefined && to !== text)"
+   ]
+  ],
+  "tests": "Talk dialog: other text",
+  "runner": "js"
+ },
+ {
+  "id": "Q07",
+  "rule": "talk dialog swap: white space around the text is kept",
+  "file": "src/runtime.js",
+  "edits": [
+   [
+    "n.nodeValue = n.nodeValue.replace(text, () => to);",
+    "n.nodeValue = to;"
+   ]
+  ],
+  "tests": "Talk dialog: the five",
+  "runner": "js"
+ },
+ {
+  "id": "Q08",
+  "rule": "talk dialog swap: white space inside the text is collapsed before the lookup",
+  "file": "src/runtime.js",
+  "edits": [
+   [
+    "const key = text.replace(/\\s+/g, ' ');",
+    "const key = text;"
+   ]
+  ],
+  "tests": "Talk dialog: the five",
+  "runner": "js"
+ },
+ {
+  "id": "Q09",
+  "rule": "talk dialog swap runs with every page change",
+  "file": "src/runtime.js",
+  "edits": [
+   [
+    "\t\tsettingsRename();\n\t\ttalkTexts(root);",
+    "\t\tsettingsRename();"
+   ]
+  ],
+  "tests": "Talk dialog: the five|Talk dialog: other text",
+  "runner": "js"
+ },
+ {
+  "id": "Q10",
+  "rule": "build: phpFixes are part of the run-time sentence map",
+  "file": "tools/build-js.mjs",
+  "edits": [
+   [
+    "...(d.phpFixes ?? {})",
+    ""
+   ]
+  ],
+  "tests": "build: phpTexts and phpFixes",
+  "runner": "js"
+ },
+ {
+  "id": "Q11",
+  "rule": "build: phpTexts are part of the run-time sentence map",
+  "file": "tools/build-js.mjs",
+  "edits": [
+   [
+    "...(d.phpTexts ?? {}), ",
+    ""
+   ]
+  ],
+  "tests": "build: phpTexts and phpFixes",
+  "runner": "js"
+ },
+ {
+  "id": "Q12",
+  "rule": "the Arabic text of the Talk voice room card exists",
+  "file": "data/ar.json",
+  "edits": [
+   [
+    "\"Voice room\":\"غرفة صوتية\"",
+    "\"Voice rooms\":\"غرفة صوتية\""
+   ]
+  ],
+  "tests": "testTalkConversationTypeTextsHaveArabic"
+ },
+ {
+  "id": "Q13",
+  "rule": "every listed English fix is in the English data",
+  "file": "data/en.json",
+  "edits": [
+   [
+    "\"Your {serverName} account\":\"Your Path account\"",
+    "\"Your {serverName} accounts\":\"Your Path account\""
+   ]
+  ],
+  "tests": "testEnglishIsOnlyTheRenamedSource"
+ },
+ {
+  "id": "Q14",
+  "rule": "phpFixes never name the product",
+  "file": "data/ar.json",
+  "edits": [
+   [
+    "\"Diagramming\":\"المخططات\"",
+    "\"Diagramming\":\"مخططات Nextcloud\""
+   ]
+  ],
+  "tests": "testPhpFixesAreSafe"
+ },
+ {
+  "id": "Q15",
+  "rule": "the Arabic federated sharing sentence stays without the product token",
+  "file": "data/ar.json",
+  "edits": [
+   [
+    "يستخدم خادمًا أو خدمة متوافقة",
+    "يستخدم {productName} أو خدمة متوافقة"
+   ]
+  ],
+  "tests": "testArabicKeepsTheTokensOfTheSource"
+ },
+ {
+  "id": "K14",
+  "rule": "css hides the privacy mission paragraph (display)",
+  "file": "css/pathlocale.css",
+  "edits": [
+   [
+    "html:root #privacy-mission p {\n\tdisplay: none !important;",
+    "html:root #privacy-mission p {\n\tdisplay: block !important;"
+   ]
+  ],
+  "tests": "testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont"
+ },
+ {
+  "id": "K15",
+  "rule": "css hides only the paragraph of the privacy mission block",
+  "file": "css/pathlocale.css",
+  "edits": [
+   [
+    "html:root #privacy-mission p {",
+    "html:root p {"
+   ]
+  ],
+  "tests": "testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont"
+ },
+ {
+  "id": "K16",
+  "rule": "css hides the social-share row of the sharing page (display)",
+  "file": "css/pathlocale.css",
+  "edits": [
+   [
+    "html:root #vue-personal-federated p.social-button {\n\tdisplay: none !important;",
+    "html:root #vue-personal-federated p.social-button {\n\tdisplay: block !important;"
+   ]
+  ],
+  "tests": "testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont"
+ },
+ {
+  "id": "K17",
+  "rule": "css hides the social-share row only inside the federated cloud section",
+  "file": "css/pathlocale.css",
+  "edits": [
+   [
+    "html:root #vue-personal-federated p.social-button {",
+    "html:root p.social-button {"
+   ]
+  ],
+  "tests": "testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont"
+ },
+ {
+  "id": "K18",
+  "rule": "css: the Talk icons are inside a feature check",
+  "file": "css/pathlocale.css",
+  "edits": [
+   [
+    "@supports selector(:has(*)) and ((mask-image: none) or (-webkit-mask-image: none)) {",
+    "@media all {"
+   ]
+  ],
+  "tests": "testTalkIllustrationsBecomeIconsAndFailSafe"
+ },
+ {
+  "id": "K19",
+  "rule": "css hides the three Talk illustrations",
+  "file": "css/pathlocale.css",
+  "edits": [
+   [
+    "> img {\n\t\tdisplay: none !important;",
+    "> img {\n\t\tdisplay: block !important;"
+   ]
+  ],
+  "tests": "testTalkIllustrationsBecomeIconsAndFailSafe"
+ },
+ {
+  "id": "K20",
+  "rule": "css: each of the three illustrations has its icon",
+  "file": "css/pathlocale.css",
+  "edits": [
+   [
+    "mentions.png\"])::before {\n\t\t-webkit-mask",
+    "mentions.jpg\"])::before {\n\t\t-webkit-mask"
+   ]
+  ],
+  "tests": "testTalkIllustrationsBecomeIconsAndFailSafe"
+ },
+ {
+  "id": "K21",
+  "rule": "css: the icon panel takes its colour from the theme",
+  "file": "css/pathlocale.css",
+  "edits": [
+   [
+    "background: var(--color-primary-element-light) !important;",
+    "background: #ffffff !important;"
+   ]
+  ],
+  "tests": "testTalkIllustrationsBecomeIconsAndFailSafe"
+ },
+ {
+  "id": "K22",
+  "rule": "css: the icon takes its colour from the theme",
+  "file": "css/pathlocale.css",
+  "edits": [
+   [
+    "background-color: var(--color-primary-element-light-text);",
+    "background-color: #ff0000;"
+   ]
+  ],
+  "tests": "testTalkIllustrationsBecomeIconsAndFailSafe"
+ },
+ {
+  "id": "K23",
+  "rule": "css: the icons are inline data, no request to another site",
+  "file": "css/pathlocale.css",
+  "edits": [
+   [
+    "-webkit-mask: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12,20A7,7",
+    "-webkit-mask: url(\"https://example.org/alarm.svg\") center / contain no-repeat;\n\t\tmask-x: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12,20A7,7"
+   ]
+  ],
+  "tests": "testTalkIllustrationsBecomeIconsAndFailSafe"
  }
 ]

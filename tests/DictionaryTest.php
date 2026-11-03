@@ -13,6 +13,23 @@ class DictionaryTest extends TestCase {
 	/** Keys that name a company or the upstream community: the real name must stay (a false sponsor or author would be worse than the old name). */
 	private const UPSTREAM_KEYS = '/Nextcloud (GmbH|community|Enterprise|portal|Appstore|App ?Store|All-in-One|Hub|[Dd]ocker|[Cc]lient|Server|Administration Manual|%d|%[0-9]\$s|[0-9]|<=)|Nextcloud subscription|community (release|build) of Nextcloud|We at Nextcloud|#Nextcloud|desktop client|(since|As of) Nextcloud|link to your Nextcloud|Add to your Nextcloud|remote Nextcloud|Nextcloud Mail [0-9]|Nextcloud instances|Struktur AG|Ethical AI Rating|Nextcloud Documentation|other Nextcloud users|Client Login Flow|^Nextcloud (URL|user)$|^Share with me via Nextcloud$/';
 	private const NAME_BAD ='/nextcloud|ن[ايِى]?كست\s*كلا?و?د|ناكست/iu';
+	/** English entries whose key does not name Nextcloud: each one stops an English page from printing the Arabic Theming name inside an English sentence (0.1.4). */
+	private const ENGLISH_FIXES = [
+		'Your {serverName} account',
+		'You can share with anyone who uses a {productName} server or other Open Cloud Mesh (OCM) compatible servers and services! Just put their Federated Cloud ID in the share dialog. It looks like person@cloud.example.com',
+	];
+	/** Arabic sentences that leave out {productName} on purpose: with no Theming productName the server fills the token with "Nextcloud". */
+	private const PRODUCT_TOKEN_DROPPED = [
+		'You can share with anyone who uses a {productName} server or other Open Cloud Mesh (OCM) compatible servers and services! Just put their Federated Cloud ID in the share dialog. It looks like person@cloud.example.com',
+	];
+	/** The texts of the Talk "new conversation" dialog that the server builds; the runtime swaps them from the spreed entries. */
+	private const TALK_TYPE_TEXTS = [
+		'Send messages, create threads, and start voice and video calls.',
+		'Restricted conversation for internal presentations.',
+		'Directly join the call, ideal for catch-ups or spontaneous meetings.',
+		'Restricted conversation with lobby enabled, ideal for public webinars.',
+		'Voice room',
+	];
 
 	private function data(string $lang): array {
 		$d = json_decode((string)file_get_contents(self::DIR . "/data/$lang.json"), true, 512, JSON_THROW_ON_ERROR);
@@ -56,6 +73,10 @@ class DictionaryTest extends TestCase {
 			foreach ($entries as $key => $value) {
 				$sources = explode('_::_', (string)$key);
 				$need = $this->tokens(implode(' ', $sources));
+				if (in_array($key, self::PRODUCT_TOKEN_DROPPED, true)) {
+					$this->assertStringNotContainsString('{productName}', (string)$value, 'the dropped token stays dropped');
+					$need = array_values(array_diff($need, ['{productName}']));
+				}
 				foreach ((array)$value as $i => $form) {
 					$have = $this->tokens($form);
 					foreach (array_diff($have, $need) as $extra) {
@@ -113,8 +134,14 @@ class DictionaryTest extends TestCase {
 	}
 
 	public function testEnglishIsOnlyTheRenamedSource(): void {
+		$fixes = 0;
 		foreach ($this->data('en')['apps'] as $app => $entries) {
 			foreach ($entries as $key => $value) {
+				if (in_array($key, self::ENGLISH_FIXES, true)) {
+					$fixes++;
+					$this->assertIsString($value, "$app: a fix is one sentence");
+					continue; // not a rename: the key does not name the product (see ENGLISH_FIXES)
+				}
 				$this->assertStringContainsString('Nextcloud', (string)$key, "$app: an English entry exists only to rename the product");
 				$this->assertStringContainsString('Path platform', implode(' ', (array)$value), "$app: " . mb_substr((string)$key, 0, 50));
 				if (str_contains((string)$key, '_::_')) {
@@ -122,6 +149,7 @@ class DictionaryTest extends TestCase {
 				}
 			}
 		}
+		$this->assertSame(count(self::ENGLISH_FIXES), $fixes, 'every listed fix is in the English data, once');
 	}
 
 	public function testBuiltScriptsMatchTheData(): void {
@@ -141,6 +169,9 @@ class DictionaryTest extends TestCase {
 			$this->assertEquals($apps, $built['apps'], "$lang: built script is not made from data/$lang.json, run tools/build-js.mjs");
 			$footer = json_decode((string)file_get_contents(self::DIR . '/data/footer.json'), true, 512, JSON_THROW_ON_ERROR)[$lang];
 			$this->assertSame($footer, $built['footer'], "$lang: built script has another footer than data/footer.json");
+			$this->assertEquals($src['swaps'] ?? [], $built['swaps'], "$lang: built script has other swaps than data/$lang.json");
+			// the run-time map is phpTexts (sentences that name the product) plus phpFixes (other exact sentences)
+			$this->assertEquals(array_merge($src['phpTexts'] ?? [], $src['phpFixes'] ?? []), $built['phpTexts'], "$lang: built script has another sentence map than data/$lang.json");
 		}
 	}
 
@@ -211,6 +242,25 @@ class DictionaryTest extends TestCase {
 		}
 	}
 
+	/** Exact sentences of PHP-rendered pages that need a fix but do not name the product (0.1.4): same safety rules as phpTexts, without the product-name condition. */
+	public function testPhpFixesAreSafe(): void {
+		foreach (['ar', 'en'] as $lang) {
+			$fixes = $this->data($lang)['phpFixes'] ?? null;
+			$this->assertIsArray($fixes, "$lang: phpFixes exists");
+			$texts = $this->data($lang)['phpTexts'] ?? [];
+			foreach ($fixes as $from => $to) {
+				$this->assertSame($from, trim((string)preg_replace('/\s+/u', ' ', $from)), "$lang: key is normalised");
+				$this->assertIsString($to);
+				$this->assertNotSame('', trim($to), "$lang: empty replacement for " . mb_substr($from, 0, 40));
+				$this->assertNotSame($from, $to);
+				$this->assertSame(0, preg_match(self::UPSTREAM_KEYS, $from . ' ' . $to), "$lang: a sentence that keeps the upstream name is in the fix map: " . mb_substr($from, 0, 50));
+				$this->assertSame(0, preg_match(self::NAME_BAD, $from . ' ' . $to), "$lang: a sentence that names the product belongs in phpTexts: " . mb_substr($from, 0, 50));
+				$this->assertArrayNotHasKey($from, $texts, "$lang: in both maps: " . mb_substr($from, 0, 50));
+			}
+		}
+		$this->assertGreaterThanOrEqual(10, count($this->data('ar')['phpFixes']));
+	}
+
 	public function testStylesheetHidesTheMoreAppsEntryAndLoadsTheFont(): void {
 		$css = str_replace("\r\n", "\n", (string)file_get_contents(self::DIR . '/css/pathlocale.css'));
 		$this->assertStringContainsString("html:root .app-menu__grid a.app-item[href\$=\"/settings/apps\"] {\n\tdisplay: none !important;\n}", $css);
@@ -222,6 +272,8 @@ class DictionaryTest extends TestCase {
 		$this->assertStringContainsString("html:root .development-notice p.social-button {
 	display: none !important;
 }", $css);
+		$this->assertStringContainsString("html:root #privacy-mission p {\n\tdisplay: none !important;\n}", $css);
+		$this->assertStringContainsString("html:root #vue-personal-federated p.social-button {\n\tdisplay: none !important;\n}", $css);
 		$this->assertSame(4, substr_count($css, '@font-face'));
 		$this->assertStringContainsString("html:root body {\n\tfont-family: var(--font-face);", $css);
 	}
@@ -250,6 +302,45 @@ class DictionaryTest extends TestCase {
 		$this->assertStringNotContainsString('document.write', $src);
 		$this->assertStringNotContainsString('fetch(', $src);
 		$this->assertStringNotContainsString('XMLHttpRequest', $src);
+	}
+
+	/** The Talk home illustrations become icons only where the browser can draw them, only for the three known images, and without any request to another site. */
+	public function testTalkIllustrationsBecomeIconsAndFailSafe(): void {
+		$css = str_replace("\r\n", "\n", (string)file_get_contents(self::DIR . '/css/pathlocale.css'));
+		$guard = '@supports selector(:has(*)) and ((mask-image: none) or (-webkit-mask-image: none)) {';
+		$this->assertSame(1, substr_count($css, $guard), 'one feature check');
+		$block = substr($css, (int)strpos($css, $guard));
+		$this->assertSame(substr_count($css, '/img/dashboard/'), substr_count($block, '/img/dashboard/'), 'every rule about the illustrations is inside the feature check');
+		foreach (['meetings', 'mentions', 'reminders'] as $img) {
+			$this->assertSame(4, substr_count($block, 'img[src*="/img/dashboard/' . $img . '.png"]'), "$img: panel, image, icon box, icon");
+		}
+		$this->assertSame(1, substr_count($block, "> img {\n\t\tdisplay: none !important;"), 'the three images are hidden by one rule');
+		$this->assertSame(1, substr_count($block, "{\n\t\tbackground: var(--color-primary-element-light) !important;"), 'the panel colour comes from the theme');
+		$this->assertSame(1, substr_count($block, "\t\tbackground-color: var(--color-primary-element-light-text);\n"), 'the icon colour comes from the theme');
+		$this->assertSame(6, substr_count($block, 'url("data:image/svg+xml,'), 'three icons, each as mask and -webkit-mask');
+		$this->assertSame(6, substr_count($block, 'url('), 'no other url');
+		$this->assertStringNotContainsString('http', str_replace("xmlns='http://www.w3.org/2000/svg'", '', $block), 'no request to another site');
+	}
+
+	public function testIconLicenceShipsWithTheIcons(): void {
+		$file = self::DIR . '/css/ICONS-LICENSE.txt';
+		$this->assertFileExists($file);
+		$text = (string)file_get_contents($file);
+		$this->assertStringContainsString('Pictogrammers Free License', $text);
+		$this->assertStringContainsString('Apache License', $text);
+		$this->assertStringContainsString('Version 2.0, January 2004', $text);
+		$this->assertStringContainsString('END OF TERMS AND CONDITIONS', $text);
+	}
+
+	/** The runtime swaps the type texts of the Talk dialog from these entries; without them it has nothing to swap. */
+	public function testTalkConversationTypeTextsHaveArabic(): void {
+		$spreed = $this->data('ar')['apps']['spreed'];
+		foreach (self::TALK_TYPE_TEXTS as $key) {
+			$this->assertArrayHasKey($key, $spreed);
+			$this->assertIsString($spreed[$key]);
+			$this->assertNotSame('', trim($spreed[$key]));
+			$this->assertSame(0, preg_match('/[A-Za-z]{3,}/', $spreed[$key]), 'Arabic text: ' . $key);
+		}
 	}
 
 	public function testFontLicenceShipsWithTheFont(): void {
