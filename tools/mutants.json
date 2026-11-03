@@ -1007,8 +1007,8 @@
   "file": "src/runtime.js",
   "edits": [
    [
-    "const TALK_PATH = /^\\/(index\\.php\\/)?apps",
-    "const TALK_PATH = /\\/(index\\.php\\/)?apps"
+    "const TALK_PATH = /^\\/(index\\.php\\/)?(apps",
+    "const TALK_PATH = /\\/(index\\.php\\/)?(apps"
    ]
   ],
   "tests": "Talk dialog: other text",
@@ -1302,5 +1302,43 @@
    ]
   ],
   "tests": "testTalkIllustrationsBecomeIconsAndFailSafe"
+ },
+ {
+  "id": "Q16",
+  "rule": "talk dialog swap: the conversation URL /call/<token> is a Talk page too",
+  "file": "src/runtime.js",
+  "edits": [
+   [
+    "const TALK_PATH = /^\\/(index\\.php\\/)?(apps\\/spreed|call)(\\/|$)/;",
+    "const TALK_PATH = /^\\/(index\\.php\\/)?(apps\\/spreed)(\\/|$)/;"
+   ]
+  ],
+  "tests": "Talk dialog: the five server-built",
+  "runner": "js"
+ },
+ {
+  "id": "Q17",
+  "rule": "talk dialog swap: the path ends at a slash or at the end",
+  "file": "src/runtime.js",
+  "edits": [
+   [
+    "const TALK_PATH = /^\\/(index\\.php\\/)?(apps\\/spreed|call)(\\/|$)/;",
+    "const TALK_PATH = /^\\/(index\\.php\\/)?(apps\\/spreed|call)/;"
+   ]
+  ],
+  "tests": "Talk dialog: other text",
+  "runner": "js"
+ },
+ {
+  "id": "Q18",
+  "rule": "no old product name in an Arabic value (the check really runs)",
+  "file": "data/ar.json",
+  "edits": [
+   [
+    "\"Voice room\":\"غرفة صوتية\"",
+    "\"Voice room\":\"غرفة Nextcloud صوتية\""
+   ]
+  ],
+  "tests": "testNoOldProductNameInArabicOrEnglishValues"
  }
 ]

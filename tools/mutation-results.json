@@ -1136,5 +1136,37 @@
   "failed": [
    "DictionaryTest::testTalkIllustrationsBecomeIconsAndFailSafe"
   ]
+ },
+ "Q16": {
+  "id": "Q16",
+  "rule": "talk dialog swap: the conversation URL /call/<token> is a Talk page too",
+  "file": "src/runtime.js",
+  "tests": "Talk dialog: the five server-built",
+  "status": "CAUGHT",
+  "failed": [
+   "Talk dialog: the five server-built type texts are swapped by exact text, white space around them kept, on Talk pages",
+   "Talk dialog: the five server-built type texts are swapped by exact text, white space around them kept, on Talk pages"
+  ]
+ },
+ "Q17": {
+  "id": "Q17",
+  "rule": "talk dialog swap: the path ends at a slash or at the end",
+  "file": "src/runtime.js",
+  "tests": "Talk dialog: other text",
+  "status": "CAUGHT",
+  "failed": [
+   "Talk dialog: other text, other pages and other kinds of node are not touched, and a dialog opened later is swapped too",
+   "Talk dialog: other text, other pages and other kinds of node are not touched, and a dialog opened later is swapped too"
+  ]
+ },
+ "Q18": {
+  "id": "Q18",
+  "rule": "no old product name in an Arabic value (the check really runs)",
+  "file": "data/ar.json",
+  "tests": "testNoOldProductNameInArabicOrEnglishValues",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testNoOldProductNameInArabicOrEnglishValues"
+  ]
  }
 }

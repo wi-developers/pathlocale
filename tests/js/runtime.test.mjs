@@ -269,7 +269,7 @@ test('Talk dialog: the five server-built type texts are swapped by exact text, w
 	const ar = data('ar').apps.spreed;
 	for (const key of TALK_TEXTS) {
 		assert.ok(typeof ar[key] === 'string' && ar[key] !== '', 'the dictionary has ' + key);
-		for (const pathname of ['/index.php/apps/spreed/', '/apps/spreed/', '/apps/spreed', '/index.php/apps/spreed/call/abc123']) {
+		for (const pathname of ['/index.php/apps/spreed/', '/apps/spreed/', '/apps/spreed', '/index.php/apps/spreed/call/abc123', '/index.php/call/abc123', '/call/abc123']) {
 			const n = textNode('\n\t' + key.replace(/ /g, '\n  ') + '\t');
 			const r = runTalk('ar', pathname, [typeEl(n)]);
 			assert.equal(n.nodeValue.trim(), ar[key], pathname + ': ' + key);
@@ -294,7 +294,7 @@ test('Talk dialog: other text, other pages and other kinds of node are not touch
 	r.observed();
 	assert.equal(later.nodeValue, ar[TALK_TEXTS[4]]);
 	assert.equal(untouched[0].nodeValue, key + ' and more');
-	for (const pathname of ['/index.php/apps/spreedx/', '/index.php/apps/files/apps/spreed/', '/index.php/apps/files/', '/index.php/settings/user', '/index.php/call/abc123', '/', '/index.php/apps/talk/']) {
+	for (const pathname of ['/index.php/apps/spreedx/', '/index.php/apps/files/apps/spreed/', '/index.php/apps/files/', '/index.php/settings/user', '/index.php/callx/abc123', '/index.php/apps/files/call/abc123', '/', '/index.php/apps/talk/']) {
 		const n = textNode(key);
 		runTalk('ar', pathname, [typeEl(n)]);
 		assert.equal(n.nodeValue, key, pathname + ' is not a Talk page');

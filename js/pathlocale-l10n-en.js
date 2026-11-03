@@ -95,11 +95,11 @@
 			if (to !== undefined) n.nodeValue = n.nodeValue.replace(n.nodeValue.trim(), () => to);
 		}
 	};
-	// Talk (/apps/spreed): the "new conversation" dialog prints the conversation types (title and description) as finished text that the server builds
+	// Talk (/apps/spreed, and the conversation URL /call/<token>, where the sidebar opens the same dialog): the "new conversation" dialog prints the conversation types (title and description) as finished text that the server builds
 	// (OCS presets API, PHP t() in spreed), so the JS dictionary never sees them and Talk's own Arabic file lacks them. The two element kinds below
 	// are swapped by exact text from our own spreed entries. They get their own list because the dialog is a .modal-container (skipped elsewhere).
 	// Text that is already Arabic, or that Talk later renames, matches nothing and stays as it is.
-	const TALK_PATH = /^\/(index\.php\/)?apps\/spreed(\/|$)/;
+	const TALK_PATH = /^\/(index\.php\/)?(apps\/spreed|call)(\/|$)/;
 	const TALK_TEXT = '.conversation-type-selector__label, .conversation-type-selector__description';
 	const talkTexts = (root) => {
 		const dict = DATA.apps.spreed;

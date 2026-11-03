@@ -102,8 +102,10 @@ class DictionaryTest extends TestCase {
 						continue; // the one place that must name the upstream software (testAttributionKeepsTheUpstreamNameAndLicence)
 					}
 					foreach ((array)$value as $form) {
-						// a URL, an e-mail address, a path or the variable {nextcloud} may keep the lower-case name
-						$text = preg_replace('~https?://\S+|[\w.+-]+@[\w.-]+\.\w+|"?[\w.…~-]*/[\w./…~-]+"?|\{nextcloud\}~u', ' ', $form);
+						// a URL, an e-mail address, a path or the variable {nextcloud} may keep the lower-case name; so may the file name that the user-migration app really
+						// creates (user.nextcloud_export, the user has to find it by that name) and the unchanged lower-case word in the notifications app description
+						$text = preg_replace('#https?://\S+|[\w.+-]+@[\w.-]+\.\w+|"?[\w.…~-]*/[\w./…~-]+"?|\{nextcloud\}|user\.nextcloud_export|nextcloud itself#u', ' ', $form);
+						$this->assertNotNull($text, "$lang $app: the pattern that removes URLs and paths must run (a NULL here would make the check test nothing)");
 						$this->assertSame(0, preg_match(self::NAME_BAD, (string)$text), "$lang $app: " . mb_substr((string)$key, 0, 50));
 					}
 				}
