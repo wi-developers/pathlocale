@@ -733,8 +733,8 @@
   "runner": "js",
   "edits": [
    [
-    "/^\\/(index\\.php\\/)?settings",
-    "/\\/(index\\.php\\/)?settings"
+    "const SETTINGS_PATH = /^\\/(index\\.php\\/)?settings",
+    "const SETTINGS_PATH = /\\/(index\\.php\\/)?settings"
    ]
   ],
   "tests": "personal settings pages"
@@ -989,19 +989,6 @@
   "tests": "testEnglishSloganSwaps"
  },
  {
-  "id": "Q01",
-  "rule": "talk dialog swap: path must end at the app name (apps/spreedx is not Talk)",
-  "file": "src/runtime.js",
-  "edits": [
-   [
-    "apps\\/spreed(\\/|$)/;",
-    "apps\\/spreed/;"
-   ]
-  ],
-  "tests": "Talk dialog: other text",
-  "runner": "js"
- },
- {
   "id": "Q02",
   "rule": "talk dialog swap: path is anchored at the start",
   "file": "src/runtime.js",
@@ -1059,12 +1046,8 @@
   "file": "src/runtime.js",
   "edits": [
    [
-    "const to = Object.prototype.hasOwnProperty.call(dict, key) ? dict[key] : undefined;",
-    "const to = dict[key];"
-   ],
-   [
-    "if (typeof to === 'string' && to !== '' && to !== text)",
-    "if (to !== undefined && to !== text)"
+    "const to = Object.prototype.hasOwnProperty.call(dict, key) ? dict[key] : undefined;\n\t\t\t\tif (typeof to === 'string' && to !== '' && to !== text)",
+    "const to = dict[key];\n\t\t\t\tif (to !== undefined && to !== text)"
    ]
   ],
   "tests": "Talk dialog: other text",
@@ -1076,8 +1059,8 @@
   "file": "src/runtime.js",
   "edits": [
    [
-    "n.nodeValue = n.nodeValue.replace(text, () => to);",
-    "n.nodeValue = to;"
+    "dict[key] : undefined;\n\t\t\t\tif (typeof to === 'string' && to !== '' && to !== text) n.nodeValue = n.nodeValue.replace(text, () => to);",
+    "dict[key] : undefined;\n\t\t\t\tif (typeof to === 'string' && to !== '' && to !== text) n.nodeValue = to;"
    ]
   ],
   "tests": "Talk dialog: the five",
@@ -1089,8 +1072,8 @@
   "file": "src/runtime.js",
   "edits": [
    [
-    "const key = text.replace(/\\s+/g, ' ');",
-    "const key = text;"
+    "const key = text.replace(/\\s+/g, ' ');\n\t\t\t\tconst to = Object.prototype",
+    "const key = text;\n\t\t\t\tconst to = Object.prototype"
    ]
   ],
   "tests": "Talk dialog: the five",
@@ -1337,6 +1320,265 @@
    [
     "\"Voice room\":\"غرفة صوتية\"",
     "\"Voice room\":\"غرفة Nextcloud صوتية\""
+   ]
+  ],
+  "tests": "testNoOldProductNameInArabicOrEnglishValues"
+ },
+ {
+  "id": "T01",
+  "rule": "admin setup checks: the path is anchored at the start",
+  "file": "src/runtime.js",
+  "edits": [
+   [
+    "const ADMIN_PATH = /^\\/(index\\.php\\/)?settings",
+    "const ADMIN_PATH = /\\/(index\\.php\\/)?settings"
+   ]
+  ],
+  "tests": "admin Overview: other text",
+  "runner": "js"
+ },
+ {
+  "id": "T02",
+  "rule": "admin setup checks: the path ends at a slash or at the end (settings/adminx is not admin)",
+  "file": "src/runtime.js",
+  "edits": [
+   [
+    "settings\\/admin(\\/|$)/;",
+    "settings\\/admin/;"
+   ]
+  ],
+  "tests": "admin Overview: other text",
+  "runner": "js"
+ },
+ {
+  "id": "T03",
+  "rule": "admin setup checks: the description element is swapped too",
+  "file": "src/runtime.js",
+  "edits": [
+   [
+    "'.settings-setup-checks-item__name, .settings-setup-checks-item__description';",
+    "'.settings-setup-checks-item__name';"
+   ]
+  ],
+  "tests": "admin Overview: the server-built",
+  "runner": "js"
+ },
+ {
+  "id": "T04",
+  "rule": "admin setup checks: text below another element is found",
+  "file": "src/runtime.js",
+  "edits": [
+   [
+    "n.tagName !== 'STYLE') textNodesOf(n, out);",
+    "n.tagName !== 'STYLE') void 0;"
+   ]
+  ],
+  "tests": "admin Overview: the server-built",
+  "runner": "js"
+ },
+ {
+  "id": "T05",
+  "rule": "admin setup checks: nothing inside a script element is swapped",
+  "file": "src/runtime.js",
+  "edits": [
+   [
+    "else if (n.nodeType === 1 && n.tagName !== 'SCRIPT' && n.tagName !== 'STYLE') textNodesOf",
+    "else if (n.nodeType === 1 && n.tagName !== 'STYLE') textNodesOf"
+   ]
+  ],
+  "tests": "admin Overview: other text",
+  "runner": "js"
+ },
+ {
+  "id": "T06",
+  "rule": "admin setup checks: white space around the text is kept",
+  "file": "src/runtime.js",
+  "edits": [
+   [
+    "ours('settings', key);\n\t\t\t\tif (typeof to === 'string' && to !== '' && to !== text) n.nodeValue = n.nodeValue.replace(text, () => to);",
+    "ours('settings', key);\n\t\t\t\tif (typeof to === 'string' && to !== '' && to !== text) n.nodeValue = to;"
+   ]
+  ],
+  "tests": "admin Overview: the server-built",
+  "runner": "js"
+ },
+ {
+  "id": "T07",
+  "rule": "admin setup checks: the fix is run for every change of the page",
+  "file": "src/runtime.js",
+  "edits": [
+   [
+    "talkTexts(root);\n\t\tadminTexts(root);",
+    "talkTexts(root);"
+   ]
+  ],
+  "tests": "admin Overview: the server-built",
+  "runner": "js"
+ },
+ {
+  "id": "T08",
+  "rule": "admin setup checks: white space inside the text is collapsed before the lookup",
+  "file": "src/runtime.js",
+  "edits": [
+   [
+    "const key = text.replace(/\\s+/g, ' ');\n\t\t\t\tconst to = ours('settings', key);",
+    "const key = text;\n\t\t\t\tconst to = ours('settings', key);"
+   ]
+  ],
+  "tests": "admin Overview: the server-built",
+  "runner": "js"
+ },
+ {
+  "id": "T09",
+  "rule": "menu labels: our own dictionaries are used only on settings pages",
+  "file": "src/runtime.js",
+  "edits": [
+   [
+    "if (onAnySettings()) {\n\t\t\tfor (const app of Object.keys(DATA.apps)) {",
+    "if (true) {\n\t\t\tfor (const app of Object.keys(DATA.apps)) {"
+   ]
+  ],
+  "tests": "settings pages, personal and admin",
+  "runner": "js"
+ },
+ {
+  "id": "T10",
+  "rule": "menu labels: the exact-sentence map is used only on settings pages",
+  "file": "src/runtime.js",
+  "edits": [
+   [
+    "(onAnySettings() ? PHP_TEXTS.get(",
+    "(true ? PHP_TEXTS.get("
+   ]
+  ],
+  "tests": "settings pages, personal and admin",
+  "runner": "js"
+ },
+ {
+  "id": "T11",
+  "rule": "settings pages: the path is anchored at the start",
+  "file": "src/runtime.js",
+  "edits": [
+   [
+    "const SETTINGS_ANY = /^\\/(index\\.php\\/)?settings",
+    "const SETTINGS_ANY = /\\/(index\\.php\\/)?settings"
+   ]
+  ],
+  "tests": "settings pages, personal and admin",
+  "runner": "js"
+ },
+ {
+  "id": "T12",
+  "rule": "settings pages: the path ends at a slash or at the end (settingsx is not settings)",
+  "file": "src/runtime.js",
+  "edits": [
+   [
+    "settings(\\/|$)/;\n\tconst onAnySettings",
+    "settings/;\n\tconst onAnySettings"
+   ]
+  ],
+  "tests": "settings pages, personal and admin",
+  "runner": "js"
+ },
+ {
+  "id": "T13",
+  "rule": "menu labels: what Nextcloud registered itself is consulted first",
+  "file": "src/runtime.js",
+  "edits": [
+   [
+    "const v = reg[app]?.[text];",
+    "const v = undefined;"
+   ]
+  ],
+  "tests": "settings pages, personal and admin",
+  "runner": "js"
+ },
+ {
+  "id": "T14",
+  "rule": "manifest: only guest pages are touched",
+  "file": "src/runtime.js",
+  "edits": [
+   [
+    "const manifest = () => {\n\t\tconst id = document.body?.id; if (id !== 'body-login' && id !== 'body-public') return;",
+    "const manifest = () => {\n\t\tconst id = document.body?.id; if (false) return;"
+   ]
+  ],
+  "tests": "guest pages: the manifest link",
+  "runner": "js"
+ },
+ {
+  "id": "T15",
+  "rule": "manifest: public pages (shares) are touched too",
+  "file": "src/runtime.js",
+  "edits": [
+   [
+    "id !== 'body-login' && id !== 'body-public') return;\n\t\tfor (const l of document.querySelectorAll('link[rel=\"manifest\"]'))",
+    "id !== 'body-login') return;\n\t\tfor (const l of document.querySelectorAll('link[rel=\"manifest\"]'))"
+   ]
+  ],
+  "tests": "guest pages: the manifest link",
+  "runner": "js"
+ },
+ {
+  "id": "T16",
+  "rule": "manifest: only the file name that ends the href is replaced",
+  "file": "src/runtime.js",
+  "edits": [
+   [
+    "manifest\\.json(\\?.*)?$/;",
+    "manifest\\.json/;"
+   ]
+  ],
+  "tests": "guest pages: the manifest link",
+  "runner": "js"
+ },
+ {
+  "id": "T17",
+  "rule": "manifest: only the core file is replaced",
+  "file": "src/runtime.js",
+  "edits": [
+   [
+    "const CORE_MANIFEST = /\\/core\\/img\\/manifest",
+    "const CORE_MANIFEST = /\\/img\\/manifest"
+   ]
+  ],
+  "tests": "guest pages: the manifest link",
+  "runner": "js"
+ },
+ {
+  "id": "T18",
+  "rule": "manifest: the web root of the installation is kept",
+  "file": "src/runtime.js",
+  "edits": [
+   [
+    "l.setAttribute('href', (g.OC?.webroot ?? '') + '/index.php/apps/theming/manifest');",
+    "l.setAttribute('href', '/index.php/apps/theming/manifest');"
+   ]
+  ],
+  "tests": "guest pages: the manifest link",
+  "runner": "js"
+ },
+ {
+  "id": "T19",
+  "rule": "manifest: the link is changed when the page starts",
+  "file": "src/runtime.js",
+  "edits": [
+   [
+    "guestSwitch();\n\t\tmanifest();",
+    "guestSwitch();"
+   ]
+  ],
+  "tests": "guest pages: the manifest link",
+  "runner": "js"
+ },
+ {
+  "id": "T20",
+  "rule": "no old product name in an Arabic value (admin menu label of the office app)",
+  "file": "data/ar.json",
+  "edits": [
+   [
+    "\"Nextcloud Office (Collabora)\":\"مكتب منصة بث (Collabora)\"",
+    "\"Nextcloud Office (Collabora)\":\"مكتب Nextcloud (Collabora)\""
    ]
   ],
   "tests": "testNoOldProductNameInArabicOrEnglishValues"

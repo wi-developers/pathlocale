@@ -305,6 +305,104 @@ test('Talk dialog: other text, other pages and other kinds of node are not touch
 	assert.equal(en.nodeValue, key);
 });
 
+// ---- 0.1.5 (owner screenshots 113 and 129): admin Overview setup checks, left-menu labels on every settings page, guest manifest link
+const ADMIN_SEL = '.settings-setup-checks-item__name, .settings-setup-checks-item__description';
+const ADMIN_KEYS = ['Second factor configuration', 'Second factor providers are available but two-factor authentication is not enforced.'];
+const elNode = (tagName, ...kids) => ({ nodeType: 1, tagName, childNodes: kids });
+const runAdmin = (lang, pathname, els) => {
+	let observed = null;
+	const body = { id: 'body-user', matches: () => false, querySelectorAll: (sel) => (sel === ADMIN_SEL ? els : []) };
+	const doc = { body, addEventListener() {}, createTextNode: (t) => ({ text: t }), createTreeWalker: () => ({ nextNode: () => null }) };
+	load(lang, (c) => { c.location = { pathname, search: '' }; c.MutationObserver = class { constructor(cb) { observed = cb; } observe() {} }; c.requestAnimationFrame = (fn) => fn(); }, doc);
+	return { observed };
+};
+
+test('admin Overview: the server-built setup check texts are swapped by exact text from our settings entries, at any depth, white space kept', () => {
+	const ar = data('ar').apps.settings;
+	for (const key of ADMIN_KEYS) assert.ok(typeof ar[key] === 'string' && ar[key] !== '', 'the dictionary has ' + key);
+	for (const pathname of ['/index.php/settings/admin/overview', '/settings/admin/overview', '/index.php/settings/admin', '/settings/admin/']) {
+		const name = textNode('\n\t' + ADMIN_KEYS[0].replace(/ /g, '\n  ') + '\t');
+		const deep = textNode(ADMIN_KEYS[1]);
+		const r = runAdmin('ar', pathname, [elNode('DIV', name), elNode('DIV', elNode('P', elNode('SPAN', deep)))]);
+		assert.equal(name.nodeValue.trim(), ar[ADMIN_KEYS[0]], pathname);
+		assert.equal(name.nodeValue.startsWith('\n\t') && name.nodeValue.endsWith('\t'), true, 'white space kept');
+		assert.equal(deep.nodeValue, ar[ADMIN_KEYS[1]], pathname + ': text below another element');
+		assert.ok(r.observed);
+	}
+});
+
+test('admin Overview: other text, other pages, other kinds of node and English pages are not touched; a list that renders later is swapped too', () => {
+	const ar = data('ar').apps.settings;
+	const untouched = [textNode(ADMIN_KEYS[0] + ' and more'), textNode('Something else entirely'), textNode('constructor'), textNode('__proto__'), textNode('toString'), textNode('')];
+	const notText = { nodeType: 1, nodeValue: ADMIN_KEYS[0], tagName: 'SCRIPT', childNodes: [textNode(ADMIN_KEYS[0])] };
+	const els = [elNode('DIV', ...untouched, notText)];
+	const r = runAdmin('ar', '/index.php/settings/admin/overview', els);
+	assert.deepEqual(untouched.map((n) => n.nodeValue), [ADMIN_KEYS[0] + ' and more', 'Something else entirely', 'constructor', '__proto__', 'toString', '']);
+	assert.equal(notText.nodeValue, ADMIN_KEYS[0], 'only text nodes');
+	assert.equal(notText.childNodes[0].nodeValue, ADMIN_KEYS[0], 'nothing inside a script element');
+	const later = textNode(ADMIN_KEYS[1]);
+	els.push(elNode('DIV', later));
+	r.observed();
+	assert.equal(later.nodeValue, ar[ADMIN_KEYS[1]]);
+	assert.equal(untouched[0].nodeValue, ADMIN_KEYS[0] + ' and more');
+	for (const pathname of ['/index.php/settings/user', '/index.php/settings/adminx/', '/index.php/apps/files/settings/admin/', '/index.php/apps/files/', '/', '/index.php/settings']) {
+		const n = textNode(ADMIN_KEYS[0]);
+		runAdmin('ar', pathname, [elNode('DIV', n)]);
+		assert.equal(n.nodeValue, ADMIN_KEYS[0], pathname + ' is not an admin settings page');
+	}
+	const en = textNode(ADMIN_KEYS[0]);
+	runAdmin('en', '/index.php/settings/admin/overview', [elNode('DIV', en)]);
+	assert.equal(en.nodeValue, ADMIN_KEYS[0], 'English pages keep the English text');
+});
+
+const runNav = (lang, pathname, labels, registry) => {
+	const mk = (text) => ({ childNodes: [{ nodeType: 3, nodeValue: text }], get firstChild() { return this.childNodes[0]; }, matches: () => false, getAttribute: () => null });
+	const els = labels.map(mk);
+	const body = { id: 'body-user', querySelectorAll: (sel) => (sel.includes('app-navigation-entry__name') ? els : []), matches: () => false };
+	load(lang, (c) => { c.location = { pathname, search: '' }; if (registry) c._oc_l10n_registry_translations = registry; }, { body, addEventListener() {}, createTreeWalker: () => ({ nextNode: () => null }), createTextNode: (t) => ({ text: t }) });
+	return els.map((e) => e.firstChild.nodeValue);
+};
+
+test('settings pages, personal and admin: left-menu labels use our dictionaries and exact-sentence map, elsewhere they do not', () => {
+	const ar = data('ar');
+	const office = 'Nextcloud Office (Collabora)';
+	assert.ok(ar.apps.richdocuments[office] && ar.phpFixes.Diagramming);
+	for (const pathname of ['/index.php/settings/admin/overview', '/index.php/settings/user/privacy', '/settings/admin/sharing', '/index.php/settings']) {
+		const out = runNav('ar', pathname, ['Diagramming', office, 'Some user folder']);
+		assert.deepEqual(out, [ar.phpFixes.Diagramming, ar.apps.richdocuments[office], 'Some user folder'], pathname);
+	}
+	const en = runNav('en', '/index.php/settings/admin/overview', [office]);
+	assert.equal(en[0], data('en').apps.richdocuments[office]);
+	for (const pathname of ['/index.php/apps/files/', '/', '/index.php/settingsx/', '/index.php/apps/files/settings/admin/']) {
+		assert.deepEqual(runNav('ar', pathname, ['Diagramming', office]), ['Diagramming', office], pathname + ' is not a settings page');
+	}
+	// what Nextcloud registered itself still wins on a settings page
+	assert.deepEqual(runNav('ar', '/index.php/settings/admin/overview', ['Diagramming'], { core: { Diagramming: 'NEXTCLOUD' } }), ['NEXTCLOUD']);
+});
+
+const runManifest = (bodyId, hrefs, webroot = '') => {
+	const links = hrefs.map((h) => { const st = { h }; return { st, getAttribute: (n) => (n === 'href' ? st.h : null), setAttribute: (n, v) => { if (n === 'href') st.h = v; } }; });
+	const queries = [];
+	const doc = { title: '', createTreeWalker: () => ({ nextNode: () => null }), querySelectorAll: (sel) => { queries.push(sel); return sel === 'link[rel="manifest"]' ? links : []; }, body: { id: bodyId, querySelectorAll: () => [], matches: () => false, appendChild() {} }, createElement: () => ({}), addEventListener() {} };
+	load('ar', (c) => { c.OC = { webroot }; c.location = { pathname: '/login', search: '' }; }, doc);
+	return { hrefs: links.map((l) => l.st.h), queries };
+};
+
+test('guest pages: the manifest link to the fixed core file is pointed at the Theming manifest; nothing else is', () => {
+	const theming = '/index.php/apps/theming/manifest';
+	for (const id of ['body-login', 'body-public']) {
+		assert.deepEqual(runManifest(id, ['/core/img/manifest.json']).hrefs, [theming], id);
+		assert.deepEqual(runManifest(id, ['/core/img/manifest.json?v=3']).hrefs, [theming], id + ' with a version');
+		assert.deepEqual(runManifest(id, ['/nc/core/img/manifest.json'], '/nc').hrefs, ['/nc' + theming], id + ' under a sub-folder');
+	}
+	const keep = ['/apps/theming/manifest/dashboard?v=1', '/core/img/manifest.json.bak', '/core/img/manifest.json/x', '/core/img/other.json', '/other/img/manifest.json'];
+	const r = runManifest('body-login', keep);
+	assert.deepEqual(r.hrefs, keep);
+	assert.ok(r.queries.includes('link[rel="manifest"]'), 'only manifest links are looked at');
+	// signed-in pages already link the Theming manifest of the app, and other body ids are never touched
+	for (const id of ['body-user', 'body-settings', '']) assert.deepEqual(runManifest(id, ['/core/img/manifest.json']).hrefs, ['/core/img/manifest.json'], 'body id ' + id);
+});
+
 test('build: phpTexts and phpFixes of the data are one sentence map in each built script, and the swaps are built in', () => {
 	for (const lang of ['ar', 'en']) {
 		const m = fs.readFileSync(path.join(root, 'js', 'pathlocale-l10n-' + lang + '.js'), 'utf8').match(/const DATA = (\{.*\});\n/);

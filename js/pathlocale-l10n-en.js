@@ -43,12 +43,23 @@
 	const NAV_TEXT = '.app-navigation-entry__name, .app-navigation-caption__name';
 	const NAV_TITLE = '.app-navigation-entry-link[title]';
 	const ORDER = ['core', 'lib', 'settings', 'files'];
+	// Any settings page (personal /settings/user/..., admin /settings/admin/...): their left menu lists the sections of every app, and the
+	// dictionary of an app that this page did not load (so it is not in the registry) would otherwise never be consulted (0.1.5).
+	const SETTINGS_ANY = /^\/(index\.php\/)?settings(\/|$)/;
+	const onAnySettings = () => SETTINGS_ANY.test(g.location?.pathname ?? '');
+	const ours = (app, text) => (Object.prototype.hasOwnProperty.call(DATA.apps[app], text) ? DATA.apps[app][text] : undefined);
 	const lookup = (text) => {
 		const reg = g._oc_l10n_registry_translations;
 		const apps = [...ORDER, ...Object.keys(reg).filter((a) => !ORDER.includes(a))];
 		for (const app of apps) {
 			const v = reg[app]?.[text];
 			if (typeof v === 'string' && v !== '' && v !== text) return v;
+		}
+		if (onAnySettings()) {
+			for (const app of Object.keys(DATA.apps)) {
+				const v = ours(app, text);
+				if (typeof v === 'string' && v !== '' && v !== text) return v;
+			}
 		}
 		return null;
 	};
@@ -114,19 +125,44 @@
 			}
 		}
 	};
+	// Admin Overview (/settings/admin/...): the setup checks print their name and description as finished text that the server builds
+	// (PHP t() in the settings app; the page puts the description in as finished markup), so the JS dictionary never sees them and the settings app's own Arabic
+	// file lacks some. The two element kinds are swapped by exact text from our own settings entries, text nodes at any depth, never anything else.
+	const ADMIN_PATH = /^\/(index\.php\/)?settings\/admin(\/|$)/;
+	const ADMIN_TEXT = '.settings-setup-checks-item__name, .settings-setup-checks-item__description';
+	const textNodesOf = (el, out = []) => {
+		for (const n of el.childNodes ?? []) {
+			if (n.nodeType === 3) out.push(n);
+			else if (n.nodeType === 1 && n.tagName !== 'SCRIPT' && n.tagName !== 'STYLE') textNodesOf(n, out);
+		}
+		return out;
+	};
+	const adminTexts = (root) => {
+		const dict = DATA.apps.settings;
+		if (!dict || !ADMIN_PATH.test(g.location?.pathname ?? '')) return;
+		for (const el of root.querySelectorAll(ADMIN_TEXT)) {
+			for (const n of textNodesOf(el)) {
+				const text = n.nodeValue.trim();
+				const key = text.replace(/\s+/g, ' ');
+				const to = ours('settings', key);
+				if (typeof to === 'string' && to !== '' && to !== text) n.nodeValue = n.nodeValue.replace(text, () => to);
+			}
+		}
+	};
 	const fix = (root) => {
 		if (!root.querySelectorAll) return;
 		const nodes = root.matches?.(NAV_TEXT) ? [root, ...root.querySelectorAll(NAV_TEXT)] : root.querySelectorAll(NAV_TEXT);
 		for (const el of nodes) {
 			if (el.childNodes.length !== 1 || el.firstChild.nodeType !== 3) continue;
 			const raw = el.firstChild.nodeValue; const text = raw.trim(); if (!text) continue;
-			const tr = lookup(text); if (tr) el.firstChild.nodeValue = raw.replace(text, () => tr);
+			const tr = lookup(text) ?? (onAnySettings() ? PHP_TEXTS.get(text.replace(/\s+/g, ' ')) : null); if (tr) el.firstChild.nodeValue = raw.replace(text, () => tr);
 		}
 		const links = root.matches?.(NAV_TITLE) ? [root, ...root.querySelectorAll(NAV_TITLE)] : root.querySelectorAll(NAV_TITLE);
 		for (const el of links) { const tr = lookup(el.getAttribute('title').trim()); if (tr) el.setAttribute('title', tr); }
 		footer(root);
 		settingsRename();
 		talkTexts(root);
+		adminTexts(root);
 	};
 	// English pages: Theming holds a single name and slogan (Arabic), so the server prints them in Arabic. Swap them for the
 	// English wording in the page title; on the login page everywhere (no user content there); on public pages (shares, Talk guests: user documents,
@@ -153,10 +189,21 @@
 		a.href = (g.OC?.webroot ?? '') + '/index.php/apps/pathlocale/lang/' + other + '?redirect=' + encodeURIComponent(location.pathname + location.search);
 		document.body.appendChild(a);
 	};
+	// Guest pages (login, public shares) link the fixed manifest file of Nextcloud's core ("name": "Nextcloud", Nextcloud icons), which the
+	// browser shows in its "Install app" prompt. Signed-in pages already link Theming's manifest (platform name, Theming icon), which also answers
+	// guests, so the link is pointed there. Only that exact core file is replaced; a link that is anything else is left alone.
+	const CORE_MANIFEST = /\/core\/img\/manifest\.json(\?.*)?$/;
+	const manifest = () => {
+		const id = document.body?.id; if (id !== 'body-login' && id !== 'body-public') return;
+		for (const l of document.querySelectorAll('link[rel="manifest"]')) {
+			if (CORE_MANIFEST.test(l.getAttribute('href') ?? '')) l.setAttribute('href', (g.OC?.webroot ?? '') + '/index.php/apps/theming/manifest');
+		}
+	};
 	const start = () => {
 		fix(document.body);
 		swapGuest();
 		guestSwitch();
+		manifest();
 		let queued = false;
 		new MutationObserver(() => { if (queued) return; queued = true; requestAnimationFrame(() => { queued = false; fix(document.body); swapGuest(); }); })
 			.observe(document.body, { childList: true, subtree: true });

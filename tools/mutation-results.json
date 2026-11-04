@@ -223,16 +223,6 @@
    "PageLanguageTest::testGuestPagesCarryTheSwitchAssets"
   ]
  },
- "R01": {
-  "id": "R01",
-  "rule": "the route exists at the documented path",
-  "file": "appinfo/routes.php",
-  "tests": "testSetsTheCookieAndRedirectsBack",
-  "status": "CAUGHT",
-  "failed": [
-   "LanguageRouteTest::testSetsTheCookieAndRedirectsBack"
-  ]
- },
  "S01": {
   "id": "S01",
   "rule": "runtime writes text, never markup",
@@ -341,7 +331,9 @@
   "status": "CAUGHT",
   "failed": [
    "navigation labels written by the server are translated, nothing else is touched",
-   "navigation labels written by the server are translated, nothing else is touched"
+   "settings pages, personal and admin: left-menu labels use our dictionaries and exact-sentence map, elsewhere they do not",
+   "navigation labels written by the server are translated, nothing else is touched",
+   "settings pages, personal and admin: left-menu labels use our dictionaries and exact-sentence map, elsewhere they do not"
   ]
  },
  "J10": {
@@ -368,12 +360,18 @@
    "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution",
    "Talk dialog: the five server-built type texts are swapped by exact text, white space around them kept, on Talk pages",
    "Talk dialog: other text, other pages and other kinds of node are not touched, and a dialog opened later is swapped too",
+   "admin Overview: the server-built setup check texts are swapped by exact text from our settings entries, at any depth, white space kept",
+   "admin Overview: other text, other pages, other kinds of node and English pages are not touched; a list that renders later is swapped too",
+   "settings pages, personal and admin: left-menu labels use our dictionaries and exact-sentence map, elsewhere they do not",
    "navigation labels written by the server are translated, nothing else is touched",
    "guest pages get one link to the other language; signed-in pages get none",
    "personal settings footer: the reasons link is renamed and the \"developed by\" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph",
    "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution",
    "Talk dialog: the five server-built type texts are swapped by exact text, white space around them kept, on Talk pages",
-   "Talk dialog: other text, other pages and other kinds of node are not touched, and a dialog opened later is swapped too"
+   "Talk dialog: other text, other pages and other kinds of node are not touched, and a dialog opened later is swapped too",
+   "admin Overview: the server-built setup check texts are swapped by exact text from our settings entries, at any depth, white space kept",
+   "admin Overview: other text, other pages, other kinds of node and English pages are not touched; a list that renders later is swapped too",
+   "settings pages, personal and admin: left-menu labels use our dictionaries and exact-sentence map, elsewhere they do not"
   ]
  },
  "J12": {
@@ -409,10 +407,14 @@
    "personal settings footer: the reasons link is renamed and the \"developed by\" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph",
    "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution",
    "Talk dialog: other text, other pages and other kinds of node are not touched, and a dialog opened later is swapped too",
+   "admin Overview: other text, other pages, other kinds of node and English pages are not touched; a list that renders later is swapped too",
+   "settings pages, personal and admin: left-menu labels use our dictionaries and exact-sentence map, elsewhere they do not",
    "English pages: the Arabic name and slogan are swapped in the title; on the login page everywhere, on public pages only in header and footer, never in editable content",
    "personal settings footer: the reasons link is renamed and the \"developed by\" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph",
    "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution",
-   "Talk dialog: other text, other pages and other kinds of node are not touched, and a dialog opened later is swapped too"
+   "Talk dialog: other text, other pages and other kinds of node are not touched, and a dialog opened later is swapped too",
+   "admin Overview: other text, other pages, other kinds of node and English pages are not touched; a list that renders later is swapped too",
+   "settings pages, personal and admin: left-menu labels use our dictionaries and exact-sentence map, elsewhere they do not"
   ]
  },
  "J15": {
@@ -608,17 +610,6 @@
  "J30": {
   "id": "J30",
   "rule": "settings sentences are actually replaced",
-  "file": "src/runtime.js",
-  "tests": "personal settings pages",
-  "status": "CAUGHT",
-  "failed": [
-   "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution",
-   "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution"
-  ]
- },
- "J31": {
-  "id": "J31",
-  "rule": "settings path is anchored at the start",
   "file": "src/runtime.js",
   "tests": "personal settings pages",
   "status": "CAUGHT",
@@ -868,17 +859,6 @@
    "DictionaryTest::testEnglishSloganSwaps"
   ]
  },
- "Q01": {
-  "id": "Q01",
-  "rule": "talk dialog swap: path must end at the app name (apps/spreedx is not Talk)",
-  "file": "src/runtime.js",
-  "tests": "Talk dialog: other text",
-  "status": "CAUGHT",
-  "failed": [
-   "Talk dialog: other text, other pages and other kinds of node are not touched, and a dialog opened later is swapped too",
-   "Talk dialog: other text, other pages and other kinds of node are not touched, and a dialog opened later is swapped too"
-  ]
- },
  "Q02": {
   "id": "Q02",
   "rule": "talk dialog swap: path is anchored at the start",
@@ -927,39 +907,6 @@
    "Talk dialog: other text, other pages and other kinds of node are not touched, and a dialog opened later is swapped too"
   ]
  },
- "Q06": {
-  "id": "Q06",
-  "rule": "talk dialog swap: own entries only, and only string values (no inherited property reaches the page)",
-  "file": "src/runtime.js",
-  "tests": "Talk dialog: other text",
-  "status": "CAUGHT",
-  "failed": [
-   "Talk dialog: other text, other pages and other kinds of node are not touched, and a dialog opened later is swapped too",
-   "Talk dialog: other text, other pages and other kinds of node are not touched, and a dialog opened later is swapped too"
-  ]
- },
- "Q07": {
-  "id": "Q07",
-  "rule": "talk dialog swap: white space around the text is kept",
-  "file": "src/runtime.js",
-  "tests": "Talk dialog: the five",
-  "status": "CAUGHT",
-  "failed": [
-   "Talk dialog: the five server-built type texts are swapped by exact text, white space around them kept, on Talk pages",
-   "Talk dialog: the five server-built type texts are swapped by exact text, white space around them kept, on Talk pages"
-  ]
- },
- "Q08": {
-  "id": "Q08",
-  "rule": "talk dialog swap: white space inside the text is collapsed before the lookup",
-  "file": "src/runtime.js",
-  "tests": "Talk dialog: the five",
-  "status": "CAUGHT",
-  "failed": [
-   "Talk dialog: the five server-built type texts are swapped by exact text, white space around them kept, on Talk pages",
-   "Talk dialog: the five server-built type texts are swapped by exact text, white space around them kept, on Talk pages"
-  ]
- },
  "Q09": {
   "id": "Q09",
   "rule": "talk dialog swap runs with every page change",
@@ -980,7 +927,9 @@
   "tests": "build: phpTexts and phpFixes",
   "status": "CAUGHT",
   "failed": [
+   "settings pages, personal and admin: left-menu labels use our dictionaries and exact-sentence map, elsewhere they do not",
    "build: phpTexts and phpFixes of the data are one sentence map in each built script, and the swaps are built in",
+   "settings pages, personal and admin: left-menu labels use our dictionaries and exact-sentence map, elsewhere they do not",
    "build: phpTexts and phpFixes of the data are one sentence map in each built script, and the swaps are built in"
   ]
  },
@@ -1167,6 +1116,301 @@
   "status": "CAUGHT",
   "failed": [
    "DictionaryTest::testNoOldProductNameInArabicOrEnglishValues"
+  ]
+ },
+ "T02": {
+  "id": "T02",
+  "rule": "admin setup checks: the path ends at a slash or at the end (settings/adminx is not admin)",
+  "file": "src/runtime.js",
+  "tests": "admin Overview: other text",
+  "status": "CAUGHT",
+  "failed": [
+   "admin Overview: other text, other pages, other kinds of node and English pages are not touched; a list that renders later is swapped too",
+   "admin Overview: other text, other pages, other kinds of node and English pages are not touched; a list that renders later is swapped too"
+  ]
+ },
+ "T03": {
+  "id": "T03",
+  "rule": "admin setup checks: the description element is swapped too",
+  "file": "src/runtime.js",
+  "tests": "admin Overview: the server-built",
+  "status": "CAUGHT",
+  "failed": [
+   "admin Overview: the server-built setup check texts are swapped by exact text from our settings entries, at any depth, white space kept",
+   "admin Overview: other text, other pages, other kinds of node and English pages are not touched; a list that renders later is swapped too",
+   "admin Overview: the server-built setup check texts are swapped by exact text from our settings entries, at any depth, white space kept",
+   "admin Overview: other text, other pages, other kinds of node and English pages are not touched; a list that renders later is swapped too"
+  ]
+ },
+ "T04": {
+  "id": "T04",
+  "rule": "admin setup checks: text below another element is found",
+  "file": "src/runtime.js",
+  "tests": "admin Overview: the server-built",
+  "status": "CAUGHT",
+  "failed": [
+   "admin Overview: the server-built setup check texts are swapped by exact text from our settings entries, at any depth, white space kept",
+   "admin Overview: the server-built setup check texts are swapped by exact text from our settings entries, at any depth, white space kept"
+  ]
+ },
+ "T05": {
+  "id": "T05",
+  "rule": "admin setup checks: nothing inside a script element is swapped",
+  "file": "src/runtime.js",
+  "tests": "admin Overview: other text",
+  "status": "CAUGHT",
+  "failed": [
+   "admin Overview: other text, other pages, other kinds of node and English pages are not touched; a list that renders later is swapped too",
+   "admin Overview: other text, other pages, other kinds of node and English pages are not touched; a list that renders later is swapped too"
+  ]
+ },
+ "T06": {
+  "id": "T06",
+  "rule": "admin setup checks: white space around the text is kept",
+  "file": "src/runtime.js",
+  "tests": "admin Overview: the server-built",
+  "status": "CAUGHT",
+  "failed": [
+   "admin Overview: the server-built setup check texts are swapped by exact text from our settings entries, at any depth, white space kept",
+   "admin Overview: the server-built setup check texts are swapped by exact text from our settings entries, at any depth, white space kept"
+  ]
+ },
+ "T07": {
+  "id": "T07",
+  "rule": "admin setup checks: the fix is run for every change of the page",
+  "file": "src/runtime.js",
+  "tests": "admin Overview: the server-built",
+  "status": "CAUGHT",
+  "failed": [
+   "admin Overview: the server-built setup check texts are swapped by exact text from our settings entries, at any depth, white space kept",
+   "admin Overview: other text, other pages, other kinds of node and English pages are not touched; a list that renders later is swapped too",
+   "admin Overview: the server-built setup check texts are swapped by exact text from our settings entries, at any depth, white space kept",
+   "admin Overview: other text, other pages, other kinds of node and English pages are not touched; a list that renders later is swapped too"
+  ]
+ },
+ "T09": {
+  "id": "T09",
+  "rule": "menu labels: our own dictionaries are used only on settings pages",
+  "file": "src/runtime.js",
+  "tests": "settings pages, personal and admin",
+  "status": "CAUGHT",
+  "failed": [
+   "settings pages, personal and admin: left-menu labels use our dictionaries and exact-sentence map, elsewhere they do not",
+   "settings pages, personal and admin: left-menu labels use our dictionaries and exact-sentence map, elsewhere they do not"
+  ]
+ },
+ "T10": {
+  "id": "T10",
+  "rule": "menu labels: the exact-sentence map is used only on settings pages",
+  "file": "src/runtime.js",
+  "tests": "settings pages, personal and admin",
+  "status": "CAUGHT",
+  "failed": [
+   "settings pages, personal and admin: left-menu labels use our dictionaries and exact-sentence map, elsewhere they do not",
+   "settings pages, personal and admin: left-menu labels use our dictionaries and exact-sentence map, elsewhere they do not"
+  ]
+ },
+ "T11": {
+  "id": "T11",
+  "rule": "settings pages: the path is anchored at the start",
+  "file": "src/runtime.js",
+  "tests": "settings pages, personal and admin",
+  "status": "CAUGHT",
+  "failed": [
+   "settings pages, personal and admin: left-menu labels use our dictionaries and exact-sentence map, elsewhere they do not",
+   "settings pages, personal and admin: left-menu labels use our dictionaries and exact-sentence map, elsewhere they do not"
+  ]
+ },
+ "T12": {
+  "id": "T12",
+  "rule": "settings pages: the path ends at a slash or at the end (settingsx is not settings)",
+  "file": "src/runtime.js",
+  "tests": "settings pages, personal and admin",
+  "status": "CAUGHT",
+  "failed": [
+   "settings pages, personal and admin: left-menu labels use our dictionaries and exact-sentence map, elsewhere they do not",
+   "settings pages, personal and admin: left-menu labels use our dictionaries and exact-sentence map, elsewhere they do not"
+  ]
+ },
+ "T14": {
+  "id": "T14",
+  "rule": "manifest: only guest pages are touched",
+  "file": "src/runtime.js",
+  "tests": "guest pages: the manifest link",
+  "status": "CAUGHT",
+  "failed": [
+   "navigation labels written by the server are translated, nothing else is touched",
+   "personal settings footer: the reasons link is renamed and the \"developed by\" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph",
+   "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution",
+   "Talk dialog: the five server-built type texts are swapped by exact text, white space around them kept, on Talk pages",
+   "Talk dialog: other text, other pages and other kinds of node are not touched, and a dialog opened later is swapped too",
+   "admin Overview: the server-built setup check texts are swapped by exact text from our settings entries, at any depth, white space kept",
+   "admin Overview: other text, other pages, other kinds of node and English pages are not touched; a list that renders later is swapped too",
+   "settings pages, personal and admin: left-menu labels use our dictionaries and exact-sentence map, elsewhere they do not",
+   "guest pages: the manifest link to the fixed core file is pointed at the Theming manifest; nothing else is",
+   "navigation labels written by the server are translated, nothing else is touched",
+   "personal settings footer: the reasons link is renamed and the \"developed by\" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph",
+   "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution",
+   "Talk dialog: the five server-built type texts are swapped by exact text, white space around them kept, on Talk pages",
+   "Talk dialog: other text, other pages and other kinds of node are not touched, and a dialog opened later is swapped too",
+   "admin Overview: the server-built setup check texts are swapped by exact text from our settings entries, at any depth, white space kept",
+   "admin Overview: other text, other pages, other kinds of node and English pages are not touched; a list that renders later is swapped too",
+   "settings pages, personal and admin: left-menu labels use our dictionaries and exact-sentence map, elsewhere they do not",
+   "guest pages: the manifest link to the fixed core file is pointed at the Theming manifest; nothing else is"
+  ]
+ },
+ "T15": {
+  "id": "T15",
+  "rule": "manifest: public pages (shares) are touched too",
+  "file": "src/runtime.js",
+  "tests": "guest pages: the manifest link",
+  "status": "CAUGHT",
+  "failed": [
+   "guest pages: the manifest link to the fixed core file is pointed at the Theming manifest; nothing else is",
+   "guest pages: the manifest link to the fixed core file is pointed at the Theming manifest; nothing else is"
+  ]
+ },
+ "T16": {
+  "id": "T16",
+  "rule": "manifest: only the file name that ends the href is replaced",
+  "file": "src/runtime.js",
+  "tests": "guest pages: the manifest link",
+  "status": "CAUGHT",
+  "failed": [
+   "guest pages: the manifest link to the fixed core file is pointed at the Theming manifest; nothing else is",
+   "guest pages: the manifest link to the fixed core file is pointed at the Theming manifest; nothing else is"
+  ]
+ },
+ "T17": {
+  "id": "T17",
+  "rule": "manifest: only the core file is replaced",
+  "file": "src/runtime.js",
+  "tests": "guest pages: the manifest link",
+  "status": "CAUGHT",
+  "failed": [
+   "guest pages: the manifest link to the fixed core file is pointed at the Theming manifest; nothing else is",
+   "guest pages: the manifest link to the fixed core file is pointed at the Theming manifest; nothing else is"
+  ]
+ },
+ "T18": {
+  "id": "T18",
+  "rule": "manifest: the web root of the installation is kept",
+  "file": "src/runtime.js",
+  "tests": "guest pages: the manifest link",
+  "status": "CAUGHT",
+  "failed": [
+   "guest pages: the manifest link to the fixed core file is pointed at the Theming manifest; nothing else is",
+   "guest pages: the manifest link to the fixed core file is pointed at the Theming manifest; nothing else is"
+  ]
+ },
+ "T19": {
+  "id": "T19",
+  "rule": "manifest: the link is changed when the page starts",
+  "file": "src/runtime.js",
+  "tests": "guest pages: the manifest link",
+  "status": "CAUGHT",
+  "failed": [
+   "guest pages: the manifest link to the fixed core file is pointed at the Theming manifest; nothing else is",
+   "guest pages: the manifest link to the fixed core file is pointed at the Theming manifest; nothing else is"
+  ]
+ },
+ "T20": {
+  "id": "T20",
+  "rule": "no old product name in an Arabic value (admin menu label of the office app)",
+  "file": "data/ar.json",
+  "tests": "testNoOldProductNameInArabicOrEnglishValues",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testNoOldProductNameInArabicOrEnglishValues"
+  ]
+ },
+ "R01": {
+  "id": "R01",
+  "rule": "the route exists at the documented path",
+  "file": "appinfo/routes.php",
+  "tests": "testSetsTheCookieAndRedirectsBack",
+  "status": "CAUGHT",
+  "failed": [
+   "LanguageRouteTest::testSetsTheCookieAndRedirectsBack"
+  ]
+ },
+ "T01": {
+  "id": "T01",
+  "rule": "admin setup checks: the path is anchored at the start",
+  "file": "src/runtime.js",
+  "tests": "admin Overview: other text",
+  "status": "CAUGHT",
+  "failed": [
+   "admin Overview: other text, other pages, other kinds of node and English pages are not touched; a list that renders later is swapped too",
+   "admin Overview: other text, other pages, other kinds of node and English pages are not touched; a list that renders later is swapped too"
+  ]
+ },
+ "T13": {
+  "id": "T13",
+  "rule": "menu labels: what Nextcloud registered itself is consulted first",
+  "file": "src/runtime.js",
+  "tests": "settings pages, personal and admin",
+  "status": "CAUGHT",
+  "failed": [
+   "navigation labels written by the server are translated, nothing else is touched",
+   "settings pages, personal and admin: left-menu labels use our dictionaries and exact-sentence map, elsewhere they do not",
+   "navigation labels written by the server are translated, nothing else is touched",
+   "settings pages, personal and admin: left-menu labels use our dictionaries and exact-sentence map, elsewhere they do not"
+  ]
+ },
+ "J31": {
+  "id": "J31",
+  "rule": "settings path is anchored at the start",
+  "file": "src/runtime.js",
+  "tests": "personal settings pages",
+  "status": "CAUGHT",
+  "failed": [
+   "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution",
+   "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution"
+  ]
+ },
+ "Q06": {
+  "id": "Q06",
+  "rule": "talk dialog swap: own entries only, and only string values (no inherited property reaches the page)",
+  "file": "src/runtime.js",
+  "tests": "Talk dialog: other text",
+  "status": "CAUGHT",
+  "failed": [
+   "Talk dialog: other text, other pages and other kinds of node are not touched, and a dialog opened later is swapped too",
+   "Talk dialog: other text, other pages and other kinds of node are not touched, and a dialog opened later is swapped too"
+  ]
+ },
+ "Q07": {
+  "id": "Q07",
+  "rule": "talk dialog swap: white space around the text is kept",
+  "file": "src/runtime.js",
+  "tests": "Talk dialog: the five",
+  "status": "CAUGHT",
+  "failed": [
+   "Talk dialog: the five server-built type texts are swapped by exact text, white space around them kept, on Talk pages",
+   "Talk dialog: the five server-built type texts are swapped by exact text, white space around them kept, on Talk pages"
+  ]
+ },
+ "Q08": {
+  "id": "Q08",
+  "rule": "talk dialog swap: white space inside the text is collapsed before the lookup",
+  "file": "src/runtime.js",
+  "tests": "Talk dialog: the five",
+  "status": "CAUGHT",
+  "failed": [
+   "Talk dialog: the five server-built type texts are swapped by exact text, white space around them kept, on Talk pages",
+   "Talk dialog: the five server-built type texts are swapped by exact text, white space around them kept, on Talk pages"
+  ]
+ },
+ "T08": {
+  "id": "T08",
+  "rule": "admin setup checks: white space inside the text is collapsed before the lookup",
+  "file": "src/runtime.js",
+  "tests": "admin Overview: the server-built",
+  "status": "CAUGHT",
+  "failed": [
+   "admin Overview: the server-built setup check texts are swapped by exact text from our settings entries, at any depth, white space kept",
+   "admin Overview: the server-built setup check texts are swapped by exact text from our settings entries, at any depth, white space kept"
   ]
  }
 }
