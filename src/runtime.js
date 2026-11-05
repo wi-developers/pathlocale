@@ -149,6 +149,32 @@
 			}
 		}
 	};
+	// 0.1.6: texts that the server (PHP t()) or an app prints as finished English on a few named pages, where the app's own Arabic file has no entry
+	// (admin pages of quick presets, groupware, delegation, AI, Diagramming and Office) or where the text is read once while the page loads, before this script
+	// has installed its dictionary (the dialog of the Files settings). Same exact-sentence map as the personal settings pages (PHP_TEXTS): only text nodes that
+	// equal a key after white space is collapsed, only inside the content area of those pages, never in form fields, editable content, code or options.
+	const PAGE_RULES = [
+		{ path: /^\/(index\.php\/)?settings\/admin\/(presets|groupware|admindelegation|ai|drawio|richdocuments)(\/|$)/, scope: 'div#content.app-settings' },
+		{ path: /^\/(index\.php\/)?apps\/files(\/|$)/, scope: '.modal-mask.app-settings' },
+	];
+	const PAGE_SKIP = '[data-pathlocale], [contenteditable], textarea, input, select, option, code, pre, tt, script, style';
+	const pageTexts = (root) => {
+		if (PHP_TEXTS.size === 0) return;
+		const rule = PAGE_RULES.find((r) => r.path.test(g.location?.pathname ?? ''));
+		if (!rule) return;
+		for (const scope of root.querySelectorAll(rule.scope)) {
+			const walker = document.createTreeWalker(scope, 4);
+			const todo = [];
+			for (let n = walker.nextNode(); n; n = walker.nextNode()) {
+				if (n.parentElement && !n.parentElement.closest(PAGE_SKIP)) todo.push(n);
+			}
+			for (const n of todo) {
+				const text = n.nodeValue.trim();
+				const to = PHP_TEXTS.get(text.replace(/\s+/g, ' '));
+				if (typeof to === 'string' && to !== '' && to !== text) n.nodeValue = n.nodeValue.replace(text, () => to);
+			}
+		}
+	};
 	const fix = (root) => {
 		if (!root.querySelectorAll) return;
 		const nodes = root.matches?.(NAV_TEXT) ? [root, ...root.querySelectorAll(NAV_TEXT)] : root.querySelectorAll(NAV_TEXT);
@@ -163,6 +189,7 @@
 		settingsRename();
 		talkTexts(root);
 		adminTexts(root);
+		pageTexts(root);
 	};
 	// English pages: Theming holds a single name and slogan (Arabic), so the server prints them in Arabic. Swap them for the
 	// English wording in the page title; on the login page everywhere (no user content there); on public pages (shares, Talk guests: user documents,

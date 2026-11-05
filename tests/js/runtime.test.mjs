@@ -415,3 +415,99 @@ test('build: phpTexts and phpFixes of the data are one sentence map in each buil
 	}
 	assert.ok(Object.keys(data('ar').phpFixes).length >= 10);
 });
+
+// 0.1.6: exact-sentence swaps on named admin pages and in the dialog of the Files settings (pageTexts)
+const ADMIN_SCOPE = 'div#content.app-settings';
+const FILES_SCOPE = '.modal-mask.app-settings';
+const ADMIN_PAGES = ['presets', 'groupware', 'admindelegation', 'ai', 'drawio', 'richdocuments'];
+// closest(sel) answers true only when one of the comma-separated parts of the selector is one of the tokens the node is "inside" (so a skip list that lost a token is noticed)
+const pageNode = (v, inside = []) => ({ nodeType: 3, nodeValue: v, parentElement: { tagName: 'DIV', closest: (sel) => sel.split(',').map((x) => x.trim()).some((x) => inside.includes(x)) } });
+const runPage = (lang, pathname, scopeSel, nodes) => {
+	let observed = null;
+	const scope = { nodes };
+	const body = { id: 'body-user', matches: () => false, querySelectorAll: (sel) => (sel === scopeSel ? [scope] : []) };
+	const doc = {
+		body, addEventListener() {}, createTextNode: (t) => ({ text: t }),
+		createTreeWalker: (el) => { let i = 0; const list = el.nodes ?? []; return { nextNode: () => list[i++] ?? null }; },
+	};
+	load(lang, (c) => { c.location = { pathname, search: '' }; c.MutationObserver = class { constructor(cb) { observed = cb; } observe() {} }; c.requestAnimationFrame = (fn) => fn(); }, doc);
+	return { observed, scope };
+};
+const arData = data('ar');
+const enData = data('en');
+const FIX_SAMPLES = ['Editor URL', 'Enable whiteboards?', 'Generate Slide Deck', 'Allow users to customize share URL', "Add example event to user's calendar when they first log in", 'Quick presets'];
+const NAMED_SAMPLES = ['Nextcloud Assistant Slide Deck Generator', 'Nextcloud Office (Collabora) requires a separate server running Collabora Online to provide editing capabilities.'];
+const FILES_SAMPLES = ['Keyboard shortcuts', 'Add or remove favorite', 'Open the details sidebar'];
+
+test('named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the owner-approved one', () => {
+	for (const k of [...FIX_SAMPLES, ...FILES_SAMPLES]) assert.ok(typeof arData.phpFixes[k] === 'string' && arData.phpFixes[k] !== '', 'ar phpFixes has ' + k);
+	for (const k of NAMED_SAMPLES) assert.ok(typeof arData.phpTexts[k] === 'string' && arData.phpTexts[k] !== '', 'ar phpTexts has ' + k);
+	assert.equal(arData.phpFixes['Enable whiteboards?'], 'تمكين السبورات البيضاء؟');
+	for (const page of ADMIN_PAGES) {
+		for (const pathname of [`/index.php/settings/admin/${page}`, `/settings/admin/${page}`, `/index.php/settings/admin/${page}/`]) {
+			const nodes = [...FIX_SAMPLES, ...NAMED_SAMPLES].map((k, i) => pageNode(i % 2 ? `\n\t${k.replace(/ /g, '\n  ')}\t` : k));
+			runPage('ar', pathname, ADMIN_SCOPE, nodes);
+			[...FIX_SAMPLES, ...NAMED_SAMPLES].forEach((k, i) => {
+				const to = arData.phpFixes[k] ?? arData.phpTexts[k];
+				assert.equal(nodes[i].nodeValue.trim(), to, pathname + ': ' + k);
+				if (i % 2) assert.equal(nodes[i].nodeValue.startsWith('\n\t') && nodes[i].nodeValue.endsWith('\t'), true, 'white space kept');
+			});
+		}
+	}
+});
+
+test('named admin pages: other pages, other text, skipped elements and the other language are not touched; text that renders later is swapped', () => {
+	const key = 'Editor URL';
+	for (const pathname of ['/index.php/settings/admin/overview', '/index.php/settings/admin/drawiox', '/index.php/settings/admin', '/index.php/settings/user/richdocuments', '/index.php/apps/drawio/', '/', '/index.php/apps/files/settings/admin/ai']) {
+		const n = pageNode(key);
+		runPage('ar', pathname, ADMIN_SCOPE, [n]);
+		assert.equal(n.nodeValue, key, pathname + ' is not one of the named pages');
+	}
+	const untouched = [pageNode(key + ' and more'), pageNode('Something else entirely'), pageNode('constructor'), pageNode('__proto__'), pageNode(''), pageNode(key, ['textarea'])];
+	const r = runPage('ar', '/index.php/settings/admin/drawio', ADMIN_SCOPE, untouched);
+	assert.deepEqual(untouched.map((n) => n.nodeValue), [key + ' and more', 'Something else entirely', 'constructor', '__proto__', '', key]);
+	for (const token of ['[data-pathlocale]', '[contenteditable]', 'textarea', 'input', 'select', 'option', 'code', 'pre', 'tt', 'script', 'style']) {
+		const skipped = pageNode(key, [token]);
+		runPage('ar', '/index.php/settings/admin/drawio', ADMIN_SCOPE, [skipped]);
+		assert.equal(skipped.nodeValue, key, 'not inside ' + token);
+	}
+	const later = pageNode('Editor configuration');
+	r.scope.nodes.push(later);
+	r.observed();
+	assert.equal(later.nodeValue, arData.phpFixes['Editor configuration']);
+	const outside = pageNode(key);
+	runPage('ar', '/index.php/settings/admin/drawio', 'main#other', [outside]);
+	assert.equal(outside.nodeValue, key, 'only inside the content area of the page');
+	const en = pageNode(key);
+	runPage('en', '/index.php/settings/admin/drawio', ADMIN_SCOPE, [en]);
+	assert.equal(en.nodeValue, key, 'English pages keep the English text');
+});
+
+test('named admin pages, English: only the product name changes', () => {
+	assert.deepEqual(Object.keys(enData.phpFixes ?? {}), [], 'English has no fixes, only renames');
+	for (const k of NAMED_SAMPLES) {
+		const n = pageNode(k);
+		runPage('en', '/index.php/settings/admin/ai', ADMIN_SCOPE, [n]);
+		assert.equal(n.nodeValue, enData.phpTexts[k], k);
+		assert.ok(!/Nextcloud/.test(n.nodeValue) && /Path platform/.test(n.nodeValue), k);
+	}
+});
+
+test('Files settings dialog: the three texts that Files reads before our dictionary is loaded are swapped, on Files pages and in the dialog only', () => {
+	for (const pathname of ['/index.php/apps/files/files', '/apps/files/', '/index.php/apps/files']) {
+		const nodes = FILES_SAMPLES.map((k) => pageNode(k));
+		runPage('ar', pathname, FILES_SCOPE, nodes);
+		FILES_SAMPLES.forEach((k, i) => assert.equal(nodes[i].nodeValue, arData.phpFixes[k], pathname + ': ' + k));
+	}
+	for (const pathname of ['/index.php/x/apps/files/files', '/other/apps/files/', '/index.php/apps/filesx/', '/index.php/apps/spreed/', '/index.php/settings/admin/drawio', '/']) {
+		const n = pageNode('Keyboard shortcuts');
+		runPage('ar', pathname, FILES_SCOPE, [n]);
+		assert.equal(n.nodeValue, 'Keyboard shortcuts', pathname);
+	}
+	const elsewhere = pageNode('Keyboard shortcuts');
+	runPage('ar', '/index.php/apps/files/files', 'div.other', [elsewhere]);
+	assert.equal(elsewhere.nodeValue, 'Keyboard shortcuts', 'only inside the settings dialog');
+	const en = pageNode('Keyboard shortcuts');
+	runPage('en', '/index.php/apps/files/files', FILES_SCOPE, [en]);
+	assert.equal(en.nodeValue, 'Keyboard shortcuts');
+});

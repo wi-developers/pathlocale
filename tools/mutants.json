@@ -1577,10 +1577,218 @@
   "file": "data/ar.json",
   "edits": [
    [
-    "\"Nextcloud Office (Collabora)\":\"مكتب منصة بث (Collabora)\"",
-    "\"Nextcloud Office (Collabora)\":\"مكتب Nextcloud (Collabora)\""
+    "Collabora Online.\",\"Nextcloud Office (Collabora)\":\"مكتب منصة بث (Collabora)\"",
+    "Collabora Online.\",\"Nextcloud Office (Collabora)\":\"مكتب Nextcloud (Collabora)\""
    ]
   ],
   "tests": "testNoOldProductNameInArabicOrEnglishValues"
+ },
+ {
+  "id": "V01",
+  "rule": "named pages: the admin path is anchored at the start",
+  "file": "src/runtime.js",
+  "edits": [
+   [
+    "const PAGE_RULES = [\n\t\t{ path: /^\\/(index\\.php\\/)?settings\\/admin\\/(presets",
+    "const PAGE_RULES = [\n\t\t{ path: /\\/(index\\.php\\/)?settings\\/admin\\/(presets"
+   ]
+  ],
+  "tests": "named admin pages: other pages, other text",
+  "runner": "js"
+ },
+ {
+  "id": "V02",
+  "rule": "named pages: the admin path ends at a slash or at the end (drawiox is not drawio)",
+  "file": "src/runtime.js",
+  "edits": [
+   [
+    "richdocuments)(\\/|$)/, scope",
+    "richdocuments)/, scope"
+   ]
+  ],
+  "tests": "named admin pages: other pages, other text",
+  "runner": "js"
+ },
+ {
+  "id": "V03",
+  "rule": "named pages: the quick presets page is on the list",
+  "file": "src/runtime.js",
+  "edits": [
+   [
+    "(presets|groupware|",
+    "(groupware|"
+   ]
+  ],
+  "tests": "named admin pages (presets",
+  "runner": "js"
+ },
+ {
+  "id": "V04",
+  "rule": "named pages: the AI page is on the list",
+  "file": "src/runtime.js",
+  "edits": [
+   [
+    "|admindelegation|ai|drawio|",
+    "|admindelegation|drawio|"
+   ]
+  ],
+  "tests": "named admin pages (presets",
+  "runner": "js"
+ },
+ {
+  "id": "V05",
+  "rule": "named pages: the Diagramming page is on the list",
+  "file": "src/runtime.js",
+  "edits": [
+   [
+    "|admindelegation|ai|drawio|richdocuments)",
+    "|admindelegation|ai|richdocuments)"
+   ]
+  ],
+  "tests": "named admin pages (presets",
+  "runner": "js"
+ },
+ {
+  "id": "V06",
+  "rule": "named pages: the Files path is anchored at the start",
+  "file": "src/runtime.js",
+  "edits": [
+   [
+    "{ path: /^\\/(index\\.php\\/)?apps\\/files(\\/|$)/",
+    "{ path: /\\/(index\\.php\\/)?apps\\/files(\\/|$)/"
+   ]
+  ],
+  "tests": "Files settings dialog",
+  "runner": "js"
+ },
+ {
+  "id": "V07",
+  "rule": "named pages: the Files path ends at a slash or at the end (filesx is not files)",
+  "file": "src/runtime.js",
+  "edits": [
+   [
+    "apps\\/files(\\/|$)/, scope",
+    "apps\\/files/, scope"
+   ]
+  ],
+  "tests": "Files settings dialog",
+  "runner": "js"
+ },
+ {
+  "id": "V08",
+  "rule": "named pages: admin texts are swapped only inside the content area",
+  "file": "src/runtime.js",
+  "edits": [
+   [
+    "scope: 'div#content.app-settings' }",
+    "scope: 'body' }"
+   ]
+  ],
+  "tests": "named admin pages (presets",
+  "runner": "js"
+ },
+ {
+  "id": "V09",
+  "rule": "named pages: the Files texts are swapped only inside the settings dialog",
+  "file": "src/runtime.js",
+  "edits": [
+   [
+    "scope: '.modal-mask.app-settings' }",
+    "scope: 'body' }"
+   ]
+  ],
+  "tests": "Files settings dialog",
+  "runner": "js"
+ },
+ {
+  "id": "V10",
+  "rule": "named pages: nothing is swapped in form fields, editable content, code, options, scripts or styles",
+  "file": "src/runtime.js",
+  "edits": [
+   [
+    "const PAGE_SKIP = '[data-pathlocale], [contenteditable], textarea, input, select, option, code, pre, tt, script, style';",
+    "const PAGE_SKIP = '[data-pathlocale]';"
+   ]
+  ],
+  "tests": "named admin pages: other pages, other text",
+  "runner": "js"
+ },
+ {
+  "id": "V11",
+  "rule": "named pages: white space around the text is kept",
+  "file": "src/runtime.js",
+  "edits": [
+   [
+    "const to = PHP_TEXTS.get(text.replace(/\\s+/g, ' '));\n\t\t\t\tif (typeof to === 'string' && to !== '' && to !== text) n.nodeValue = n.nodeValue.replace(text, () => to);",
+    "const to = PHP_TEXTS.get(text.replace(/\\s+/g, ' '));\n\t\t\t\tif (typeof to === 'string' && to !== '' && to !== text) n.nodeValue = to;"
+   ]
+  ],
+  "tests": "named admin pages (presets",
+  "runner": "js"
+ },
+ {
+  "id": "V12",
+  "rule": "named pages: white space inside the text is collapsed before the lookup",
+  "file": "src/runtime.js",
+  "edits": [
+   [
+    "const to = PHP_TEXTS.get(text.replace(/\\s+/g, ' '));",
+    "const to = PHP_TEXTS.get(text);"
+   ]
+  ],
+  "tests": "named admin pages (presets",
+  "runner": "js"
+ },
+ {
+  "id": "V13",
+  "rule": "named pages: the swap is run for every change of the page",
+  "file": "src/runtime.js",
+  "edits": [
+   [
+    "adminTexts(root);\n\t\tpageTexts(root);",
+    "adminTexts(root);"
+   ]
+  ],
+  "tests": "named admin pages (presets",
+  "runner": "js"
+ },
+ {
+  "id": "V14",
+  "rule": "named pages: a page that is not on the list is left alone (no rule found)",
+  "file": "src/runtime.js",
+  "edits": [
+   [
+    "const rule = PAGE_RULES.find((r) => r.path.test(g.location?.pathname ?? ''));",
+    "const rule = PAGE_RULES.find((r) => !r.path.test(g.location?.pathname ?? ''));"
+   ]
+  ],
+  "tests": "named admin pages (presets",
+  "runner": "js"
+ },
+ {
+  "id": "V15",
+  "rule": "named pages: a text that equals no key is not changed (lookup is by own key)",
+  "file": "src/runtime.js",
+  "edits": [
+   [
+    "const to = PHP_TEXTS.get(text.replace(/\\s+/g, ' '));\n\t\t\t\tif (typeof to === 'string' && to !== '' && to !== text)",
+    "const to = PHP_TEXTS.get(text.replace(/\\s+/g, ' ')) ?? 'x';\n\t\t\t\tif (typeof to === 'string' && to !== '' && to !== text)"
+   ]
+  ],
+  "tests": "named admin pages: other pages, other text",
+  "runner": "js"
+ },
+ {
+  "id": "V16",
+  "rule": "owner-approved wording: whiteboards setting uses تمكين",
+  "file": "data/ar.json",
+  "edits": [
+   [
+    "\"Enable whiteboards?\":\"تمكين السبورات البيضاء؟\"",
+    "\"Enable whiteboards?\":\"تفعيل السبورات البيضاء؟\""
+   ]
+  ],
+  "tests": "named admin pages (presets",
+  "runner": "js"
  }
 ]

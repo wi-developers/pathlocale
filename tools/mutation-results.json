@@ -363,6 +363,10 @@
    "admin Overview: the server-built setup check texts are swapped by exact text from our settings entries, at any depth, white space kept",
    "admin Overview: other text, other pages, other kinds of node and English pages are not touched; a list that renders later is swapped too",
    "settings pages, personal and admin: left-menu labels use our dictionaries and exact-sentence map, elsewhere they do not",
+   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the owner-approved one",
+   "named admin pages: other pages, other text, skipped elements and the other language are not touched; text that renders later is swapped",
+   "named admin pages, English: only the product name changes",
+   "Files settings dialog: the three texts that Files reads before our dictionary is loaded are swapped, on Files pages and in the dialog only",
    "navigation labels written by the server are translated, nothing else is touched",
    "guest pages get one link to the other language; signed-in pages get none",
    "personal settings footer: the reasons link is renamed and the \"developed by\" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph",
@@ -371,7 +375,11 @@
    "Talk dialog: other text, other pages and other kinds of node are not touched, and a dialog opened later is swapped too",
    "admin Overview: the server-built setup check texts are swapped by exact text from our settings entries, at any depth, white space kept",
    "admin Overview: other text, other pages, other kinds of node and English pages are not touched; a list that renders later is swapped too",
-   "settings pages, personal and admin: left-menu labels use our dictionaries and exact-sentence map, elsewhere they do not"
+   "settings pages, personal and admin: left-menu labels use our dictionaries and exact-sentence map, elsewhere they do not",
+   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the owner-approved one",
+   "named admin pages: other pages, other text, skipped elements and the other language are not touched; text that renders later is swapped",
+   "named admin pages, English: only the product name changes",
+   "Files settings dialog: the three texts that Files reads before our dictionary is loaded are swapped, on Files pages and in the dialog only"
   ]
  },
  "J12": {
@@ -409,12 +417,18 @@
    "Talk dialog: other text, other pages and other kinds of node are not touched, and a dialog opened later is swapped too",
    "admin Overview: other text, other pages, other kinds of node and English pages are not touched; a list that renders later is swapped too",
    "settings pages, personal and admin: left-menu labels use our dictionaries and exact-sentence map, elsewhere they do not",
+   "named admin pages: other pages, other text, skipped elements and the other language are not touched; text that renders later is swapped",
+   "named admin pages, English: only the product name changes",
+   "Files settings dialog: the three texts that Files reads before our dictionary is loaded are swapped, on Files pages and in the dialog only",
    "English pages: the Arabic name and slogan are swapped in the title; on the login page everywhere, on public pages only in header and footer, never in editable content",
    "personal settings footer: the reasons link is renamed and the \"developed by\" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph",
    "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution",
    "Talk dialog: other text, other pages and other kinds of node are not touched, and a dialog opened later is swapped too",
    "admin Overview: other text, other pages, other kinds of node and English pages are not touched; a list that renders later is swapped too",
-   "settings pages, personal and admin: left-menu labels use our dictionaries and exact-sentence map, elsewhere they do not"
+   "settings pages, personal and admin: left-menu labels use our dictionaries and exact-sentence map, elsewhere they do not",
+   "named admin pages: other pages, other text, skipped elements and the other language are not touched; text that renders later is swapped",
+   "named admin pages, English: only the product name changes",
+   "Files settings dialog: the three texts that Files reads before our dictionary is loaded are swapped, on Files pages and in the dialog only"
   ]
  },
  "J15": {
@@ -929,8 +943,14 @@
   "failed": [
    "settings pages, personal and admin: left-menu labels use our dictionaries and exact-sentence map, elsewhere they do not",
    "build: phpTexts and phpFixes of the data are one sentence map in each built script, and the swaps are built in",
+   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the owner-approved one",
+   "named admin pages: other pages, other text, skipped elements and the other language are not touched; text that renders later is swapped",
+   "Files settings dialog: the three texts that Files reads before our dictionary is loaded are swapped, on Files pages and in the dialog only",
    "settings pages, personal and admin: left-menu labels use our dictionaries and exact-sentence map, elsewhere they do not",
-   "build: phpTexts and phpFixes of the data are one sentence map in each built script, and the swaps are built in"
+   "build: phpTexts and phpFixes of the data are one sentence map in each built script, and the swaps are built in",
+   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the owner-approved one",
+   "named admin pages: other pages, other text, skipped elements and the other language are not touched; text that renders later is swapped",
+   "Files settings dialog: the three texts that Files reads before our dictionary is loaded are swapped, on Files pages and in the dialog only"
   ]
  },
  "Q11": {
@@ -942,8 +962,12 @@
   "failed": [
    "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution",
    "build: phpTexts and phpFixes of the data are one sentence map in each built script, and the swaps are built in",
+   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the owner-approved one",
+   "named admin pages, English: only the product name changes",
    "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution",
-   "build: phpTexts and phpFixes of the data are one sentence map in each built script, and the swaps are built in"
+   "build: phpTexts and phpFixes of the data are one sentence map in each built script, and the swaps are built in",
+   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the owner-approved one",
+   "named admin pages, English: only the product name changes"
   ]
  },
  "Q12": {
@@ -1248,6 +1272,10 @@
    "admin Overview: other text, other pages, other kinds of node and English pages are not touched; a list that renders later is swapped too",
    "settings pages, personal and admin: left-menu labels use our dictionaries and exact-sentence map, elsewhere they do not",
    "guest pages: the manifest link to the fixed core file is pointed at the Theming manifest; nothing else is",
+   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the owner-approved one",
+   "named admin pages: other pages, other text, skipped elements and the other language are not touched; text that renders later is swapped",
+   "named admin pages, English: only the product name changes",
+   "Files settings dialog: the three texts that Files reads before our dictionary is loaded are swapped, on Files pages and in the dialog only",
    "navigation labels written by the server are translated, nothing else is touched",
    "personal settings footer: the reasons link is renamed and the \"developed by\" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph",
    "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution",
@@ -1256,7 +1284,11 @@
    "admin Overview: the server-built setup check texts are swapped by exact text from our settings entries, at any depth, white space kept",
    "admin Overview: other text, other pages, other kinds of node and English pages are not touched; a list that renders later is swapped too",
    "settings pages, personal and admin: left-menu labels use our dictionaries and exact-sentence map, elsewhere they do not",
-   "guest pages: the manifest link to the fixed core file is pointed at the Theming manifest; nothing else is"
+   "guest pages: the manifest link to the fixed core file is pointed at the Theming manifest; nothing else is",
+   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the owner-approved one",
+   "named admin pages: other pages, other text, skipped elements and the other language are not touched; text that renders later is swapped",
+   "named admin pages, English: only the product name changes",
+   "Files settings dialog: the three texts that Files reads before our dictionary is loaded are swapped, on Files pages and in the dialog only"
   ]
  },
  "T15": {
@@ -1411,6 +1443,204 @@
   "failed": [
    "admin Overview: the server-built setup check texts are swapped by exact text from our settings entries, at any depth, white space kept",
    "admin Overview: the server-built setup check texts are swapped by exact text from our settings entries, at any depth, white space kept"
+  ]
+ },
+ "V01": {
+  "id": "V01",
+  "rule": "named pages: the admin path is anchored at the start",
+  "file": "src/runtime.js",
+  "tests": "named admin pages: other pages, other text",
+  "status": "CAUGHT",
+  "failed": [
+   "named admin pages: other pages, other text, skipped elements and the other language are not touched; text that renders later is swapped",
+   "named admin pages: other pages, other text, skipped elements and the other language are not touched; text that renders later is swapped"
+  ]
+ },
+ "V02": {
+  "id": "V02",
+  "rule": "named pages: the admin path ends at a slash or at the end (drawiox is not drawio)",
+  "file": "src/runtime.js",
+  "tests": "named admin pages: other pages, other text",
+  "status": "CAUGHT",
+  "failed": [
+   "named admin pages: other pages, other text, skipped elements and the other language are not touched; text that renders later is swapped",
+   "named admin pages: other pages, other text, skipped elements and the other language are not touched; text that renders later is swapped"
+  ]
+ },
+ "V03": {
+  "id": "V03",
+  "rule": "named pages: the quick presets page is on the list",
+  "file": "src/runtime.js",
+  "tests": "named admin pages (presets",
+  "status": "CAUGHT",
+  "failed": [
+   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the owner-approved one",
+   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the owner-approved one"
+  ]
+ },
+ "V04": {
+  "id": "V04",
+  "rule": "named pages: the AI page is on the list",
+  "file": "src/runtime.js",
+  "tests": "named admin pages (presets",
+  "status": "CAUGHT",
+  "failed": [
+   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the owner-approved one",
+   "named admin pages, English: only the product name changes",
+   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the owner-approved one",
+   "named admin pages, English: only the product name changes"
+  ]
+ },
+ "V05": {
+  "id": "V05",
+  "rule": "named pages: the Diagramming page is on the list",
+  "file": "src/runtime.js",
+  "tests": "named admin pages (presets",
+  "status": "CAUGHT",
+  "failed": [
+   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the owner-approved one",
+   "named admin pages: other pages, other text, skipped elements and the other language are not touched; text that renders later is swapped",
+   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the owner-approved one",
+   "named admin pages: other pages, other text, skipped elements and the other language are not touched; text that renders later is swapped"
+  ]
+ },
+ "V06": {
+  "id": "V06",
+  "rule": "named pages: the Files path is anchored at the start",
+  "file": "src/runtime.js",
+  "tests": "Files settings dialog",
+  "status": "CAUGHT",
+  "failed": [
+   "Files settings dialog: the three texts that Files reads before our dictionary is loaded are swapped, on Files pages and in the dialog only",
+   "Files settings dialog: the three texts that Files reads before our dictionary is loaded are swapped, on Files pages and in the dialog only"
+  ]
+ },
+ "V07": {
+  "id": "V07",
+  "rule": "named pages: the Files path ends at a slash or at the end (filesx is not files)",
+  "file": "src/runtime.js",
+  "tests": "Files settings dialog",
+  "status": "CAUGHT",
+  "failed": [
+   "Files settings dialog: the three texts that Files reads before our dictionary is loaded are swapped, on Files pages and in the dialog only",
+   "Files settings dialog: the three texts that Files reads before our dictionary is loaded are swapped, on Files pages and in the dialog only"
+  ]
+ },
+ "V08": {
+  "id": "V08",
+  "rule": "named pages: admin texts are swapped only inside the content area",
+  "file": "src/runtime.js",
+  "tests": "named admin pages (presets",
+  "status": "CAUGHT",
+  "failed": [
+   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the owner-approved one",
+   "named admin pages: other pages, other text, skipped elements and the other language are not touched; text that renders later is swapped",
+   "named admin pages, English: only the product name changes",
+   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the owner-approved one",
+   "named admin pages: other pages, other text, skipped elements and the other language are not touched; text that renders later is swapped",
+   "named admin pages, English: only the product name changes"
+  ]
+ },
+ "V09": {
+  "id": "V09",
+  "rule": "named pages: the Files texts are swapped only inside the settings dialog",
+  "file": "src/runtime.js",
+  "tests": "Files settings dialog",
+  "status": "CAUGHT",
+  "failed": [
+   "Files settings dialog: the three texts that Files reads before our dictionary is loaded are swapped, on Files pages and in the dialog only",
+   "Files settings dialog: the three texts that Files reads before our dictionary is loaded are swapped, on Files pages and in the dialog only"
+  ]
+ },
+ "V10": {
+  "id": "V10",
+  "rule": "named pages: nothing is swapped in form fields, editable content, code, options, scripts or styles",
+  "file": "src/runtime.js",
+  "tests": "named admin pages: other pages, other text",
+  "status": "CAUGHT",
+  "failed": [
+   "named admin pages: other pages, other text, skipped elements and the other language are not touched; text that renders later is swapped",
+   "named admin pages: other pages, other text, skipped elements and the other language are not touched; text that renders later is swapped"
+  ]
+ },
+ "V11": {
+  "id": "V11",
+  "rule": "named pages: white space around the text is kept",
+  "file": "src/runtime.js",
+  "tests": "named admin pages (presets",
+  "status": "CAUGHT",
+  "failed": [
+   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the owner-approved one",
+   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the owner-approved one"
+  ]
+ },
+ "V12": {
+  "id": "V12",
+  "rule": "named pages: white space inside the text is collapsed before the lookup",
+  "file": "src/runtime.js",
+  "tests": "named admin pages (presets",
+  "status": "CAUGHT",
+  "failed": [
+   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the owner-approved one",
+   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the owner-approved one"
+  ]
+ },
+ "V13": {
+  "id": "V13",
+  "rule": "named pages: the swap is run for every change of the page",
+  "file": "src/runtime.js",
+  "tests": "named admin pages (presets",
+  "status": "CAUGHT",
+  "failed": [
+   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the owner-approved one",
+   "named admin pages: other pages, other text, skipped elements and the other language are not touched; text that renders later is swapped",
+   "named admin pages, English: only the product name changes",
+   "Files settings dialog: the three texts that Files reads before our dictionary is loaded are swapped, on Files pages and in the dialog only",
+   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the owner-approved one",
+   "named admin pages: other pages, other text, skipped elements and the other language are not touched; text that renders later is swapped",
+   "named admin pages, English: only the product name changes",
+   "Files settings dialog: the three texts that Files reads before our dictionary is loaded are swapped, on Files pages and in the dialog only"
+  ]
+ },
+ "V14": {
+  "id": "V14",
+  "rule": "named pages: a page that is not on the list is left alone (no rule found)",
+  "file": "src/runtime.js",
+  "tests": "named admin pages (presets",
+  "status": "CAUGHT",
+  "failed": [
+   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the owner-approved one",
+   "named admin pages: other pages, other text, skipped elements and the other language are not touched; text that renders later is swapped",
+   "named admin pages, English: only the product name changes",
+   "Files settings dialog: the three texts that Files reads before our dictionary is loaded are swapped, on Files pages and in the dialog only",
+   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the owner-approved one",
+   "named admin pages: other pages, other text, skipped elements and the other language are not touched; text that renders later is swapped",
+   "named admin pages, English: only the product name changes",
+   "Files settings dialog: the three texts that Files reads before our dictionary is loaded are swapped, on Files pages and in the dialog only"
+  ]
+ },
+ "V15": {
+  "id": "V15",
+  "rule": "named pages: a text that equals no key is not changed (lookup is by own key)",
+  "file": "src/runtime.js",
+  "tests": "named admin pages: other pages, other text",
+  "status": "CAUGHT",
+  "failed": [
+   "named admin pages: other pages, other text, skipped elements and the other language are not touched; text that renders later is swapped",
+   "Files settings dialog: the three texts that Files reads before our dictionary is loaded are swapped, on Files pages and in the dialog only",
+   "named admin pages: other pages, other text, skipped elements and the other language are not touched; text that renders later is swapped",
+   "Files settings dialog: the three texts that Files reads before our dictionary is loaded are swapped, on Files pages and in the dialog only"
+  ]
+ },
+ "V16": {
+  "id": "V16",
+  "rule": "owner-approved wording: whiteboards setting uses تمكين",
+  "file": "data/ar.json",
+  "tests": "named admin pages (presets",
+  "status": "CAUGHT",
+  "failed": [
+   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the owner-approved one",
+   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the owner-approved one"
   ]
  }
 }
