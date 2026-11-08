@@ -309,18 +309,44 @@ class DictionaryTest extends TestCase {
 	/** The Talk home illustrations become icons only where the browser can draw them, only for the three known images, and without any request to another site. */
 	public function testTalkIllustrationsBecomeIconsAndFailSafe(): void {
 		$css = str_replace("\r\n", "\n", (string)file_get_contents(self::DIR . '/css/pathlocale.css'));
-		$guard = '@supports selector(:has(*)) and ((mask-image: none) or (-webkit-mask-image: none)) {';
-		$this->assertSame(1, substr_count($css, $guard), 'one feature check');
-		$block = substr($css, (int)strpos($css, $guard));
-		$this->assertSame(substr_count($css, '/img/dashboard/'), substr_count($block, '/img/dashboard/'), 'every rule about the illustrations is inside the feature check');
+		$from = (int)strpos($css, 'reworked for Talk 25');
+		$to = (int)strpos($css, 'owner request 2026-11-08 (D-NC-050');
+		$this->assertTrue($from > 0 && $to > $from, 'the Talk block and the Teams block are both there');
+		$talk = substr($css, $from, $to - $from);
+		$guard = '@supports ((mask-image: none) or (-webkit-mask-image: none)) {';
+		$this->assertSame(1, substr_count($talk, $guard), 'one feature check');
+		$before = substr($talk, 0, (int)strpos($talk, $guard));
+		$block = substr($talk, (int)strpos($talk, $guard));
+		$this->assertSame(0, substr_count($before, '[style*='), 'no rule about the illustrations outside the feature check');
 		foreach (['meetings', 'mentions', 'reminders'] as $img) {
-			$this->assertSame(4, substr_count($block, 'img[src*="/img/dashboard/' . $img . '.png"]'), "$img: panel, image, icon box, icon");
+			$this->assertSame(4, substr_count($block, '[style*="/dashboard/' . $img . '"]'), "$img: panel, icon box, faded icon box, icon");
 		}
-		$this->assertSame(1, substr_count($block, "> img {\n\t\tdisplay: none !important;"), 'the three images are hidden by one rule');
-		$this->assertSame(1, substr_count($block, "{\n\t\tbackground: var(--color-primary-element-light) !important;"), 'the panel colour comes from the theme');
+		$this->assertSame(1, substr_count($block, "\t\t--dashboard-section-image: none !important;\n"), 'the three pictures are switched off by one rule');
+		$this->assertSame(1, substr_count($block, "{\n\t\tbackground: var(--color-primary-element-light);\n"), 'the panel colour comes from the theme');
 		$this->assertSame(1, substr_count($block, "\t\tbackground-color: var(--color-primary-element-light-text);\n"), 'the icon colour comes from the theme');
-		$this->assertSame(6, substr_count($block, 'url("data:image/svg+xml,'), 'three icons, each as mask and -webkit-mask');
+		$this->assertSame(1, substr_count($block, "\t\topacity: 0.2;\n"), 'the icon is faded behind the text where the section is veiled');
+		$this->assertSame(1, substr_count($block, "\t\tmask-position: var(--dashboard-section-image-position, right) center;\n"), 'the icon sits on the side Talk puts its picture (follows the text direction)');
+		$this->assertSame(6, substr_count($block, 'url("data:image/svg+xml,'), 'three icons, each as mask-image and -webkit-mask-image');
 		$this->assertSame(6, substr_count($block, 'url('), 'no other url');
+		$this->assertStringNotContainsString('http', str_replace("xmlns='http://www.w3.org/2000/svg'", '', $block), 'no request to another site');
+	}
+
+	/** The Teams banner picture becomes an icon the same way: only where the browser can draw it, only for the one known image file, no request to another site. */
+	public function testTeamsIllustrationBecomesIconAndFailsSafe(): void {
+		$css = str_replace("\r\n", "\n", (string)file_get_contents(self::DIR . '/css/pathlocale.css'));
+		$from = (int)strpos($css, 'owner request 2026-11-08 (D-NC-050');
+		$this->assertTrue($from > 0, 'the Teams block is there');
+		$teams = substr($css, $from);
+		$guard = '@supports selector(:has(*)) and ((mask-image: none) or (-webkit-mask-image: none)) {';
+		$this->assertSame(1, substr_count($teams, $guard), 'one feature check');
+		$before = substr($teams, 0, (int)strpos($teams, $guard));
+		$block = substr($teams, (int)strpos($teams, $guard));
+		$this->assertSame(0, substr_count($before, 'teams-illustration.svg"]'), 'no rule about the picture outside the feature check');
+		$this->assertSame(3, substr_count($block, ':has(> img[src*="/img/teams-illustration.svg"])'), 'positioned parent, hidden image, icon');
+		$this->assertSame(1, substr_count($block, "{\n\t\tvisibility: hidden !important;\n"), 'the picture is hidden, not removed');
+		$this->assertSame(1, substr_count($block, "\t\tbackground-color: var(--color-primary-element-light-text);\n"), 'the icon colour comes from the theme');
+		$this->assertSame(2, substr_count($block, 'url("data:image/svg+xml,'), 'one icon, as mask and -webkit-mask');
+		$this->assertSame(2, substr_count($block, 'url('), 'no other url');
 		$this->assertStringNotContainsString('http', str_replace("xmlns='http://www.w3.org/2000/svg'", '', $block), 'no request to another site');
 	}
 

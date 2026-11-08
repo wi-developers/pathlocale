@@ -18,10 +18,10 @@ const results = existsSync(join(root, 'tools', 'mutation-results.json'))
 function restartApache() {
 	// apachectl restart signals the main process (SIGHUP) and the exec can report status 129 although the restart worked
 	try {
-		execFileSync('docker', ['compose', 'exec', '-T', 'app', 'apachectl', 'restart'], { cwd: join(root, '..', 'rig'), stdio: 'ignore', env: { ...process.env, MSYS_NO_PATHCONV: '1' } });
+		execFileSync('docker', ['compose', 'exec', '-T', 'app', 'apachectl', 'restart'], { cwd: join(root, '..', process.env.RIG_DIR ?? 'rig'), stdio: 'ignore', env: { ...process.env, MSYS_NO_PATHCONV: '1' } });
 	} catch (e) { /* checked below */ }
 	execFileSync('sleep', ['6']);
-	execFileSync('docker', ['compose', 'exec', '-T', 'app', 'curl', '-sf', '-o', '/dev/null', 'http://localhost/status.php'], { cwd: join(root, '..', 'rig'), env: { ...process.env, MSYS_NO_PATHCONV: '1' } });
+	execFileSync('docker', ['compose', 'exec', '-T', 'app', 'curl', '-sf', '-o', '/dev/null', 'http://localhost/status.php'], { cwd: join(root, '..', process.env.RIG_DIR ?? 'rig'), env: { ...process.env, MSYS_NO_PATHCONV: '1' } });
 }
 
 function run(filter, outFile) {
@@ -29,7 +29,7 @@ function run(filter, outFile) {
 	try {
 		execFileSync('sh', [sh, '--filter', filter], { env: { ...process.env, OUT: outFile }, encoding: 'utf8', timeout: 900000, stdio: ['ignore', 'pipe', 'pipe'] });
 	} catch (e) { /* run-tests.sh prints the tail; the result is read from the output file */ }
-	return execFileSync('docker', ['compose', 'exec', '-T', 'app', 'cat', outFile], { cwd: join(root, '..', 'rig'), encoding: 'utf8', env: { ...process.env, MSYS_NO_PATHCONV: '1' } });
+	return execFileSync('docker', ['compose', 'exec', '-T', 'app', 'cat', outFile], { cwd: join(root, '..', process.env.RIG_DIR ?? 'rig'), encoding: 'utf8', env: { ...process.env, MSYS_NO_PATHCONV: '1' } });
 }
 
 for (const m of mutants) {

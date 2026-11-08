@@ -1062,7 +1062,7 @@
  },
  "K19": {
   "id": "K19",
-  "rule": "css hides the three Talk illustrations",
+  "rule": "css switches off the three Talk pictures (important, so the inline style loses)",
   "file": "css/pathlocale.css",
   "tests": "testTalkIllustrationsBecomeIconsAndFailSafe",
   "status": "CAUGHT",
@@ -1072,7 +1072,7 @@
  },
  "K20": {
   "id": "K20",
-  "rule": "css: each of the three illustrations has its icon",
+  "rule": "css: each of the three pictures has its icon",
   "file": "css/pathlocale.css",
   "tests": "testTalkIllustrationsBecomeIconsAndFailSafe",
   "status": "CAUGHT",
@@ -1092,7 +1092,7 @@
  },
  "K22": {
   "id": "K22",
-  "rule": "css: the icon takes its colour from the theme",
+  "rule": "css: the Talk icon takes its colour from the theme",
   "file": "css/pathlocale.css",
   "tests": "testTalkIllustrationsBecomeIconsAndFailSafe",
   "status": "CAUGHT",
@@ -1102,7 +1102,7 @@
  },
  "K23": {
   "id": "K23",
-  "rule": "css: the icons are inline data, no request to another site",
+  "rule": "css: the Talk icons are inline data, no request to another site",
   "file": "css/pathlocale.css",
   "tests": "testTalkIllustrationsBecomeIconsAndFailSafe",
   "status": "CAUGHT",
@@ -1641,6 +1641,76 @@
   "failed": [
    "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the owner-approved one",
    "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the owner-approved one"
+  ]
+ },
+ "W01": {
+  "id": "W01",
+  "rule": "css: the faded icon behind veiled Talk sections",
+  "file": "css/pathlocale.css",
+  "tests": "testTalkIllustrationsBecomeIconsAndFailSafe",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testTalkIllustrationsBecomeIconsAndFailSafe"
+  ]
+ },
+ "W02": {
+  "id": "W02",
+  "rule": "css: the Talk icon follows the text direction",
+  "file": "css/pathlocale.css",
+  "tests": "testTalkIllustrationsBecomeIconsAndFailSafe",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testTalkIllustrationsBecomeIconsAndFailSafe"
+  ]
+ },
+ "W03": {
+  "id": "W03",
+  "rule": "css: the Teams icon is inside a feature check",
+  "file": "css/pathlocale.css",
+  "tests": "testTeamsIllustrationBecomesIconAndFailsSafe",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testTeamsIllustrationBecomesIconAndFailsSafe"
+  ]
+ },
+ "W04": {
+  "id": "W04",
+  "rule": "css: the Teams picture is hidden, not removed",
+  "file": "css/pathlocale.css",
+  "tests": "testTeamsIllustrationBecomesIconAndFailsSafe",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testTeamsIllustrationBecomesIconAndFailsSafe"
+  ]
+ },
+ "W05": {
+  "id": "W05",
+  "rule": "css: the Teams icon is drawn for the known picture file",
+  "file": "css/pathlocale.css",
+  "tests": "testTeamsIllustrationBecomesIconAndFailsSafe",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testTeamsIllustrationBecomesIconAndFailsSafe"
+  ]
+ },
+ "W06": {
+  "id": "W06",
+  "rule": "css: the Teams icon takes its colour from the theme",
+  "file": "css/pathlocale.css",
+  "tests": "testTeamsIllustrationBecomesIconAndFailsSafe",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testTeamsIllustrationBecomesIconAndFailsSafe"
+  ]
+ },
+ "W07": {
+  "id": "W07",
+  "rule": "css: the Teams icon is inline data, no request to another site",
+  "file": "css/pathlocale.css",
+  "tests": "testTeamsIllustrationBecomesIconAndFailsSafe",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testTeamsIllustrationBecomesIconAndFailsSafe"
   ]
  }
 }

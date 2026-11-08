@@ -1220,7 +1220,7 @@
   "file": "css/pathlocale.css",
   "edits": [
    [
-    "@supports selector(:has(*)) and ((mask-image: none) or (-webkit-mask-image: none)) {",
+    "@supports ((mask-image: none) or (-webkit-mask-image: none)) {",
     "@media all {"
    ]
   ],
@@ -1228,24 +1228,24 @@
  },
  {
   "id": "K19",
-  "rule": "css hides the three Talk illustrations",
+  "rule": "css switches off the three Talk pictures (important, so the inline style loses)",
   "file": "css/pathlocale.css",
   "edits": [
    [
-    "> img {\n\t\tdisplay: none !important;",
-    "> img {\n\t\tdisplay: block !important;"
+    "--dashboard-section-image: none !important;",
+    "--dashboard-section-image: none;"
    ]
   ],
   "tests": "testTalkIllustrationsBecomeIconsAndFailSafe"
  },
  {
   "id": "K20",
-  "rule": "css: each of the three illustrations has its icon",
+  "rule": "css: each of the three pictures has its icon",
   "file": "css/pathlocale.css",
   "edits": [
    [
-    "mentions.png\"])::before {\n\t\t-webkit-mask",
-    "mentions.jpg\"])::before {\n\t\t-webkit-mask"
+    "[style*=\"/dashboard/mentions\"]::before {\n\t\t-webkit-mask-image",
+    "[style*=\"/dashboard/mentions2\"]::before {\n\t\t-webkit-mask-image"
    ]
   ],
   "tests": "testTalkIllustrationsBecomeIconsAndFailSafe"
@@ -1256,32 +1256,32 @@
   "file": "css/pathlocale.css",
   "edits": [
    [
-    "background: var(--color-primary-element-light) !important;",
-    "background: #ffffff !important;"
+    "\t\tbackground: var(--color-primary-element-light);\n\t\t--dashboard-section-image",
+    "\t\tbackground: #ffffff;\n\t\t--dashboard-section-image"
    ]
   ],
   "tests": "testTalkIllustrationsBecomeIconsAndFailSafe"
  },
  {
   "id": "K22",
-  "rule": "css: the icon takes its colour from the theme",
+  "rule": "css: the Talk icon takes its colour from the theme",
   "file": "css/pathlocale.css",
   "edits": [
    [
-    "background-color: var(--color-primary-element-light-text);",
-    "background-color: #ff0000;"
+    "\t\tbackground-color: var(--color-primary-element-light-text);\n\t\tfilter: none !important;",
+    "\t\tbackground-color: #ff0000;\n\t\tfilter: none !important;"
    ]
   ],
   "tests": "testTalkIllustrationsBecomeIconsAndFailSafe"
  },
  {
   "id": "K23",
-  "rule": "css: the icons are inline data, no request to another site",
+  "rule": "css: the Talk icons are inline data, no request to another site",
   "file": "css/pathlocale.css",
   "edits": [
    [
-    "-webkit-mask: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12,20A7,7",
-    "-webkit-mask: url(\"https://example.org/alarm.svg\") center / contain no-repeat;\n\t\tmask-x: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12,20A7,7"
+    "-webkit-mask-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12,20A7,7",
+    "-webkit-mask-image: url(\"https://example.org/alarm.svg\"); x: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12,20A7,7"
    ]
   ],
   "tests": "testTalkIllustrationsBecomeIconsAndFailSafe"
@@ -1790,5 +1790,89 @@
   ],
   "tests": "named admin pages (presets",
   "runner": "js"
+ },
+ {
+  "id": "W01",
+  "rule": "css: the faded icon behind veiled Talk sections",
+  "file": "css/pathlocale.css",
+  "edits": [
+   [
+    "\t\topacity: 0.2;",
+    "\t\topacity: 1;"
+   ]
+  ],
+  "tests": "testTalkIllustrationsBecomeIconsAndFailSafe"
+ },
+ {
+  "id": "W02",
+  "rule": "css: the Talk icon follows the text direction",
+  "file": "css/pathlocale.css",
+  "edits": [
+   [
+    "\t\tmask-position: var(--dashboard-section-image-position, right) center;",
+    "\t\tmask-position: right center;"
+   ]
+  ],
+  "tests": "testTalkIllustrationsBecomeIconsAndFailSafe"
+ },
+ {
+  "id": "W03",
+  "rule": "css: the Teams icon is inside a feature check",
+  "file": "css/pathlocale.css",
+  "edits": [
+   [
+    "@supports selector(:has(*)) and ((mask-image: none) or (-webkit-mask-image: none)) {\n\thtml:root :has(> img[src*=\"/img/teams",
+    "@media all {\n\thtml:root :has(> img[src*=\"/img/teams"
+   ]
+  ],
+  "tests": "testTeamsIllustrationBecomesIconAndFailsSafe"
+ },
+ {
+  "id": "W04",
+  "rule": "css: the Teams picture is hidden, not removed",
+  "file": "css/pathlocale.css",
+  "edits": [
+   [
+    "visibility: hidden !important;",
+    "display: none !important;"
+   ]
+  ],
+  "tests": "testTeamsIllustrationBecomesIconAndFailsSafe"
+ },
+ {
+  "id": "W05",
+  "rule": "css: the Teams icon is drawn for the known picture file",
+  "file": "css/pathlocale.css",
+  "edits": [
+   [
+    ":has(> img[src*=\"/img/teams-illustration.svg\"])::after",
+    ":has(> img[src*=\"/img/teams-illustration.png\"])::after"
+   ]
+  ],
+  "tests": "testTeamsIllustrationBecomesIconAndFailsSafe"
+ },
+ {
+  "id": "W06",
+  "rule": "css: the Teams icon takes its colour from the theme",
+  "file": "css/pathlocale.css",
+  "edits": [
+   [
+    "\t\tbackground-color: var(--color-primary-element-light-text);\n\t\topacity: 0.6;\n\t\t-webkit-mask: url",
+    "\t\tbackground-color: #ff0000;\n\t\topacity: 0.6;\n\t\t-webkit-mask: url"
+   ]
+  ],
+  "tests": "testTeamsIllustrationBecomesIconAndFailsSafe"
+ },
+ {
+  "id": "W07",
+  "rule": "css: the Teams icon is inline data, no request to another site",
+  "file": "css/pathlocale.css",
+  "edits": [
+   [
+    "-webkit-mask: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12,5A3.5",
+    "-webkit-mask: url(\"https://example.org/teams.svg\"); x: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12,5A3.5"
+   ]
+  ],
+  "tests": "testTeamsIllustrationBecomesIconAndFailsSafe"
  }
 ]
