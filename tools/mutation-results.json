@@ -913,7 +913,7 @@
   "failed": [
    "settings pages, personal and admin: left-menu labels use our dictionaries and exact-sentence map, elsewhere they do not",
    "build: phpTexts and phpFixes of the data are one sentence map in each built script, and the swaps are built in",
-   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is pinned (not confirmed by the owner yet)",
+   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the one the owner confirmed on 2026-11-09",
    "named admin pages: other pages, other text, skipped elements and the other language are not touched; text that renders later is swapped",
    "Files settings dialog: the three texts that Files reads before our dictionary is loaded are swapped, on Files pages and in the dialog only",
    "Office start page, 0.1.7: the file-kind names and the headings built around them are swapped by exact text, on Office pages, white space kept",
@@ -925,7 +925,7 @@
    "C4, 0.1.7: a part that throws does not stop the other parts, on the first run and on later changes of the page",
    "settings pages, personal and admin: left-menu labels use our dictionaries and exact-sentence map, elsewhere they do not",
    "build: phpTexts and phpFixes of the data are one sentence map in each built script, and the swaps are built in",
-   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is pinned (not confirmed by the owner yet)",
+   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the one the owner confirmed on 2026-11-09",
    "named admin pages: other pages, other text, skipped elements and the other language are not touched; text that renders later is swapped",
    "Files settings dialog: the three texts that Files reads before our dictionary is loaded are swapped, on Files pages and in the dialog only",
    "Office start page, 0.1.7: the file-kind names and the headings built around them are swapped by exact text, on Office pages, white space kept",
@@ -946,11 +946,11 @@
   "failed": [
    "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution",
    "build: phpTexts and phpFixes of the data are one sentence map in each built script, and the swaps are built in",
-   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is pinned (not confirmed by the owner yet)",
+   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the one the owner confirmed on 2026-11-09",
    "named admin pages, English: only the product name changes",
    "personal settings pages: exact upstream sentences are replaced, nothing else, and not in editable content or the attribution",
    "build: phpTexts and phpFixes of the data are one sentence map in each built script, and the swaps are built in",
-   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is pinned (not confirmed by the owner yet)",
+   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the one the owner confirmed on 2026-11-09",
    "named admin pages, English: only the product name changes"
   ]
  },
@@ -1450,8 +1450,8 @@
   "tests": "named admin pages (presets",
   "status": "CAUGHT",
   "failed": [
-   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is pinned (not confirmed by the owner yet)",
-   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is pinned (not confirmed by the owner yet)"
+   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the one the owner confirmed on 2026-11-09",
+   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the one the owner confirmed on 2026-11-09"
   ]
  },
  "V04": {
@@ -1461,9 +1461,9 @@
   "tests": "named admin pages (presets",
   "status": "CAUGHT",
   "failed": [
-   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is pinned (not confirmed by the owner yet)",
+   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the one the owner confirmed on 2026-11-09",
    "named admin pages, English: only the product name changes",
-   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is pinned (not confirmed by the owner yet)",
+   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the one the owner confirmed on 2026-11-09",
    "named admin pages, English: only the product name changes"
   ]
  },
@@ -1474,11 +1474,11 @@
   "tests": "named admin pages (presets",
   "status": "CAUGHT",
   "failed": [
-   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is pinned (not confirmed by the owner yet)",
+   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the one the owner confirmed on 2026-11-09",
    "named admin pages: other pages, other text, skipped elements and the other language are not touched; text that renders later is swapped",
    "C4, 0.1.7: a part that throws does not stop the other parts, on the first run and on later changes of the page",
    "text-node walkers (item 10 of D-NC-040): all three ask the browser for text nodes only (whatToShow 4)",
-   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is pinned (not confirmed by the owner yet)",
+   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the one the owner confirmed on 2026-11-09",
    "named admin pages: other pages, other text, skipped elements and the other language are not touched; text that renders later is swapped",
    "C4, 0.1.7: a part that throws does not stop the other parts, on the first run and on later changes of the page",
    "text-node walkers (item 10 of D-NC-040): all three ask the browser for text nodes only (whatToShow 4)"
@@ -1513,13 +1513,13 @@
   "tests": "named admin pages (presets",
   "status": "CAUGHT",
   "failed": [
-   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is pinned (not confirmed by the owner yet)",
+   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the one the owner confirmed on 2026-11-09",
    "named admin pages: other pages, other text, skipped elements and the other language are not touched; text that renders later is swapped",
    "named admin pages, English: only the product name changes",
    "Office admin page, 0.1.7: the hard-coded note \"(Determined from the browser URL)\" is swapped there; English pages keep it",
    "C4, 0.1.7: a part that throws does not stop the other parts, on the first run and on later changes of the page",
    "text-node walkers (item 10 of D-NC-040): all three ask the browser for text nodes only (whatToShow 4)",
-   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is pinned (not confirmed by the owner yet)",
+   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the one the owner confirmed on 2026-11-09",
    "named admin pages: other pages, other text, skipped elements and the other language are not touched; text that renders later is swapped",
    "named admin pages, English: only the product name changes",
    "Office admin page, 0.1.7: the hard-coded note \"(Determined from the browser URL)\" is swapped there; English pages keep it",
@@ -1558,9 +1558,9 @@
   "tests": "named admin pages (presets",
   "status": "CAUGHT",
   "failed": [
-   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is pinned (not confirmed by the owner yet)",
+   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the one the owner confirmed on 2026-11-09",
    "Office start page, 0.1.7: the file-kind names and the headings built around them are swapped by exact text, on Office pages, white space kept",
-   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is pinned (not confirmed by the owner yet)",
+   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the one the owner confirmed on 2026-11-09",
    "Office start page, 0.1.7: the file-kind names and the headings built around them are swapped by exact text, on Office pages, white space kept"
   ]
  },
@@ -1571,8 +1571,8 @@
   "tests": "named admin pages (presets",
   "status": "CAUGHT",
   "failed": [
-   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is pinned (not confirmed by the owner yet)",
-   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is pinned (not confirmed by the owner yet)"
+   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the one the owner confirmed on 2026-11-09",
+   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the one the owner confirmed on 2026-11-09"
   ]
  },
  "V13": {
@@ -1582,20 +1582,22 @@
   "tests": "named admin pages (presets",
   "status": "CAUGHT",
   "failed": [
-   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is pinned (not confirmed by the owner yet)",
+   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the one the owner confirmed on 2026-11-09",
    "named admin pages: other pages, other text, skipped elements and the other language are not touched; text that renders later is swapped",
    "named admin pages, English: only the product name changes",
    "Files settings dialog: the three texts that Files reads before our dictionary is loaded are swapped, on Files pages and in the dialog only",
    "Office start page, 0.1.7: the file-kind names and the headings built around them are swapped by exact text, on Office pages, white space kept",
+   "Office start page, 0.1.7: other pages, file and template names (outside the menu, heading and empty list), form fields and English pages are not touched",
    "Calendar settings dialog, 0.1.7: the \"Keyboard shortcuts\" heading of the shared component library is swapped, on Calendar pages and in the dialog only",
    "Office admin page, 0.1.7: the hard-coded note \"(Determined from the browser URL)\" is swapped there; English pages keep it",
    "C4, 0.1.7: a part that throws does not stop the other parts, on the first run and on later changes of the page",
    "text-node walkers (item 10 of D-NC-040): all three ask the browser for text nodes only (whatToShow 4)",
-   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is pinned (not confirmed by the owner yet)",
+   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the one the owner confirmed on 2026-11-09",
    "named admin pages: other pages, other text, skipped elements and the other language are not touched; text that renders later is swapped",
    "named admin pages, English: only the product name changes",
    "Files settings dialog: the three texts that Files reads before our dictionary is loaded are swapped, on Files pages and in the dialog only",
    "Office start page, 0.1.7: the file-kind names and the headings built around them are swapped by exact text, on Office pages, white space kept",
+   "Office start page, 0.1.7: other pages, file and template names (outside the menu, heading and empty list), form fields and English pages are not touched",
    "Calendar settings dialog, 0.1.7: the \"Keyboard shortcuts\" heading of the shared component library is swapped, on Calendar pages and in the dialog only",
    "Office admin page, 0.1.7: the hard-coded note \"(Determined from the browser URL)\" is swapped there; English pages keep it",
    "C4, 0.1.7: a part that throws does not stop the other parts, on the first run and on later changes of the page",
@@ -1609,20 +1611,22 @@
   "tests": "named admin pages (presets",
   "status": "CAUGHT",
   "failed": [
-   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is pinned (not confirmed by the owner yet)",
+   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the one the owner confirmed on 2026-11-09",
    "named admin pages: other pages, other text, skipped elements and the other language are not touched; text that renders later is swapped",
    "named admin pages, English: only the product name changes",
    "Files settings dialog: the three texts that Files reads before our dictionary is loaded are swapped, on Files pages and in the dialog only",
    "Office start page, 0.1.7: the file-kind names and the headings built around them are swapped by exact text, on Office pages, white space kept",
+   "Office start page, 0.1.7: other pages, file and template names (outside the menu, heading and empty list), form fields and English pages are not touched",
    "Calendar settings dialog, 0.1.7: the \"Keyboard shortcuts\" heading of the shared component library is swapped, on Calendar pages and in the dialog only",
    "Office admin page, 0.1.7: the hard-coded note \"(Determined from the browser URL)\" is swapped there; English pages keep it",
    "C4, 0.1.7: a part that throws does not stop the other parts, on the first run and on later changes of the page",
    "text-node walkers (item 10 of D-NC-040): all three ask the browser for text nodes only (whatToShow 4)",
-   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is pinned (not confirmed by the owner yet)",
+   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the one the owner confirmed on 2026-11-09",
    "named admin pages: other pages, other text, skipped elements and the other language are not touched; text that renders later is swapped",
    "named admin pages, English: only the product name changes",
    "Files settings dialog: the three texts that Files reads before our dictionary is loaded are swapped, on Files pages and in the dialog only",
    "Office start page, 0.1.7: the file-kind names and the headings built around them are swapped by exact text, on Office pages, white space kept",
+   "Office start page, 0.1.7: other pages, file and template names (outside the menu, heading and empty list), form fields and English pages are not touched",
    "Calendar settings dialog, 0.1.7: the \"Keyboard shortcuts\" heading of the shared component library is swapped, on Calendar pages and in the dialog only",
    "Office admin page, 0.1.7: the hard-coded note \"(Determined from the browser URL)\" is swapped there; English pages keep it",
    "C4, 0.1.7: a part that throws does not stop the other parts, on the first run and on later changes of the page",
@@ -1799,7 +1803,7 @@
  },
  "X07": {
   "id": "X07",
-  "rule": "C4: a part that throws does not stop the others",
+  "rule": "C4: a part that throws does not stop the others (0.1.8: the catch also logs at debug level)",
   "file": "src/runtime.js",
   "tests": "C4, 0.1.7: a part that throws",
   "status": "CAUGHT",
@@ -1829,7 +1833,9 @@
   "status": "CAUGHT",
   "failed": [
    "Office start page, 0.1.7: the file-kind names and the headings built around them are swapped by exact text, on Office pages, white space kept",
-   "Office start page, 0.1.7: the file-kind names and the headings built around them are swapped by exact text, on Office pages, white space kept"
+   "Office start page, 0.1.7: other pages, file and template names (outside the menu, heading and empty list), form fields and English pages are not touched",
+   "Office start page, 0.1.7: the file-kind names and the headings built around them are swapped by exact text, on Office pages, white space kept",
+   "Office start page, 0.1.7: other pages, file and template names (outside the menu, heading and empty list), form fields and English pages are not touched"
   ]
  },
  "X10": {
@@ -1862,7 +1868,9 @@
   "status": "CAUGHT",
   "failed": [
    "Office start page, 0.1.7: the file-kind names and the headings built around them are swapped by exact text, on Office pages, white space kept",
-   "Office start page, 0.1.7: the file-kind names and the headings built around them are swapped by exact text, on Office pages, white space kept"
+   "Office start page, 0.1.7: other pages, file and template names (outside the menu, heading and empty list), form fields and English pages are not touched",
+   "Office start page, 0.1.7: the file-kind names and the headings built around them are swapped by exact text, on Office pages, white space kept",
+   "Office start page, 0.1.7: other pages, file and template names (outside the menu, heading and empty list), form fields and English pages are not touched"
   ]
  },
  "X13": {

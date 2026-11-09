@@ -1955,11 +1955,11 @@
  },
  {
   "id": "X07",
-  "rule": "C4: a part that throws does not stop the others",
+  "rule": "C4: a part that throws does not stop the others (0.1.8: the catch also logs at debug level)",
   "file": "src/runtime.js",
   "edits": [
    [
-    "try { part(root); } catch { /* fail safe: the texts of this part stay as the page printed them */ }",
+    "try { part(root); } catch (e) { /* fail safe: the texts of this part stay as the page printed them; the reason goes to the console at debug level */ if (typeof console !== 'undefined' && console.debug) console.debug('pathlocale: a part failed', e); }",
     "part(root);"
    ]
   ],
