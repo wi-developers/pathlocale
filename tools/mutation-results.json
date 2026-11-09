@@ -1208,8 +1208,12 @@
   "failed": [
    "admin Overview: the server-built setup check texts are swapped by exact text from our settings entries, at any depth, white space kept",
    "admin Overview: other text, other pages, other kinds of node and English pages are not touched; a list that renders later is swapped too",
+   "C2, 0.1.7: admin Overview leaves the text inside a style element alone",
+   "C2, 0.1.7: admin Overview on English pages renames the product in a setup-check text that our English settings entries hold word for word",
    "admin Overview: the server-built setup check texts are swapped by exact text from our settings entries, at any depth, white space kept",
-   "admin Overview: other text, other pages, other kinds of node and English pages are not touched; a list that renders later is swapped too"
+   "admin Overview: other text, other pages, other kinds of node and English pages are not touched; a list that renders later is swapped too",
+   "C2, 0.1.7: admin Overview leaves the text inside a style element alone",
+   "C2, 0.1.7: admin Overview on English pages renames the product in a setup-check text that our English settings entries hold word for word"
   ]
  },
  "T09": {
@@ -1253,7 +1257,9 @@
   "status": "CAUGHT",
   "failed": [
    "settings pages, personal and admin: left-menu labels use our dictionaries and exact-sentence map, elsewhere they do not",
-   "settings pages, personal and admin: left-menu labels use our dictionaries and exact-sentence map, elsewhere they do not"
+   "C2, 0.1.7: menu link titles use the dictionaries the same way as the labels",
+   "settings pages, personal and admin: left-menu labels use our dictionaries and exact-sentence map, elsewhere they do not",
+   "C2, 0.1.7: menu link titles use the dictionaries the same way as the labels"
   ]
  },
  "T14": {
@@ -1343,7 +1349,9 @@
   "status": "CAUGHT",
   "failed": [
    "guest pages: the manifest link to the fixed core file is pointed at the Theming manifest; nothing else is",
-   "guest pages: the manifest link to the fixed core file is pointed at the Theming manifest; nothing else is"
+   "C4, 0.1.7: when one start step throws (title swap on an English guest page), the language link and the manifest link are still made",
+   "guest pages: the manifest link to the fixed core file is pointed at the Theming manifest; nothing else is",
+   "C4, 0.1.7: when one start step throws (title swap on an English guest page), the language link and the manifest link are still made"
   ]
  },
  "T20": {
@@ -1596,10 +1604,18 @@
    "named admin pages: other pages, other text, skipped elements and the other language are not touched; text that renders later is swapped",
    "named admin pages, English: only the product name changes",
    "Files settings dialog: the three texts that Files reads before our dictionary is loaded are swapped, on Files pages and in the dialog only",
+   "Office start page, 0.1.7: the file-kind names and the headings built around them are swapped by exact text, on Office pages, white space kept",
+   "Calendar settings dialog, 0.1.7: the \"Keyboard shortcuts\" heading of the shared component library is swapped, on Calendar pages and in the dialog only",
+   "Office admin page, 0.1.7: the hard-coded note \"(Determined from the browser URL)\" is swapped there; English pages keep it",
+   "C4, 0.1.7: a part that throws does not stop the other parts, on the first run and on later changes of the page",
    "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the owner-approved one",
    "named admin pages: other pages, other text, skipped elements and the other language are not touched; text that renders later is swapped",
    "named admin pages, English: only the product name changes",
-   "Files settings dialog: the three texts that Files reads before our dictionary is loaded are swapped, on Files pages and in the dialog only"
+   "Files settings dialog: the three texts that Files reads before our dictionary is loaded are swapped, on Files pages and in the dialog only",
+   "Office start page, 0.1.7: the file-kind names and the headings built around them are swapped by exact text, on Office pages, white space kept",
+   "Calendar settings dialog, 0.1.7: the \"Keyboard shortcuts\" heading of the shared component library is swapped, on Calendar pages and in the dialog only",
+   "Office admin page, 0.1.7: the hard-coded note \"(Determined from the browser URL)\" is swapped there; English pages keep it",
+   "C4, 0.1.7: a part that throws does not stop the other parts, on the first run and on later changes of the page"
   ]
  },
  "V14": {
@@ -1634,13 +1650,13 @@
  },
  "V16": {
   "id": "V16",
-  "rule": "owner-approved wording: whiteboards setting uses تمكين",
+  "rule": "wording pinned, not confirmed by the owner yet: whiteboards setting uses تمكين",
   "file": "data/ar.json",
   "tests": "named admin pages (presets",
   "status": "CAUGHT",
   "failed": [
-   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the owner-approved one",
-   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the owner-approved one"
+   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is pinned (not confirmed by the owner yet)",
+   "named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is pinned (not confirmed by the owner yet)"
   ]
  },
  "W01": {
@@ -1711,6 +1727,302 @@
   "status": "CAUGHT",
   "failed": [
    "DictionaryTest::testTeamsIllustrationBecomesIconAndFailsSafe"
+  ]
+ },
+ "X01": {
+  "id": "X01",
+  "rule": "C1: the menu fallback runs on the personal and admin settings pages only, not on the accounts or apps pages",
+  "file": "src/runtime.js",
+  "tests": "settings pages, personal and admin",
+  "status": "CAUGHT",
+  "failed": [
+   "settings pages, personal and admin: left-menu labels use our dictionaries and exact-sentence map, elsewhere they do not",
+   "C2, 0.1.7: menu link titles use the dictionaries the same way as the labels",
+   "settings pages, personal and admin: left-menu labels use our dictionaries and exact-sentence map, elsewhere they do not",
+   "C2, 0.1.7: menu link titles use the dictionaries the same way as the labels"
+  ]
+ },
+ "X02": {
+  "id": "X02",
+  "rule": "C2: a menu label is swapped only when it is one text node",
+  "file": "src/runtime.js",
+  "tests": "C2, 0.1.7: a menu label is swapped only",
+  "status": "CAUGHT",
+  "failed": [
+   "C2, 0.1.7: a menu label is swapped only when it is one text node; a label with an icon or other markup inside is left alone",
+   "C2, 0.1.7: a menu label is swapped only when it is one text node; a label with an icon or other markup inside is left alone"
+  ]
+ },
+ "X03": {
+  "id": "X03",
+  "rule": "C2: white space inside a menu label is collapsed before the sentence-map lookup",
+  "file": "src/runtime.js",
+  "tests": "C2, 0.1.7: a menu label that breaks",
+  "status": "CAUGHT",
+  "failed": [
+   "C2, 0.1.7: a menu label that breaks over lines is found in the sentence map after its white space is collapsed",
+   "C2, 0.1.7: a menu label that breaks over lines is found in the sentence map after its white space is collapsed"
+  ]
+ },
+ "X04": {
+  "id": "X04",
+  "rule": "C2: admin setup checks: nothing inside a style element is swapped",
+  "file": "src/runtime.js",
+  "tests": "C2, 0.1.7: admin Overview leaves",
+  "status": "CAUGHT",
+  "failed": [
+   "C2, 0.1.7: admin Overview leaves the text inside a style element alone",
+   "C2, 0.1.7: admin Overview leaves the text inside a style element alone"
+  ]
+ },
+ "X05": {
+  "id": "X05",
+  "rule": "C2: menu link titles are translated",
+  "file": "src/runtime.js",
+  "tests": "C2, 0.1.7: menu link titles",
+  "status": "CAUGHT",
+  "failed": [
+   "C2, 0.1.7: menu link titles use the dictionaries the same way as the labels",
+   "C2, 0.1.7: menu link titles use the dictionaries the same way as the labels"
+  ]
+ },
+ "X06": {
+  "id": "X06",
+  "rule": "C2: admin setup checks are not Arabic-only (English entries rename the product)",
+  "file": "src/runtime.js",
+  "tests": "C2, 0.1.7: admin Overview on English",
+  "status": "CAUGHT",
+  "failed": [
+   "C2, 0.1.7: admin Overview on English pages renames the product in a setup-check text that our English settings entries hold word for word",
+   "C2, 0.1.7: admin Overview on English pages renames the product in a setup-check text that our English settings entries hold word for word"
+  ]
+ },
+ "X07": {
+  "id": "X07",
+  "rule": "C4: a part that throws does not stop the others",
+  "file": "src/runtime.js",
+  "tests": "C4, 0.1.7: a part that throws",
+  "status": "CAUGHT",
+  "failed": [
+   "C4, 0.1.7: a part that throws does not stop the other parts, on the first run and on later changes of the page",
+   "C4, 0.1.7: when one start step throws (title swap on an English guest page), the language link and the manifest link are still made",
+   "C4, 0.1.7: a part that throws does not stop the other parts, on the first run and on later changes of the page",
+   "C4, 0.1.7: when one start step throws (title swap on an English guest page), the language link and the manifest link are still made"
+  ]
+ },
+ "X08": {
+  "id": "X08",
+  "rule": "C4: the start steps run on their own",
+  "file": "src/runtime.js",
+  "tests": "C4, 0.1.7: when one start step",
+  "status": "CAUGHT",
+  "failed": [
+   "C4, 0.1.7: when one start step throws (title swap on an English guest page), the language link and the manifest link are still made",
+   "C4, 0.1.7: when one start step throws (title swap on an English guest page), the language link and the manifest link are still made"
+  ]
+ },
+ "X09": {
+  "id": "X09",
+  "rule": "Office start page is on the list",
+  "file": "src/runtime.js",
+  "tests": "Office start page, 0.1.7: the file-kind names",
+  "status": "CAUGHT",
+  "failed": [
+   "Office start page, 0.1.7: the file-kind names and the headings built around them are swapped by exact text, on Office pages, white space kept",
+   "Office start page, 0.1.7: the file-kind names and the headings built around them are swapped by exact text, on Office pages, white space kept"
+  ]
+ },
+ "X10": {
+  "id": "X10",
+  "rule": "Office start page: the path is anchored at the start",
+  "file": "src/runtime.js",
+  "tests": "Office start page, 0.1.7: other pages",
+  "status": "CAUGHT",
+  "failed": [
+   "Office start page, 0.1.7: other pages, file and template names (outside the menu, heading and empty list), form fields and English pages are not touched",
+   "Office start page, 0.1.7: other pages, file and template names (outside the menu, heading and empty list), form fields and English pages are not touched"
+  ]
+ },
+ "X11": {
+  "id": "X11",
+  "rule": "Office start page: the path ends at a slash or at the end (officex is not office)",
+  "file": "src/runtime.js",
+  "tests": "Office start page, 0.1.7: other pages",
+  "status": "CAUGHT",
+  "failed": [
+   "Office start page, 0.1.7: other pages, file and template names (outside the menu, heading and empty list), form fields and English pages are not touched",
+   "Office start page, 0.1.7: other pages, file and template names (outside the menu, heading and empty list), form fields and English pages are not touched"
+  ]
+ },
+ "X12": {
+  "id": "X12",
+  "rule": "Office start page: swapped only in the menu, the list heading and the empty list",
+  "file": "src/runtime.js",
+  "tests": "Office start page, 0.1.7: the file-kind names",
+  "status": "CAUGHT",
+  "failed": [
+   "Office start page, 0.1.7: the file-kind names and the headings built around them are swapped by exact text, on Office pages, white space kept",
+   "Office start page, 0.1.7: the file-kind names and the headings built around them are swapped by exact text, on Office pages, white space kept"
+  ]
+ },
+ "X13": {
+  "id": "X13",
+  "rule": "Calendar settings dialog is on the list",
+  "file": "src/runtime.js",
+  "tests": "Calendar settings dialog, 0.1.7",
+  "status": "CAUGHT",
+  "failed": [
+   "Calendar settings dialog, 0.1.7: the \"Keyboard shortcuts\" heading of the shared component library is swapped, on Calendar pages and in the dialog only",
+   "Calendar settings dialog, 0.1.7: the \"Keyboard shortcuts\" heading of the shared component library is swapped, on Calendar pages and in the dialog only"
+  ]
+ },
+ "X14": {
+  "id": "X14",
+  "rule": "Calendar settings dialog: the path is anchored at the start",
+  "file": "src/runtime.js",
+  "tests": "Calendar settings dialog, 0.1.7",
+  "status": "CAUGHT",
+  "failed": [
+   "Calendar settings dialog, 0.1.7: the \"Keyboard shortcuts\" heading of the shared component library is swapped, on Calendar pages and in the dialog only",
+   "Calendar settings dialog, 0.1.7: the \"Keyboard shortcuts\" heading of the shared component library is swapped, on Calendar pages and in the dialog only"
+  ]
+ },
+ "X15": {
+  "id": "X15",
+  "rule": "Calendar settings dialog: the path ends at a slash or at the end (calendarx is not calendar)",
+  "file": "src/runtime.js",
+  "tests": "Calendar settings dialog, 0.1.7",
+  "status": "CAUGHT",
+  "failed": [
+   "Calendar settings dialog, 0.1.7: the \"Keyboard shortcuts\" heading of the shared component library is swapped, on Calendar pages and in the dialog only",
+   "Calendar settings dialog, 0.1.7: the \"Keyboard shortcuts\" heading of the shared component library is swapped, on Calendar pages and in the dialog only"
+  ]
+ },
+ "X16": {
+  "id": "X16",
+  "rule": "Calendar settings dialog: swapped only inside the dialog",
+  "file": "src/runtime.js",
+  "tests": "Calendar settings dialog, 0.1.7",
+  "status": "CAUGHT",
+  "failed": [
+   "Calendar settings dialog, 0.1.7: the \"Keyboard shortcuts\" heading of the shared component library is swapped, on Calendar pages and in the dialog only",
+   "Calendar settings dialog, 0.1.7: the \"Keyboard shortcuts\" heading of the shared component library is swapped, on Calendar pages and in the dialog only"
+  ]
+ },
+ "X17": {
+  "id": "X17",
+  "rule": "data: the Office list heading of the diagram kind has an Arabic entry",
+  "file": "data/ar.json",
+  "tests": "Office start page, 0.1.7: the file-kind names",
+  "status": "CAUGHT",
+  "failed": [
+   "Office start page, 0.1.7: the file-kind names and the headings built around them are swapped by exact text, on Office pages, white space kept",
+   "Office start page, 0.1.7: the file-kind names and the headings built around them are swapped by exact text, on Office pages, white space kept"
+  ]
+ },
+ "X18": {
+  "id": "X18",
+  "rule": "data: the reduced-motion title of the Appearance page has an Arabic entry in the sentence map",
+  "file": "data/ar.json",
+  "tests": "Appearance page, 0.1.7",
+  "status": "CAUGHT",
+  "failed": [
+   "Appearance page, 0.1.7, Theming 3.0.0: the server-built texts of the reduced-motion theme are swapped on personal settings pages, with the wording of the theming dictionary",
+   "Appearance page, 0.1.7, Theming 3.0.0: the server-built texts of the reduced-motion theme are swapped on personal settings pages, with the wording of the theming dictionary"
+  ]
+ },
+ "X19": {
+  "id": "X19",
+  "rule": "data: the Office admin note has an Arabic entry",
+  "file": "data/ar.json",
+  "tests": "Office admin page, 0.1.7",
+  "status": "CAUGHT",
+  "failed": [
+   "Office admin page, 0.1.7: the hard-coded note \"(Determined from the browser URL)\" is swapped there; English pages keep it",
+   "Office admin page, 0.1.7: the hard-coded note \"(Determined from the browser URL)\" is swapped there; English pages keep it"
+  ]
+ },
+ "X20": {
+  "id": "X20",
+  "rule": "data: the Matterbridge sentence names the platform for the product word",
+  "file": "data/ar.json",
+  "tests": "testKeepAndRenameSentences",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testKeepAndRenameSentences"
+  ]
+ },
+ "X21": {
+  "id": "X21",
+  "rule": "data: the Matterbridge sentence keeps the name of the upstream App Store",
+  "file": "data/ar.json",
+  "tests": "testCompanyAndCommunityNamesAreKept",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testCompanyAndCommunityNamesAreKept"
+  ]
+ },
+ "Y01": {
+  "id": "Y01",
+  "rule": "css: the badge gap is a logical margin (a physical left margin is on the wrong side in Arabic)",
+  "file": "css/pathlocale.css",
+  "tests": "testTalkBetaBadgesGetTheirSpaceBack",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testTalkBetaBadgesGetTheirSpaceBack"
+  ]
+ },
+ "Y02": {
+  "id": "Y02",
+  "rule": "css: the badge gap also covers the federation heading",
+  "file": "css/pathlocale.css",
+  "tests": "testTalkBetaBadgesGetTheirSpaceBack",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testTalkBetaBadgesGetTheirSpaceBack"
+  ]
+ },
+ "Y03": {
+  "id": "Y03",
+  "rule": "css: the badge gap applies to those two sections only",
+  "file": "css/pathlocale.css",
+  "tests": "testTalkBetaBadgesGetTheirSpaceBack",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testTalkBetaBadgesGetTheirSpaceBack"
+  ]
+ },
+ "Z01": {
+  "id": "Z01",
+  "rule": "runtime: the personal settings walker sees text nodes only",
+  "file": "src/runtime.js",
+  "tests": "text-node walkers",
+  "status": "CAUGHT",
+  "failed": [
+   "text-node walkers (item 10 of D-NC-040): all three ask the browser for text nodes only (whatToShow 4)",
+   "text-node walkers (item 10 of D-NC-040): all three ask the browser for text nodes only (whatToShow 4)"
+  ]
+ },
+ "Z02": {
+  "id": "Z02",
+  "rule": "runtime: the named-page walker sees text nodes only",
+  "file": "src/runtime.js",
+  "tests": "text-node walkers",
+  "status": "CAUGHT",
+  "failed": [
+   "text-node walkers (item 10 of D-NC-040): all three ask the browser for text nodes only (whatToShow 4)",
+   "text-node walkers (item 10 of D-NC-040): all three ask the browser for text nodes only (whatToShow 4)"
+  ]
+ },
+ "Z03": {
+  "id": "Z03",
+  "rule": "runtime: the guest-page walker sees text nodes only",
+  "file": "src/runtime.js",
+  "tests": "text-node walkers",
+  "status": "CAUGHT",
+  "failed": [
+   "text-node walkers (item 10 of D-NC-040): all three ask the browser for text nodes only (whatToShow 4)",
+   "text-node walkers (item 10 of D-NC-040): all three ask the browser for text nodes only (whatToShow 4)"
   ]
  }
 }

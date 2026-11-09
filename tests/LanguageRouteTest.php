@@ -28,7 +28,8 @@ class LanguageRouteTest extends PathlocaleTestCase {
 			$this->assertStringContainsStringIgnoringCase('secure', $cookie);
 			$this->assertStringContainsStringIgnoringCase('httponly', $cookie);
 			$this->assertStringContainsStringIgnoringCase('samesite=lax', $cookie);
-			$this->assertStringContainsString('Max-Age=' . GuestLanguage::MAX_AGE, $cookie);
+			// one second less when the response is built just after a clock second has passed
+			$this->assertMatchesRegularExpression('/Max-Age=(' . GuestLanguage::MAX_AGE . '|' . (GuestLanguage::MAX_AGE - 1) . ')(;|$)/', $cookie);
 			$this->assertStringContainsString('path=/', $cookie);
 		}
 	}

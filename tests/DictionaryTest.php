@@ -22,6 +22,11 @@ class DictionaryTest extends TestCase {
 	private const PRODUCT_TOKEN_DROPPED = [
 		'You can share with anyone who uses a {productName} server or other Open Cloud Mesh (OCM) compatible servers and services! Just put their Federated Cloud ID in the share dialog. It looks like person@cloud.example.com',
 	];
+	/** Keep-list sentences that also name the product itself (0.1.7, owner decision D-NC-050): the product word is renamed, the upstream name stays where
+	 * the sentence states a fact about upstream (D-NC-017). Key => the Arabic part that keeps the upstream name, word for word. */
+	private const KEEP_AND_RENAME = [
+		'You can install the Matterbridge to link Nextcloud Talk to some other services, visit their {linkstart1}GitHub page{linkend} for more details. Downloading and installing the app can take a while. In case it times out, please install it manually from the {linkstart2}Nextcloud App Store{linkend}.' => '{linkstart2}متجر تطبيقات Nextcloud{linkend}',
+	];
 	/** The texts of the Talk "new conversation" dialog that the server builds; the runtime swaps them from the spreed entries. */
 	private const TALK_TYPE_TEXTS = [
 		'Send messages, create threads, and start voice and video calls.',
@@ -186,6 +191,12 @@ class DictionaryTest extends TestCase {
 					continue;
 				}
 				$found++;
+				if (isset(self::KEEP_AND_RENAME[$key])) {
+					$this->assertStringContainsString(self::KEEP_AND_RENAME[$key], (string)$value, "$app: the upstream name stays where the sentence is about upstream");
+					$this->assertSame(1, substr_count((string)$value, 'Nextcloud'), "$app: only that part keeps the upstream name");
+					$this->assertSame(1, substr_count((string)$value, 'منصة بث'), "$app: the product word is renamed once");
+					continue;
+				}
 				$this->assertSame(0, preg_match('/منصة بث|Path platform/u', implode(' ', (array)$value)), "$app: the platform name replaced a company or community");
 			}
 		}
@@ -350,6 +361,14 @@ class DictionaryTest extends TestCase {
 		$this->assertStringNotContainsString('http', str_replace("xmlns='http://www.w3.org/2000/svg'", '', $block), 'no request to another site');
 	}
 
+	/** Admin Talk page (owner screenshot 195): the badge of the two beta headings gets its space back, with a logical margin, in those two sections only. */
+	public function testTalkBetaBadgesGetTheirSpaceBack(): void {
+		$css = str_replace("\r\n", "\n", (string)file_get_contents(self::DIR . '/css/pathlocale.css'));
+		$this->assertSame(1, substr_count($css, "html:root #matterbridge_settings h2 small,\nhtml:root #federation_settings h2 small {\n\tmargin-inline-start: 6px;\n}\n"), 'one rule, both sections, logical margin');
+		$this->assertSame(1, substr_count($css, '#matterbridge_settings'), 'nothing else names the first section');
+		$this->assertSame(1, substr_count($css, '#federation_settings'), 'nothing else names the second section');
+	}
+
 	public function testIconLicenceShipsWithTheIcons(): void {
 		$file = self::DIR . '/css/ICONS-LICENSE.txt';
 		$this->assertFileExists($file);
@@ -358,6 +377,20 @@ class DictionaryTest extends TestCase {
 		$this->assertStringContainsString('Apache License', $text);
 		$this->assertStringContainsString('Version 2.0, January 2004', $text);
 		$this->assertStringContainsString('END OF TERMS AND CONDITIONS', $text);
+	}
+
+	/** Admin Talk page, Matterbridge section (owner screenshot 195, D-NC-050): "Nextcloud Talk" reads as Talk of the platform; the App Store link keeps its name. */
+	public function testKeepAndRenameSentences(): void {
+		$spreed = $this->data('ar')['apps']['spreed'];
+		$this->assertCount(1, self::KEEP_AND_RENAME);
+		foreach (self::KEEP_AND_RENAME as $key => $kept) {
+			$this->assertSame(1, preg_match(self::UPSTREAM_KEYS, $key), 'still a keep-list key');
+			$this->assertArrayHasKey($key, $spreed);
+			$this->assertStringContainsString('لربط Talk في منصة بث', $spreed[$key]);
+			$this->assertStringNotContainsString('Talk في Nextcloud', $spreed[$key]);
+			$this->assertStringContainsString($kept, $spreed[$key]);
+			$this->assertSame(['{linkend}', '{linkstart1}', '{linkstart2}'], $this->tokens($spreed[$key]), 'the link tokens of the source');
+		}
 	}
 
 	/** The runtime swaps the type texts of the Talk dialog from these entries; without them it has nothing to swap. */

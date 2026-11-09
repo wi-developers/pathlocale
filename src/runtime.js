@@ -43,9 +43,10 @@
 	const NAV_TEXT = '.app-navigation-entry__name, .app-navigation-caption__name';
 	const NAV_TITLE = '.app-navigation-entry-link[title]';
 	const ORDER = ['core', 'lib', 'settings', 'files'];
-	// Any settings page (personal /settings/user/..., admin /settings/admin/...): their left menu lists the sections of every app, and the
-	// dictionary of an app that this page did not load (so it is not in the registry) would otherwise never be consulted (0.1.5).
-	const SETTINGS_ANY = /^\/(index\.php\/)?settings(\/|$)/;
+	// The personal and admin settings pages (/settings/user/..., /settings/admin/...): their left menu lists the sections of every app, and the
+	// dictionary of an app that this page did not load (so it is not in the registry) would otherwise never be consulted (0.1.5). Only those two
+	// (0.1.7): the accounts page (/settings/users) lists group names and the apps page lists app names in the same kind of menu entry.
+	const SETTINGS_ANY = /^\/(index\.php\/)?settings\/(user|admin)(\/|$)/;
 	const onAnySettings = () => SETTINGS_ANY.test(g.location?.pathname ?? '');
 	const ours = (app, text) => (Object.prototype.hasOwnProperty.call(DATA.apps[app], text) ? DATA.apps[app][text] : undefined);
 	const lookup = (text) => {
@@ -126,8 +127,9 @@
 		}
 	};
 	// Admin Overview (/settings/admin/...): the setup checks print their name and description as finished text that the server builds
-	// (PHP t() in the settings app; the page puts the description in as finished markup), so the JS dictionary never sees them and the settings app's own Arabic
-	// file lacks some. The two element kinds are swapped by exact text from our own settings entries, text nodes at any depth, never anything else.
+	// (PHP t() in the settings app; the page puts the description in as finished markup), so the JS dictionary never sees them. The two element kinds are
+	// swapped by exact text from our own settings entries, text nodes at any depth, never anything else. There is no language check: on Arabic pages this
+	// fills in sentences the settings app's own Arabic file lacks; on English pages our English entries only rename the product in a sentence they hold word for word.
 	const ADMIN_PATH = /^\/(index\.php\/)?settings\/admin(\/|$)/;
 	const ADMIN_TEXT = '.settings-setup-checks-item__name, .settings-setup-checks-item__description';
 	const textNodesOf = (el, out = []) => {
@@ -153,9 +155,14 @@
 	// (admin pages of quick presets, groupware, delegation, AI, Diagramming and Office) or where the text is read once while the page loads, before this script
 	// has installed its dictionary (the dialog of the Files settings). Same exact-sentence map as the personal settings pages (PHP_TEXTS): only text nodes that
 	// equal a key after white space is collapsed, only inside the content area of those pages, never in form fields, editable content, code or options.
+	// 0.1.7: the Office start page (/apps/office) names the kinds of file that other apps register on the server (Text, draw.io) with their finished English
+	// names when those apps have no Arabic for them: swapped in its menu, its list heading and its empty-list text only, never in file or template names.
+	// The settings dialog of Calendar (/apps/calendar) shows the heading "Keyboard shortcuts" of the shared component library, whose Arabic list lacks it.
 	const PAGE_RULES = [
 		{ path: /^\/(index\.php\/)?settings\/admin\/(presets|groupware|admindelegation|ai|drawio|richdocuments)(\/|$)/, scope: 'div#content.app-settings' },
 		{ path: /^\/(index\.php\/)?apps\/files(\/|$)/, scope: '.modal-mask.app-settings' },
+		{ path: /^\/(index\.php\/)?apps\/office(\/|$)/, scope: '#app-navigation-vue, #files-section-heading, .office-overview__files > .empty-content' },
+		{ path: /^\/(index\.php\/)?apps\/calendar(\/|$)/, scope: '.modal-mask.app-settings' },
 	];
 	const PAGE_SKIP = '[data-pathlocale], [contenteditable], textarea, input, select, option, code, pre, tt, script, style';
 	const pageTexts = (root) => {
@@ -175,8 +182,7 @@
 			}
 		}
 	};
-	const fix = (root) => {
-		if (!root.querySelectorAll) return;
+	const navTexts = (root) => {
 		const nodes = root.matches?.(NAV_TEXT) ? [root, ...root.querySelectorAll(NAV_TEXT)] : root.querySelectorAll(NAV_TEXT);
 		for (const el of nodes) {
 			if (el.childNodes.length !== 1 || el.firstChild.nodeType !== 3) continue;
@@ -185,11 +191,17 @@
 		}
 		const links = root.matches?.(NAV_TITLE) ? [root, ...root.querySelectorAll(NAV_TITLE)] : root.querySelectorAll(NAV_TITLE);
 		for (const el of links) { const tr = lookup(el.getAttribute('title').trim()); if (tr) el.setAttribute('title', tr); }
-		footer(root);
-		settingsRename();
-		talkTexts(root);
-		adminTexts(root);
-		pageTexts(root);
+	};
+	// Each part runs on its own (0.1.7, C4 of D-NC-035): a part that throws leaves its texts as they are, and the parts after it, and the next
+	// change of the page, still run. No part is known to throw; this only keeps one surprise from stopping all the others.
+	const each = (parts, root) => {
+		for (const part of parts) {
+			try { part(root); } catch { /* fail safe: the texts of this part stay as the page printed them */ }
+		}
+	};
+	const fix = (root) => {
+		if (!root.querySelectorAll) return;
+		each([navTexts, footer, settingsRename, talkTexts, adminTexts, pageTexts], root);
 	};
 	// English pages: Theming holds a single name and slogan (Arabic), so the server prints them in Arabic. Swap them for the
 	// English wording in the page title; on the login page everywhere (no user content there); on public pages (shares, Talk guests: user documents,
@@ -216,9 +228,10 @@
 		a.href = (g.OC?.webroot ?? '') + '/index.php/apps/pathlocale/lang/' + other + '?redirect=' + encodeURIComponent(location.pathname + location.search);
 		document.body.appendChild(a);
 	};
-	// Guest pages (login, public shares) link the fixed manifest file of Nextcloud's core ("name": "Nextcloud", Nextcloud icons), which the
-	// browser shows in its "Install app" prompt. Signed-in pages already link Theming's manifest (platform name, Theming icon), which also answers
-	// guests, so the link is pointed there. Only that exact core file is replaced; a link that is anything else is left alone.
+	// Guest-layout pages (the login page, the password page of a protected share) link the fixed manifest file of Nextcloud's core ("name":
+	// "Nextcloud", Nextcloud icons), which the browser shows in its "Install app" prompt; an open public share page already links Theming's manifest.
+	// Signed-in pages link Theming's manifest too (platform name, Theming icon), which also answers guests, so the core link is pointed there. Only
+	// that exact core file is replaced; a link that is anything else is left alone.
 	const CORE_MANIFEST = /\/core\/img\/manifest\.json(\?.*)?$/;
 	const manifest = () => {
 		const id = document.body?.id; if (id !== 'body-login' && id !== 'body-public') return;
@@ -227,12 +240,9 @@
 		}
 	};
 	const start = () => {
-		fix(document.body);
-		swapGuest();
-		guestSwitch();
-		manifest();
+		each([fix, swapGuest, guestSwitch, manifest], document.body);
 		let queued = false;
-		new MutationObserver(() => { if (queued) return; queued = true; requestAnimationFrame(() => { queued = false; fix(document.body); swapGuest(); }); })
+		new MutationObserver(() => { if (queued) return; queued = true; requestAnimationFrame(() => { queued = false; each([fix, swapGuest], document.body); }); })
 			.observe(document.body, { childList: true, subtree: true });
 	};
 	if (document.body) start(); else document.addEventListener('DOMContentLoaded', start, { once: true });

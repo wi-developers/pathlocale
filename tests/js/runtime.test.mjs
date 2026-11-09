@@ -367,13 +367,14 @@ test('settings pages, personal and admin: left-menu labels use our dictionaries 
 	const ar = data('ar');
 	const office = 'Nextcloud Office (Collabora)';
 	assert.ok(ar.apps.richdocuments[office] && ar.phpFixes.Diagramming);
-	for (const pathname of ['/index.php/settings/admin/overview', '/index.php/settings/user/privacy', '/settings/admin/sharing', '/index.php/settings']) {
+	for (const pathname of ['/index.php/settings/admin/overview', '/index.php/settings/user/privacy', '/settings/admin/sharing', '/index.php/settings/user', '/settings/admin']) {
 		const out = runNav('ar', pathname, ['Diagramming', office, 'Some user folder']);
 		assert.deepEqual(out, [ar.phpFixes.Diagramming, ar.apps.richdocuments[office], 'Some user folder'], pathname);
 	}
 	const en = runNav('en', '/index.php/settings/admin/overview', [office]);
 	assert.equal(en[0], data('en').apps.richdocuments[office]);
-	for (const pathname of ['/index.php/apps/files/', '/', '/index.php/settingsx/', '/index.php/apps/files/settings/admin/']) {
+	// C1 of D-NC-035 (0.1.7): only the personal and admin settings pages; the accounts page lists group names, the apps page app names
+	for (const pathname of ['/index.php/apps/files/', '/', '/index.php/settingsx/', '/index.php/apps/files/settings/admin/', '/index.php/settings', '/index.php/settings/users', '/settings/users/', '/index.php/settings/apps', '/index.php/settings/help', '/index.php/settings/userx', '/settings/adminx/']) {
 		assert.deepEqual(runNav('ar', pathname, ['Diagramming', office]), ['Diagramming', office], pathname + ' is not a settings page');
 	}
 	// what Nextcloud registered itself still wins on a settings page
@@ -439,7 +440,7 @@ const FIX_SAMPLES = ['Editor URL', 'Enable whiteboards?', 'Generate Slide Deck',
 const NAMED_SAMPLES = ['Nextcloud Assistant Slide Deck Generator', 'Nextcloud Office (Collabora) requires a separate server running Collabora Online to provide editing capabilities.'];
 const FILES_SAMPLES = ['Keyboard shortcuts', 'Add or remove favorite', 'Open the details sidebar'];
 
-test('named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the owner-approved one', () => {
+test('named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is pinned (not confirmed by the owner yet)', () => {
 	for (const k of [...FIX_SAMPLES, ...FILES_SAMPLES]) assert.ok(typeof arData.phpFixes[k] === 'string' && arData.phpFixes[k] !== '', 'ar phpFixes has ' + k);
 	for (const k of NAMED_SAMPLES) assert.ok(typeof arData.phpTexts[k] === 'string' && arData.phpTexts[k] !== '', 'ar phpTexts has ' + k);
 	assert.equal(arData.phpFixes['Enable whiteboards?'], 'تمكين السبورات البيضاء؟');
@@ -510,4 +511,199 @@ test('Files settings dialog: the three texts that Files reads before our diction
 	const en = pageNode('Keyboard shortcuts');
 	runPage('en', '/index.php/apps/files/files', FILES_SCOPE, [en]);
 	assert.equal(en.nodeValue, 'Keyboard shortcuts');
+});
+
+// ---- 0.1.7 (owner screenshots 182-195 on Nextcloud 35; C1-C4 of D-NC-035)
+const OFFICE_SCOPE = '#app-navigation-vue, #files-section-heading, .office-overview__files > .empty-content';
+const OFFICE_KEYS = ['Text document', 'New Diagram', 'New Whiteboard', 'آخر Text document', 'آخر New Diagram', 'آخر New Whiteboard', 'لم يتم العثور على أيText document', 'لم يتم العثور على أيNew Diagram', 'لم يتم العثور على أيNew Whiteboard'];
+const CALENDAR_SCOPE = '.modal-mask.app-settings';
+
+test('Office start page, 0.1.7: the file-kind names and the headings built around them are swapped by exact text, on Office pages, white space kept', () => {
+	for (const k of OFFICE_KEYS) assert.ok(typeof arData.phpFixes[k] === 'string' && arData.phpFixes[k] !== '' && !/[A-Za-z]{3,}/.test(arData.phpFixes[k]), 'ar phpFixes has an Arabic text for ' + k);
+	for (const pathname of ['/index.php/apps/office/', '/apps/office', '/index.php/apps/office/drawio-drawio']) {
+		const nodes = OFFICE_KEYS.map((k, i) => pageNode(i % 2 ? `\n\t\t${k}\n\t` : k));
+		runPage('ar', pathname, OFFICE_SCOPE, nodes);
+		OFFICE_KEYS.forEach((k, i) => assert.equal(nodes[i].nodeValue.trim(), arData.phpFixes[k], pathname + ': ' + k));
+		assert.equal(nodes[1].nodeValue.startsWith('\n\t\t') && nodes[1].nodeValue.endsWith('\n\t'), true, 'white space kept');
+	}
+});
+
+test('Office start page, 0.1.7: other pages, file and template names (outside the menu, heading and empty list), form fields and English pages are not touched', () => {
+	for (const pathname of ['/index.php/apps/officex/', '/index.php/x/apps/office/', '/other/apps/office', '/index.php/apps/files/', '/index.php/settings/user/richdocuments', '/']) {
+		const n = pageNode('New Diagram');
+		runPage('ar', pathname, OFFICE_SCOPE, [n]);
+		assert.equal(n.nodeValue, 'New Diagram', pathname + ' is not the Office start page');
+	}
+	for (const elsewhere of ['.office-overview__list', '.template-section', 'main#app-content-vue']) {
+		const n = pageNode('Text document');
+		runPage('ar', '/index.php/apps/office/', elsewhere, [n]);
+		assert.equal(n.nodeValue, 'Text document', 'not swapped in ' + elsewhere);
+	}
+	const search = pageNode('Text document', ['input']);
+	runPage('ar', '/index.php/apps/office/', OFFICE_SCOPE, [search]);
+	assert.equal(search.nodeValue, 'Text document', 'not inside a form field');
+	const en = [pageNode('Text document'), pageNode('Recent Text document')];
+	runPage('en', '/index.php/apps/office/', OFFICE_SCOPE, en);
+	assert.deepEqual(en.map((n) => n.nodeValue), ['Text document', 'Recent Text document'], 'English pages keep the English names');
+});
+
+test('Calendar settings dialog, 0.1.7: the "Keyboard shortcuts" heading of the shared component library is swapped, on Calendar pages and in the dialog only', () => {
+	for (const pathname of ['/index.php/apps/calendar/', '/apps/calendar', '/index.php/apps/calendar/dayGridMonth/now']) {
+		const nodes = [pageNode('Keyboard shortcuts'), pageNode('\n Keyboard shortcuts \n')];
+		runPage('ar', pathname, CALENDAR_SCOPE, nodes);
+		assert.deepEqual(nodes.map((n) => n.nodeValue.trim()), [arData.phpFixes['Keyboard shortcuts'], arData.phpFixes['Keyboard shortcuts']], pathname);
+	}
+	for (const pathname of ['/index.php/apps/calendarx/', '/index.php/x/apps/calendar/', '/other/apps/calendar', '/index.php/apps/spreed/', '/']) {
+		const n = pageNode('Keyboard shortcuts');
+		runPage('ar', pathname, CALENDAR_SCOPE, [n]);
+		assert.equal(n.nodeValue, 'Keyboard shortcuts', pathname + ' is not a Calendar page');
+	}
+	const elsewhere = pageNode('Keyboard shortcuts');
+	runPage('ar', '/index.php/apps/calendar/', 'div.other', [elsewhere]);
+	assert.equal(elsewhere.nodeValue, 'Keyboard shortcuts', 'only inside the settings dialog');
+	const en = pageNode('Keyboard shortcuts');
+	runPage('en', '/index.php/apps/calendar/', CALENDAR_SCOPE, [en]);
+	assert.equal(en.nodeValue, 'Keyboard shortcuts');
+});
+
+test('Office admin page, 0.1.7: the hard-coded note "(Determined from the browser URL)" is swapped there; English pages keep it', () => {
+	const k = '(Determined from the browser URL)';
+	assert.ok(typeof arData.phpFixes[k] === 'string' && arData.phpFixes[k].startsWith('(') && arData.phpFixes[k].endsWith(')'));
+	const n = pageNode('\n\t' + k + '\n');
+	runPage('ar', '/index.php/settings/admin/richdocuments', ADMIN_SCOPE, [n]);
+	assert.equal(n.nodeValue.trim(), arData.phpFixes[k]);
+	const en = pageNode(k);
+	runPage('en', '/index.php/settings/admin/richdocuments', ADMIN_SCOPE, [en]);
+	assert.equal(en.nodeValue, k);
+});
+
+test('Appearance page, 0.1.7, Theming 3.0.0: the server-built texts of the reduced-motion theme are swapped on personal settings pages, with the wording of the theming dictionary', () => {
+	const KEYS = ['Reduced motion', 'Motion sickness reduction', 'Prevents animations, such as scaling or panning large objects, that can trigger discomfort for those with vestibular motion disorders.'];
+	for (const k of KEYS) {
+		assert.equal(arData.phpFixes[k], arData.apps.theming[k], 'one Arabic text for ' + k);
+		assert.ok(typeof arData.phpFixes[k] === 'string' && !/[A-Za-z]{3,}/.test(arData.phpFixes[k]), k);
+	}
+	assert.ok(arData.phpFixes[KEYS[2]].endsWith('.'), 'the sentence keeps its full stop');
+	const mk = (v) => ({ nodeValue: v, parentElement: { tagName: 'H3', closest: () => null } });
+	const run = (lang, pathname, texts) => {
+		let i = 0;
+		const doc = { body: { id: 'body-user', querySelectorAll: () => [], matches: () => false }, addEventListener() {}, createTreeWalker: () => ({ nextNode: () => texts[i++] ?? null }) };
+		load(lang, (c) => { c.location = { pathname, search: '' }; }, doc);
+	};
+	const nodes = KEYS.map((k) => mk('\n  ' + k + '  '));
+	run('ar', '/index.php/settings/user/theming', nodes);
+	KEYS.forEach((k, i) => assert.equal(nodes[i].nodeValue.trim(), arData.phpFixes[k], k));
+	const off = mk(KEYS[0]);
+	run('ar', '/index.php/apps/files/', [off]);
+	assert.equal(off.nodeValue, KEYS[0], 'not a personal settings page');
+	const en = mk(KEYS[0]);
+	run('en', '/index.php/settings/user/theming', [en]);
+	assert.equal(en.nodeValue, KEYS[0], 'English pages keep the English text');
+});
+
+// C2 of D-NC-035: test gaps found by the 0.1.5 reviewer
+const menuEl = (...kids) => ({ childNodes: kids, get firstChild() { return this.childNodes[0]; }, matches: () => false, getAttribute: () => null });
+const runMenu = (lang, pathname, els) => {
+	const body = { id: 'body-user', querySelectorAll: (sel) => (sel.includes('app-navigation-entry__name') ? els : []), matches: () => false };
+	load(lang, (c) => { c.location = { pathname, search: '' }; }, { body, addEventListener() {}, createTreeWalker: () => ({ nextNode: () => null }), createTextNode: (t) => ({ text: t }) });
+};
+
+test('C2, 0.1.7: a menu label is swapped only when it is one text node; a label with an icon or other markup inside is left alone', () => {
+	const two = menuEl(textNode('Diagramming'), { nodeType: 1, tagName: 'SPAN', nodeValue: null });
+	const elementFirst = menuEl({ nodeType: 1, tagName: 'SPAN', nodeValue: null });
+	const one = menuEl(textNode('Diagramming'));
+	runMenu('ar', '/index.php/settings/admin/overview', [two, elementFirst, one]);
+	assert.equal(two.childNodes[0].nodeValue, 'Diagramming', 'two child nodes');
+	assert.equal(elementFirst.childNodes[0].nodeValue, null, 'an element as the only child');
+	assert.equal(one.firstChild.nodeValue, arData.phpFixes.Diagramming, 'the plain label is swapped');
+});
+
+test('C2, 0.1.7: a menu label that breaks over lines is found in the sentence map after its white space is collapsed', () => {
+	assert.equal(typeof arData.phpFixes['Calendar App'], 'string');
+	const label = menuEl(textNode('\n  Calendar\n    App \n'));
+	runMenu('ar', '/index.php/settings/user/calendar', [label]);
+	assert.equal(label.firstChild.nodeValue.trim(), arData.phpFixes['Calendar App']);
+	assert.ok(label.firstChild.nodeValue.startsWith('\n  '), 'white space around it kept');
+});
+
+test('C2, 0.1.7: admin Overview leaves the text inside a style element alone', () => {
+	const inStyle = textNode(ADMIN_KEYS[0]);
+	const beside = textNode(ADMIN_KEYS[1]);
+	runAdmin('ar', '/index.php/settings/admin/overview', [elNode('DIV', elNode('STYLE', inStyle), beside)]);
+	assert.equal(inStyle.nodeValue, ADMIN_KEYS[0], 'nothing inside a style element');
+	assert.equal(beside.nodeValue, data('ar').apps.settings[ADMIN_KEYS[1]], 'the text beside it is swapped');
+});
+
+test('C2, 0.1.7: menu link titles use the dictionaries the same way as the labels', () => {
+	const run = (pathname, titles, registry) => {
+		const links = titles.map((t) => { const st = { t }; return { st, getAttribute: (n) => (n === 'title' ? st.t : null), setAttribute: (n, v) => { if (n === 'title') st.t = v; } }; });
+		const body = { id: 'body-user', matches: () => false, querySelectorAll: (sel) => (sel === '.app-navigation-entry-link[title]' ? links : []) };
+		load('ar', (c) => { c.location = { pathname, search: '' }; if (registry) c._oc_l10n_registry_translations = registry; }, { body, addEventListener() {}, createTreeWalker: () => ({ nextNode: () => null }), createTextNode: (t) => ({ text: t }) });
+		return links.map((l) => l.st.t);
+	};
+	const office = 'Nextcloud Office (Collabora)';
+	assert.deepEqual(run('/index.php/apps/files/', [' Some menu title ', 'Some user folder'], { someapp: { 'Some menu title': 'عنوان ما' } }), ['عنوان ما', 'Some user folder'], 'what Nextcloud registered, on any page');
+	assert.deepEqual(run('/index.php/settings/admin/overview', [office]), [arData.apps.richdocuments[office]], 'our dictionaries on a settings page');
+	assert.deepEqual(run('/index.php/apps/files/', [office]), [office], 'not elsewhere');
+	assert.deepEqual(run('/index.php/settings/users', [office]), [office], 'not on the accounts page');
+});
+
+test('C2, 0.1.7: admin Overview on English pages renames the product in a setup-check text that our English settings entries hold word for word', () => {
+	const key = 'Nextcloud configuration file is writable';
+	const to = enData.apps.settings[key];
+	assert.ok(typeof to === 'string' && /Path platform/.test(to) && !/Nextcloud/.test(to), 'the English entry renames the product');
+	const n = textNode(key);
+	runAdmin('en', '/index.php/settings/admin/overview', [elNode('DIV', n)]);
+	assert.equal(n.nodeValue, to);
+	const plain = textNode(ADMIN_KEYS[0]);
+	runAdmin('en', '/index.php/settings/admin/overview', [elNode('DIV', plain)]);
+	assert.equal(plain.nodeValue, ADMIN_KEYS[0], 'a text without the product name stays English');
+});
+
+test('C4, 0.1.7: a part that throws does not stop the other parts, on the first run and on later changes of the page', () => {
+	let observed = null;
+	const n = pageNode('Editor URL');
+	const scope = { nodes: [n] };
+	const body = { id: 'body-user', matches: () => false, querySelectorAll: (sel) => { if (sel.includes('app-navigation-entry__name')) throw new Error('menu part fails'); return sel === ADMIN_SCOPE ? [scope] : []; } };
+	const doc = { body, addEventListener() {}, createTextNode: (t) => ({ text: t }), createTreeWalker: (el) => { let i = 0; const list = el.nodes ?? []; return { nextNode: () => list[i++] ?? null }; } };
+	assert.doesNotThrow(() => load('ar', (c) => { c.location = { pathname: '/index.php/settings/admin/drawio', search: '' }; c.MutationObserver = class { constructor(cb) { observed = cb; } observe() {} }; c.requestAnimationFrame = (fn) => fn(); }, doc));
+	assert.equal(n.nodeValue, arData.phpFixes['Editor URL'], 'the named-page part still ran');
+	assert.equal(typeof observed, 'function', 'the page is still watched');
+	const later = pageNode('Editor configuration');
+	scope.nodes.push(later);
+	assert.doesNotThrow(() => observed());
+	assert.equal(later.nodeValue, arData.phpFixes['Editor configuration'], 'and on a later change');
+});
+
+test('C4, 0.1.7: when one start step throws (title swap on an English guest page), the language link and the manifest link are still made', () => {
+	const made = [];
+	const st = { h: '/core/img/manifest.json' };
+	const link = { getAttribute: (k) => (k === 'href' ? st.h : null), setAttribute: (k, v) => { if (k === 'href') st.h = v; } };
+	const doc = {
+		get title() { throw new Error('title fails'); }, set title(v) { void v; },
+		createTreeWalker: () => ({ nextNode: () => null }), querySelectorAll: (sel) => (sel === 'link[rel="manifest"]' ? [link] : []),
+		body: { id: 'body-login', querySelectorAll: () => [], matches: () => false, appendChild: (e) => made.push(e) }, createElement: () => ({}), addEventListener() {},
+	};
+	assert.ok(data('en').swaps.length > 0, 'the English build swaps titles, so the title is read');
+	assert.doesNotThrow(() => load('en', (c) => { c.OC = { webroot: '' }; c.location = { pathname: '/login', search: '' }; }, doc));
+	assert.equal(made.length, 1, 'the language link');
+	assert.equal(st.h, '/index.php/apps/theming/manifest', 'the manifest link');
+});
+
+test('text-node walkers (item 10 of D-NC-040): all three ask the browser for text nodes only (whatToShow 4)', () => {
+	const run = (lang, pathname, body) => {
+		const asked = [];
+		const doc = { title: '', body, addEventListener() {}, createTextNode: (t) => ({ text: t }), createElement: () => ({}), querySelectorAll: () => [], createTreeWalker: (r, what) => { asked.push(what); return { nextNode: () => null }; } };
+		load(lang, (c) => { c.OC = { webroot: '' }; c.location = { pathname, search: '' }; }, doc);
+		return asked;
+	};
+	const user = { id: 'body-user', matches: () => false, querySelectorAll: () => [] };
+	const personal = run('ar', '/index.php/settings/user/theming', user);
+	assert.ok(personal.length > 0 && personal.every((w) => w === 4), 'personal settings: ' + personal);
+	const admin = { id: 'body-user', matches: () => false, querySelectorAll: (sel) => (sel === ADMIN_SCOPE ? [{}] : []) };
+	const page = run('ar', '/index.php/settings/admin/drawio', admin);
+	assert.ok(page.length > 0 && page.every((w) => w === 4), 'named page: ' + page);
+	const login = { id: 'body-login', matches: () => false, querySelectorAll: () => [], appendChild() {} };
+	const guest = run('en', '/login', login);
+	assert.ok(guest.length > 0 && guest.every((w) => w === 4), 'guest page: ' + guest);
 });
