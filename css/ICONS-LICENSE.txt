@@ -1,12 +1,12 @@
 Icons in css/pathlocale.css
 ===========================
 
-The three icons that replace the Talk home page illustrations (calendar-clock-outline, at, alarm) are drawn from the outlines of the Material Design Icons
+Four icons are used. The three that replace the Talk home page illustrations (calendar-clock-outline, at, alarm) are drawn from the outlines of the Material Design Icons
 collection (Pictogrammers, https://pictogrammers.com/library/mdi/, package @mdi/js 7.4.47). The same outlines are bundled in Talk 24.0.6 itself, which is where
-they were copied from. They are used unchanged inside CSS mask images.
+they were copied from. The fourth, account-group-outline (the Teams banner icon, since 0.1.7), was copied from the outline bundled in the Teams app (circles 35.0.0, js/teams-main.mjs). All four are used unchanged inside CSS mask images.
 
 The collection's licence file (copied verbatim) says that its icons are distributed under the Apache License 2.0 or under their own respective licences;
-the origin of each of the three outlines was not checked one by one. The Apache License 2.0 text follows, as the collection requires.
+the origin of each of the four outlines was not checked one by one. The Apache License 2.0 text follows, as the collection requires.
 The licence of this app as a whole is the GNU AGPL v3 (COPYING); Apache-2.0 material may be combined with it.
 
 --------------------------------------------------------------------------------

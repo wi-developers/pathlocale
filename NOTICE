@@ -16,7 +16,7 @@ Third-party material in this repository
 - Font: fonts/IBMPlexSansArabic-*.woff2 are the unmodified IBM Plex Sans Arabic files.
   Copyright (C) 2017 IBM Corp. with Reserved Font Name "Plex". Licensed under the SIL Open Font
   License 1.1, text in fonts/OFL-LICENSE.txt.
-- Icons: the three outlines used as CSS masks in css/pathlocale.css (calendar-clock-outline, at, alarm)
+- Icons: the four outlines used as CSS masks in css/pathlocale.css (calendar-clock-outline, at, alarm, account-group-outline)
   are from the Material Design Icons collection (Pictogrammers), licensed Apache-2.0; licence texts
   in css/ICONS-LICENSE.txt.
 

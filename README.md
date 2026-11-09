@@ -5,11 +5,12 @@ texts, loads the IBM Plex Sans Arabic font, offers an Arabic/English switch on t
 pages, and replaces the upstream product name in interface texts. It changes no Nextcloud file.
 
 - Licence: GNU AGPL v3 or later (`COPYING`). Credits and third-party notices: `NOTICE`.
-- Source of the version running on path.wi.sa: this repository, tag `v0.1.7`. The deployable package
+- Source of the version running on path.wi.sa: this repository, tag `v0.1.8`. The deployable package
   contains only `appinfo/`, `lib/`, `css/`, `js/` and `fonts/`; everything else is tests, tools and
   the dictionary generator.
-- Build the package: `sh tools/build-package.sh <commit> <outdir>` (deterministic; the 0.1.7 package is
-  described in the release notes of its tag; the 0.1.6 package built from commit `7881f62` has sha256
+- Build the package: `sh tools/build-package.sh <commit> <outdir>` (deterministic; the 0.1.8 package is
+  described in the release notes of its tag; the 0.1.7 package built from commit `86c00c2` has sha256
+  `b0518d054b2dc53fd1942abfcef5c9cb793875238628a85eb39418c99fe54eea`; the 0.1.6 package built from commit `7881f62` has sha256
   `af85d9eec626ca4224781dc70bc4de59751fefb2f1301f1e8045f559eb819609`; the 0.1.5 package built from commit `ffdc017` has sha256
   `372d0cefa08241210d481809fad112ff6817560e817da8f9cf1968af22dd5495`; the 0.1.4 package built from commit `3dd0012` has sha256
   `89c158263f48404e1b7f2cb2fecdd9706e7313b3291771bfb6c7dfd79d07312c`; the earlier 0.1.2 package has `ee0b9f817e957d7353b654af04cbe28be32f4e45adadadaed564f678a24ba194`).

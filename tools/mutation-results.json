@@ -2024,5 +2024,136 @@
    "text-node walkers (item 10 of D-NC-040): all three ask the browser for text nodes only (whatToShow 4)",
    "text-node walkers (item 10 of D-NC-040): all three ask the browser for text nodes only (whatToShow 4)"
   ]
+ },
+ "F05": {
+  "id": "F05",
+  "rule": "runtime: the watcher of later page changes guards each of its parts",
+  "file": "src/runtime.js",
+  "tests": "C4, 0.1.7: when one start step throws",
+  "status": "CAUGHT",
+  "failed": [
+   "personal settings footer: the reasons link is renamed and the \"developed by\" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph",
+   "Talk dialog: other text, other pages and other kinds of node are not touched, and a dialog opened later is swapped too",
+   "admin Overview: other text, other pages, other kinds of node and English pages are not touched; a list that renders later is swapped too",
+   "named admin pages: other pages, other text, skipped elements and the other language are not touched; text that renders later is swapped",
+   "C4, 0.1.7: a part that throws does not stop the other parts, on the first run and on later changes of the page",
+   "C4, 0.1.7: when one start step throws (title swap on an English guest page), the language link and the manifest link are still made",
+   "personal settings footer: the reasons link is renamed and the \"developed by\" sentence becomes an attribution, only on the settings page, inside the notice area and for the stock paragraph",
+   "Talk dialog: other text, other pages and other kinds of node are not touched, and a dialog opened later is swapped too",
+   "admin Overview: other text, other pages, other kinds of node and English pages are not touched; a list that renders later is swapped too",
+   "named admin pages: other pages, other text, skipped elements and the other language are not touched; text that renders later is swapped",
+   "C4, 0.1.7: a part that throws does not stop the other parts, on the first run and on later changes of the page",
+   "C4, 0.1.7: when one start step throws (title swap on an English guest page), the language link and the manifest link are still made"
+  ]
+ },
+ "F01": {
+  "id": "F01",
+  "rule": "css: the Files entry rule names the Files address",
+  "file": "css/pathlocale.css",
+  "tests": "testFilesEntryOfTheAppMenuIsHidden",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testFilesEntryOfTheAppMenuIsHidden"
+  ]
+ },
+ "F02": {
+  "id": "F02",
+  "rule": "css: the Files entry is really hidden",
+  "file": "css/pathlocale.css",
+  "tests": "testFilesEntryOfTheAppMenuIsHidden",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testFilesEntryOfTheAppMenuIsHidden"
+  ]
+ },
+ "F03": {
+  "id": "F03",
+  "rule": "css: the Files entry rule stays inside the app menu grid",
+  "file": "css/pathlocale.css",
+  "tests": "testFilesEntryOfTheAppMenuIsHidden",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testFilesEntryOfTheAppMenuIsHidden"
+  ]
+ },
+ "F04": {
+  "id": "F04",
+  "rule": "css: the Files entry rule wins over the theme (important)",
+  "file": "css/pathlocale.css",
+  "tests": "testFilesEntryOfTheAppMenuIsHidden",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testFilesEntryOfTheAppMenuIsHidden"
+  ]
+ },
+ "F06": {
+  "id": "F06",
+  "rule": "css: Talk icons cancel the original colour filter",
+  "file": "css/pathlocale.css",
+  "tests": "testTalkIllustrationsBecomeIconsAndFailSafe",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testTalkIllustrationsBecomeIconsAndFailSafe"
+  ]
+ },
+ "F07": {
+  "id": "F07",
+  "rule": "css: Talk icons fill their box",
+  "file": "css/pathlocale.css",
+  "tests": "testTalkIllustrationsBecomeIconsAndFailSafe",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testTalkIllustrationsBecomeIconsAndFailSafe"
+  ]
+ },
+ "F08": {
+  "id": "F08",
+  "rule": "css: Talk icons are not tiled",
+  "file": "css/pathlocale.css",
+  "tests": "testTalkIllustrationsBecomeIconsAndFailSafe",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testTalkIllustrationsBecomeIconsAndFailSafe"
+  ]
+ },
+ "F09": {
+  "id": "F09",
+  "rule": "css: Talk icons keep their size",
+  "file": "css/pathlocale.css",
+  "tests": "testTalkIllustrationsBecomeIconsAndFailSafe",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testTalkIllustrationsBecomeIconsAndFailSafe"
+  ]
+ },
+ "F10": {
+  "id": "F10",
+  "rule": "css: the Teams parent is the anchor of the icon",
+  "file": "css/pathlocale.css",
+  "tests": "testTeamsIllustrationBecomesIconAndFailsSafe",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testTeamsIllustrationBecomesIconAndFailsSafe"
+  ]
+ },
+ "F11": {
+  "id": "F11",
+  "rule": "css: the Teams icon is laid over the picture",
+  "file": "css/pathlocale.css",
+  "tests": "testTeamsIllustrationBecomesIconAndFailsSafe",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testTeamsIllustrationBecomesIconAndFailsSafe"
+  ]
+ },
+ "F12": {
+  "id": "F12",
+  "rule": "css: the Teams icon fills the picture box",
+  "file": "css/pathlocale.css",
+  "tests": "testTeamsIllustrationBecomesIconAndFailsSafe",
+  "status": "CAUGHT",
+  "failed": [
+   "DictionaryTest::testTeamsIllustrationBecomesIconAndFailsSafe"
+  ]
  }
 }

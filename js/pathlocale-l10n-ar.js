@@ -196,7 +196,7 @@
 	// change of the page, still run. No part is known to throw; this only keeps one surprise from stopping all the others.
 	const each = (parts, root) => {
 		for (const part of parts) {
-			try { part(root); } catch { /* fail safe: the texts of this part stay as the page printed them */ }
+			try { part(root); } catch (e) { /* fail safe: the texts of this part stay as the page printed them; the reason goes to the console at debug level */ if (typeof console !== 'undefined' && console.debug) console.debug('pathlocale: a part failed', e); }
 		}
 	};
 	const fix = (root) => {

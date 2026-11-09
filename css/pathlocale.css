@@ -148,3 +148,11 @@ html:root #matterbridge_settings h2 small,
 html:root #federation_settings h2 small {
 	margin-inline-start: 6px;
 }
+
+/* owner request 2026-11-09 (D-NC-054, D-NC-057): the Files entry is hidden from the app menu (the grid that opens from the dots button in the header) for every user, admins included.
+   This is only a hidden menu entry, not access control: the Files app, its address and WebDAV keep working, and Files cannot be disabled (it is in the core always-enabled list).
+   Selector measured on Nextcloud 35.0.2: the entry is an app-item link whose href holds /apps/files/, inside `.app-menu__grid`, like the two "More apps" rules above; it matched exactly one entry. If Nextcloud renames those
+   classes the entry shows again (nothing else breaks). */
+html:root .app-menu__grid a.app-item[href*="/apps/files/"] {
+	display: none !important;
+}

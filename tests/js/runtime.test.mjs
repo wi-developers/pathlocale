@@ -425,14 +425,16 @@ const ADMIN_PAGES = ['presets', 'groupware', 'admindelegation', 'ai', 'drawio', 
 const pageNode = (v, inside = []) => ({ nodeType: 3, nodeValue: v, parentElement: { tagName: 'DIV', closest: (sel) => sel.split(',').map((x) => x.trim()).some((x) => inside.includes(x)) } });
 const runPage = (lang, pathname, scopeSel, nodes) => {
 	let observed = null;
+	const asked = [];
 	const scope = { nodes };
-	const body = { id: 'body-user', matches: () => false, querySelectorAll: (sel) => (sel === scopeSel ? [scope] : []) };
+	// 0.1.8 (D-NC-053 b): every selector the page code asks for is recorded, so a negative test can prove the code did ask for its real scope and got nothing, instead of passing because it never asked
+	const body = { id: 'body-user', matches: () => false, querySelectorAll: (sel) => { asked.push(sel); return sel === scopeSel ? [scope] : []; } };
 	const doc = {
 		body, addEventListener() {}, createTextNode: (t) => ({ text: t }),
 		createTreeWalker: (el) => { let i = 0; const list = el.nodes ?? []; return { nextNode: () => list[i++] ?? null }; },
 	};
 	load(lang, (c) => { c.location = { pathname, search: '' }; c.MutationObserver = class { constructor(cb) { observed = cb; } observe() {} }; c.requestAnimationFrame = (fn) => fn(); }, doc);
-	return { observed, scope };
+	return { observed, scope, asked };
 };
 const arData = data('ar');
 const enData = data('en');
@@ -477,7 +479,8 @@ test('named admin pages: other pages, other text, skipped elements and the other
 	r.observed();
 	assert.equal(later.nodeValue, arData.phpFixes['Editor configuration']);
 	const outside = pageNode(key);
-	runPage('ar', '/index.php/settings/admin/drawio', 'main#other', [outside]);
+	const outsideRun = runPage('ar', '/index.php/settings/admin/drawio', 'main#other', [outside]);
+	assert.ok(outsideRun.asked.includes(ADMIN_SCOPE), 'the page code asked for its real scope (and found none here)');
 	assert.equal(outside.nodeValue, key, 'only inside the content area of the page');
 	const en = pageNode(key);
 	runPage('en', '/index.php/settings/admin/drawio', ADMIN_SCOPE, [en]);
@@ -506,7 +509,8 @@ test('Files settings dialog: the three texts that Files reads before our diction
 		assert.equal(n.nodeValue, 'Keyboard shortcuts', pathname);
 	}
 	const elsewhere = pageNode('Keyboard shortcuts');
-	runPage('ar', '/index.php/apps/files/files', 'div.other', [elsewhere]);
+	const filesRun = runPage('ar', '/index.php/apps/files/files', 'div.other', [elsewhere]);
+	assert.ok(filesRun.asked.includes(FILES_SCOPE), 'the page code asked for its real scope (and found none here)');
 	assert.equal(elsewhere.nodeValue, 'Keyboard shortcuts', 'only inside the settings dialog');
 	const en = pageNode('Keyboard shortcuts');
 	runPage('en', '/index.php/apps/files/files', FILES_SCOPE, [en]);
@@ -536,7 +540,8 @@ test('Office start page, 0.1.7: other pages, file and template names (outside th
 	}
 	for (const elsewhere of ['.office-overview__list', '.template-section', 'main#app-content-vue']) {
 		const n = pageNode('Text document');
-		runPage('ar', '/index.php/apps/office/', elsewhere, [n]);
+		const officeRun = runPage('ar', '/index.php/apps/office/', elsewhere, [n]);
+		assert.ok(officeRun.asked.includes('#app-navigation-vue, #files-section-heading, .office-overview__files > .empty-content'), 'the page code asked for its real scope (and found none here)');
 		assert.equal(n.nodeValue, 'Text document', 'not swapped in ' + elsewhere);
 	}
 	const search = pageNode('Text document', ['input']);
@@ -559,7 +564,8 @@ test('Calendar settings dialog, 0.1.7: the "Keyboard shortcuts" heading of the s
 		assert.equal(n.nodeValue, 'Keyboard shortcuts', pathname + ' is not a Calendar page');
 	}
 	const elsewhere = pageNode('Keyboard shortcuts');
-	runPage('ar', '/index.php/apps/calendar/', 'div.other', [elsewhere]);
+	const calRun = runPage('ar', '/index.php/apps/calendar/', 'div.other', [elsewhere]);
+	assert.ok(calRun.asked.includes(FILES_SCOPE), 'the page code asked for its real scope (and found none here)');
 	assert.equal(elsewhere.nodeValue, 'Keyboard shortcuts', 'only inside the settings dialog');
 	const en = pageNode('Keyboard shortcuts');
 	runPage('en', '/index.php/apps/calendar/', CALENDAR_SCOPE, [en]);
@@ -677,6 +683,7 @@ test('C4, 0.1.7: a part that throws does not stop the other parts, on the first 
 
 test('C4, 0.1.7: when one start step throws (title swap on an English guest page), the language link and the manifest link are still made', () => {
 	const made = [];
+	let observed = null;
 	const st = { h: '/core/img/manifest.json' };
 	const link = { getAttribute: (k) => (k === 'href' ? st.h : null), setAttribute: (k, v) => { if (k === 'href') st.h = v; } };
 	const doc = {
@@ -685,9 +692,12 @@ test('C4, 0.1.7: when one start step throws (title swap on an English guest page
 		body: { id: 'body-login', querySelectorAll: () => [], matches: () => false, appendChild: (e) => made.push(e) }, createElement: () => ({}), addEventListener() {},
 	};
 	assert.ok(data('en').swaps.length > 0, 'the English build swaps titles, so the title is read');
-	assert.doesNotThrow(() => load('en', (c) => { c.OC = { webroot: '' }; c.location = { pathname: '/login', search: '' }; }, doc));
+	assert.doesNotThrow(() => load('en', (c) => { c.OC = { webroot: '' }; c.location = { pathname: '/login', search: '' }; c.MutationObserver = class { constructor(cb) { observed = cb; } observe() {} }; c.requestAnimationFrame = (fn) => fn(); }, doc));
 	assert.equal(made.length, 1, 'the language link');
 	assert.equal(st.h, '/index.php/apps/theming/manifest', 'the manifest link');
+	// 0.1.8 (D-NC-053 b): the watcher of later changes guards each of its parts too (swapGuest reads the title, which throws here)
+	assert.equal(typeof observed, 'function', 'the page is watched');
+	assert.doesNotThrow(() => observed(), 'a part that throws on a later change does not escape');
 });
 
 test('text-node walkers (item 10 of D-NC-040): all three ask the browser for text nodes only (whatToShow 4)', () => {

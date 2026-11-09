@@ -329,6 +329,12 @@ class DictionaryTest extends TestCase {
 		$before = substr($talk, 0, (int)strpos($talk, $guard));
 		$block = substr($talk, (int)strpos($talk, $guard));
 		$this->assertSame(0, substr_count($before, '[style*='), 'no rule about the illustrations outside the feature check');
+		// 0.1.8 (D-NC-053 b): the layout properties that put the icon in the place of the picture were checked by eye only
+		$this->assertSame(1, substr_count($block, "\t\tfilter: none !important;\n"), 'the original colour filter of the picture is cancelled');
+		$this->assertSame(1, substr_count($block, "\t\tinset: 0 !important;\n"), 'the icon fills its box');
+		$this->assertSame(1, substr_count($block, "\t\tmask-repeat: no-repeat;\n"), 'the icon is not tiled');
+		$this->assertSame(1, substr_count($block, "\t\t-webkit-mask-repeat: no-repeat;\n"), 'the icon is not tiled (prefixed)');
+		$this->assertSame(1, substr_count($block, "\t\tmask-size: 88px 88px;\n"), 'the icon size');
 		foreach (['meetings', 'mentions', 'reminders'] as $img) {
 			$this->assertSame(4, substr_count($block, '[style*="/dashboard/' . $img . '"]'), "$img: panel, icon box, faded icon box, icon");
 		}
@@ -353,12 +359,27 @@ class DictionaryTest extends TestCase {
 		$before = substr($teams, 0, (int)strpos($teams, $guard));
 		$block = substr($teams, (int)strpos($teams, $guard));
 		$this->assertSame(0, substr_count($before, 'teams-illustration.svg"]'), 'no rule about the picture outside the feature check');
+		// 0.1.8 (D-NC-053 b): the layout properties of the Teams icon were checked by eye only
+		$this->assertSame(1, substr_count($block, "\t\tposition: relative;\n"), 'the parent is the anchor of the icon');
+		$this->assertSame(1, substr_count($block, "\t\tposition: absolute;\n"), 'the icon is laid over the picture');
+		$this->assertSame(1, substr_count($block, "\t\tinset: 0;\n"), 'the icon fills the picture box');
 		$this->assertSame(3, substr_count($block, ':has(> img[src*="/img/teams-illustration.svg"])'), 'positioned parent, hidden image, icon');
 		$this->assertSame(1, substr_count($block, "{\n\t\tvisibility: hidden !important;\n"), 'the picture is hidden, not removed');
 		$this->assertSame(1, substr_count($block, "\t\tbackground-color: var(--color-primary-element-light-text);\n"), 'the icon colour comes from the theme');
 		$this->assertSame(2, substr_count($block, 'url("data:image/svg+xml,'), 'one icon, as mask and -webkit-mask');
 		$this->assertSame(2, substr_count($block, 'url('), 'no other url');
 		$this->assertStringNotContainsString('http', str_replace("xmlns='http://www.w3.org/2000/svg'", '', $block), 'no request to another site');
+	}
+
+	/** Owner request 2026-11-09 (D-NC-057): the Files entry of the app menu is hidden for everyone by one rule, in the app menu only; nothing else is hidden. */
+	public function testFilesEntryOfTheAppMenuIsHidden(): void {
+		$css = str_replace("\r\n", "\n", (string)file_get_contents(self::DIR . '/css/pathlocale.css'));
+		$nl = chr(10);
+		$tab = chr(9);
+		$rule = 'html:root .app-menu__grid a.app-item[href*="/apps/files/"] {' . $nl . $tab . 'display: none !important;' . $nl . '}' . $nl;
+		$this->assertSame(1, substr_count($css, $rule), 'one rule, inside the app menu grid, for the Files address');
+		$this->assertSame(1, substr_count($css, '/apps/files/"]'), 'no other rule names the Files address');
+		$this->assertSame(1, substr_count($css, 'a.app-item[href*="/apps/files/"]'), 'the Files entry is named once, in the rule');
 	}
 
 	/** Admin Talk page (owner screenshot 195): the badge of the two beta headings gets its space back, with a logical margin, in those two sections only. */

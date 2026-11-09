@@ -2220,5 +2220,150 @@
   ],
   "tests": "text-node walkers",
   "runner": "js"
+ },
+ {
+  "id": "F01",
+  "rule": "css: the Files entry rule names the Files address",
+  "file": "css/pathlocale.css",
+  "edits": [
+   [
+    "html:root .app-menu__grid a.app-item[href*=\"/apps/files/\"] {\n\tdisplay: none !important;\n}",
+    "html:root .app-menu__grid a.app-item[href*=\"/apps/files2/\"] {\n\tdisplay: none !important;\n}"
+   ]
+  ],
+  "tests": "testFilesEntryOfTheAppMenuIsHidden"
+ },
+ {
+  "id": "F02",
+  "rule": "css: the Files entry is really hidden",
+  "file": "css/pathlocale.css",
+  "edits": [
+   [
+    "html:root .app-menu__grid a.app-item[href*=\"/apps/files/\"] {\n\tdisplay: none !important;\n}",
+    "html:root .app-menu__grid a.app-item[href*=\"/apps/files/\"] {\n\tdisplay: block !important;\n}"
+   ]
+  ],
+  "tests": "testFilesEntryOfTheAppMenuIsHidden"
+ },
+ {
+  "id": "F03",
+  "rule": "css: the Files entry rule stays inside the app menu grid",
+  "file": "css/pathlocale.css",
+  "edits": [
+   [
+    "html:root .app-menu__grid a.app-item[href*=\"/apps/files/\"] {\n\tdisplay: none !important;\n}",
+    "html:root a.app-item[href*=\"/apps/files/\"] {\n\tdisplay: none !important;\n}"
+   ]
+  ],
+  "tests": "testFilesEntryOfTheAppMenuIsHidden"
+ },
+ {
+  "id": "F04",
+  "rule": "css: the Files entry rule wins over the theme (important)",
+  "file": "css/pathlocale.css",
+  "edits": [
+   [
+    "html:root .app-menu__grid a.app-item[href*=\"/apps/files/\"] {\n\tdisplay: none !important;\n}",
+    "html:root .app-menu__grid a.app-item[href*=\"/apps/files/\"] {\n\tdisplay: none;\n}"
+   ]
+  ],
+  "tests": "testFilesEntryOfTheAppMenuIsHidden"
+ },
+ {
+  "id": "F05",
+  "rule": "runtime: the watcher of later page changes guards each of its parts",
+  "file": "src/runtime.js",
+  "edits": [
+   [
+    "queued = false; each([fix, swapGuest], document.body);",
+    "queued = false; fix(); swapGuest();"
+   ]
+  ],
+  "tests": "C4, 0.1.7: when one start step throws",
+  "runner": "js"
+ },
+ {
+  "id": "F06",
+  "rule": "css: Talk icons cancel the original colour filter",
+  "file": "css/pathlocale.css",
+  "edits": [
+   [
+    "\t\tfilter: none !important;\n",
+    ""
+   ]
+  ],
+  "tests": "testTalkIllustrationsBecomeIconsAndFailSafe"
+ },
+ {
+  "id": "F07",
+  "rule": "css: Talk icons fill their box",
+  "file": "css/pathlocale.css",
+  "edits": [
+   [
+    "\t\tinset: 0 !important;\n",
+    ""
+   ]
+  ],
+  "tests": "testTalkIllustrationsBecomeIconsAndFailSafe"
+ },
+ {
+  "id": "F08",
+  "rule": "css: Talk icons are not tiled",
+  "file": "css/pathlocale.css",
+  "edits": [
+   [
+    "\t\tmask-repeat: no-repeat;\n",
+    ""
+   ]
+  ],
+  "tests": "testTalkIllustrationsBecomeIconsAndFailSafe"
+ },
+ {
+  "id": "F09",
+  "rule": "css: Talk icons keep their size",
+  "file": "css/pathlocale.css",
+  "edits": [
+   [
+    "\t\tmask-size: 88px 88px;\n",
+    "\t\tmask-size: 10px 10px;\n"
+   ]
+  ],
+  "tests": "testTalkIllustrationsBecomeIconsAndFailSafe"
+ },
+ {
+  "id": "F10",
+  "rule": "css: the Teams parent is the anchor of the icon",
+  "file": "css/pathlocale.css",
+  "edits": [
+   [
+    "\t\tposition: relative;\n",
+    ""
+   ]
+  ],
+  "tests": "testTeamsIllustrationBecomesIconAndFailsSafe"
+ },
+ {
+  "id": "F11",
+  "rule": "css: the Teams icon is laid over the picture",
+  "file": "css/pathlocale.css",
+  "edits": [
+   [
+    "\t\tposition: absolute;\n",
+    ""
+   ]
+  ],
+  "tests": "testTeamsIllustrationBecomesIconAndFailsSafe"
+ },
+ {
+  "id": "F12",
+  "rule": "css: the Teams icon fills the picture box",
+  "file": "css/pathlocale.css",
+  "edits": [
+   [
+    "\t\tinset: 0;\n",
+    ""
+   ]
+  ],
+  "tests": "testTeamsIllustrationBecomesIconAndFailsSafe"
  }
 ]
