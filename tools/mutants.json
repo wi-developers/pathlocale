@@ -1780,7 +1780,7 @@
  },
  {
   "id": "V16",
-  "rule": "wording pinned, not confirmed by the owner yet: whiteboards setting uses تمكين",
+  "rule": "owner-confirmed wording (2026-11-09): whiteboards setting uses تمكين",
   "file": "data/ar.json",
   "edits": [
    [

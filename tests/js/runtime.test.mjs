@@ -440,7 +440,7 @@ const FIX_SAMPLES = ['Editor URL', 'Enable whiteboards?', 'Generate Slide Deck',
 const NAMED_SAMPLES = ['Nextcloud Assistant Slide Deck Generator', 'Nextcloud Office (Collabora) requires a separate server running Collabora Online to provide editing capabilities.'];
 const FILES_SAMPLES = ['Keyboard shortcuts', 'Add or remove favorite', 'Open the details sidebar'];
 
-test('named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is pinned (not confirmed by the owner yet)', () => {
+test('named admin pages (presets, groupware, delegation, AI, Diagramming, Office): exact texts are swapped, white space kept; the whiteboard wording is the one the owner confirmed on 2026-11-09', () => {
 	for (const k of [...FIX_SAMPLES, ...FILES_SAMPLES]) assert.ok(typeof arData.phpFixes[k] === 'string' && arData.phpFixes[k] !== '', 'ar phpFixes has ' + k);
 	for (const k of NAMED_SAMPLES) assert.ok(typeof arData.phpTexts[k] === 'string' && arData.phpTexts[k] !== '', 'ar phpTexts has ' + k);
 	assert.equal(arData.phpFixes['Enable whiteboards?'], 'تمكين السبورات البيضاء؟');
